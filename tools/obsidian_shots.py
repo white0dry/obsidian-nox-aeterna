@@ -194,7 +194,7 @@ NOTE_BLOCKS_JS = """(sel) => {
 
 
 def shot_note(o):
-    """整篇笔记按段裁：标题与属性 / 列表与任务 / 表格与小标题 / 代码公式 Mermaid / 图片嵌入脚注；Callout 拼成两列"""
+    """整篇笔记按段裁：标题与属性 / 列表 / 任务清单(全部状态) / 表格与小标题 / 代码公式 Mermaid / 图片嵌入脚注；Callout 拼成两列"""
     for lang in langs():
         o.open(lang)
         o.tall(7600)
@@ -217,14 +217,16 @@ def shot_note(o):
         img_h = max(i for i in range(img) if cls[i] == "el-h2")
         foot = max(i for i, c in enumerate(cls) if c == "el-section")
         header = next(i for i, b in enumerate(bl) if "mod-header" in b["cls"])
+        tasks = max(i for i in range(h2, h4) if cls[i] == "el-p")   # 「今晚的事项：」那段，后面是全部状态的任务清单
         cuts = [("note-title", max(bl[header]["top"] - 24, d["viewHeaderBottom"] + 1), bl[h1 + 1]["bottom"] + 24),
-                ("note-lists", bl[h2]["top"] - 24, bl[h4 - 1]["bottom"] + 24),
+                ("note-lists", bl[h2]["top"] - 24, bl[tasks - 1]["bottom"] + 24),
+                ("note-tasks", bl[tasks]["top"] - 16, bl[h4 - 1]["bottom"] + 24),
                 ("note-table", bl[h4]["top"] - 24, bl[h6 + 1]["bottom"] + 24),
                 ("note-code", bl[hr]["top"] - 10, bl[img_h - 1]["bottom"] + 24),
                 ("note-media", bl[img_h]["top"] - 24, bl[foot]["bottom"] + 24)]
         full = o.grab()
-        for name, y0, y1 in cuts:
-            R.save_webp(o.crop(full, (x, y0, w, y1 - y0)), name + suffix(lang))
+        for name, y0, y1 in cuts:   # 任务清单只占左半边，裁窄一点
+            R.save_webp(o.crop(full, (x, y0, min(w, 600) if name == "note-tasks" else w, y1 - y0)), name + suffix(lang))
         # Callout：前 14 个(不含最后那个可折叠的)，各自带一圈底色裁下来，两列拼图
         cs = [c for c in d["callouts"] if not c[4]][:14]
         pad = 10

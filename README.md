@@ -22,9 +22,11 @@ Taken with the sample vault in [`demo-vault/`](demo-vault). Open that folder as 
 
 ![Title, properties and inline styles](docs/images/note-title.webp)
 
-![Headings, blockquote, lists and tasks](docs/images/note-lists.webp)
+![Headings, blockquote and lists](docs/images/note-lists.webp)
 
-Besides `[ ]` and `[x]`, task lists support `[/]` in progress, `[-]` cancelled, `[>]` deferred, `[<]` scheduled, `[!]` important, `[?]` question, `[*]` star, `["]` quote, `[i]` info, `[b]` bookmark, `[l]` location and `[I]` idea.
+<p align="center"><img src="docs/images/note-tasks.webp" width="480" alt="Task list with every status"></p>
+
+Besides `[ ]` and `[x]`, task lists support, from top to bottom above, `[/]` in progress, `[-]` cancelled, `[>]` deferred, `[<]` scheduled, `[!]` important, `[?]` question, `[*]` star, `["]` quote, `[i]` info, `[b]` bookmark, `[l]` location and `[I]` idea.
 
 ![Table and H4 to H6](docs/images/note-table.webp)
 
