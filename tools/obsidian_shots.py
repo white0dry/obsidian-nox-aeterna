@@ -118,7 +118,8 @@ class Obs:
             layout = self.js("""async (l) => { const w = app.workspace; const lay = w.getLayout(); await w.saveLayout();
                                  await new Promise(r => setTimeout(r, 1500)); localStorage.setItem('language', l); return lay; }""", lang)
             self.pg.reload()
-            self.pg.wait_for_function("window.app && app.workspace && app.workspace.layoutReady", timeout=30000)
+            # 按时间轮询：默认按动画帧轮询，示例库窗口被别的窗口挡住时不出帧，会一直等到超时(踩过)
+            self.pg.wait_for_function("window.app && app.workspace && app.workspace.layoutReady", polling=500, timeout=30000)
             self.pg.wait_for_timeout(1500)
             self.js("async (lay) => { await app.workspace.changeLayout(lay); }", layout)
             self.pg.wait_for_timeout(2000)

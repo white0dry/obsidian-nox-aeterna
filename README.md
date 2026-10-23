@@ -1,14 +1,14 @@
-<h1 align="center">Night Lords</h1>
+<h1 align="center">Nox Aeterna</h1>
 
-<p align="center"><em>Midnight-clad, lightning-wreathed. A classical gothic dark theme for Obsidian.</em></p>
+<p align="center"><em>Midnight-clad, lightning-wreathed. A classical gothic dark theme for Obsidian, inspired by the Night Lords.</em></p>
 
 <p align="center">English · <a href="README.zh-CN.md">简体中文</a></p>
 
-![Night Lords in Obsidian: file explorer and local graph on the left, a note in reading view, calendar and outline on the right](docs/images/cover.webp)
+![Nox Aeterna in Obsidian: file explorer and local graph on the left, a note in reading view, calendar and outline on the right](docs/images/cover.webp)
 
 ## The look
 
-Night Lords takes its colours and heraldry from the VIII Legion of *Warhammer 40,000*: the Night Lords of Nostramo, a world that never saw the sun. Their armour is midnight blue, painted with lightning and hung with bone and bat wings. The theme borrows that heraldry and sets it out like an old printed book.
+Nox Aeterna (Latin for "eternal night") is inspired by the Night Lords, the VIII Legion of *Warhammer 40,000*, who came from Nostramo, a world that never saw the sun. Their armour is midnight blue, painted with lightning and hung with bone and bat wings. The theme borrows that heraldry and sets it out like an old printed book.
 
 - **Palette.** Deep midnight-blue backgrounds, bone-white text, brass ornaments, crimson accents and pale lightning blue for interface frames. It never uses pure black or pure white.
 - **Type.** Classical book typography. EB Garamond sets the text, Cinzel capitals the headings, and Noto Serif SC the Chinese. Empty tabs carry a blackletter epigraph.
@@ -111,9 +111,9 @@ All four of these are in Style Settings under *Interface*:
 
 ## Installation
 
-**From Obsidian:** go to *Settings → Appearance → Themes → Manage*, search for **Night Lords**, then choose *Install and use*.
+**From Obsidian:** go to *Settings → Appearance → Themes → Manage*, search for **Nox Aeterna**, then choose *Install and use*.
 
-**Manually:** copy `theme.css` and `manifest.json` into `<your vault>/.obsidian/themes/Night Lords/`, then select the theme in *Settings → Appearance*.
+**Manually:** copy `theme.css` and `manifest.json` into `<your vault>/.obsidian/themes/Nox Aeterna/`, then select the theme in *Settings → Appearance*.
 
 **Recommended:**
 
@@ -190,7 +190,7 @@ Textures are pre-rendered images, never live SVG filters, and fixed backgrounds 
 
 ## Disclaimer
 
-This is a fan work. *Warhammer 40,000*, the Night Lords and their emblem are trademarks of Games Workshop Ltd. The theme is unofficial and is not endorsed by or affiliated with Games Workshop.
+This is a fan work inspired by the Night Lords. *Warhammer 40,000*, the Night Lords and their emblem are trademarks of Games Workshop Ltd. The theme is unofficial and is not endorsed by or affiliated with Games Workshop.
 
 ## License
 

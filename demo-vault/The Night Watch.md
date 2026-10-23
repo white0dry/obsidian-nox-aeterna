@@ -12,7 +12,7 @@ tags:
   - night-watch
 ---
 
-This is the sample note for the **Night Lords** theme. It puts the common note styles on one page: **bold**, *italic*, ***bold italic***, ~~strikethrough~~, ==highlight==, `inline code`, an internal link to [[The Bell Tower]], an external link to [obsidian.md](https://obsidian.md), a #sample tag, and a footnote.[^1]
+This is the sample note for the **Nox Aeterna** theme. It puts the common note styles on one page: **bold**, *italic*, ***bold italic***, ~~strikethrough~~, ==highlight==, `inline code`, an internal link to [[The Bell Tower]], an external link to [obsidian.md](https://obsidian.md), a #sample tag, and a footnote.[^1]
 
 # I. The Sunless City
 

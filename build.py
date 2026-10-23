@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
-"""组装 Night Lords 主题：src/theme.src.css + 内嵌字体 + SVG 装饰 → 仓库根目录 theme.css + manifest.json
+"""组装 Nox Aeterna 主题(原名 Night Lords)：src/theme.src.css + 内嵌字体 + SVG 装饰 → 仓库根目录 theme.css + manifest.json
 (社区主题目录从仓库根目录读 manifest.json，发版时这两个文件作为 release 附件上传)
 用法:
   python build.py              # 只构建到仓库根目录
-  python build.py --install    # 构建并复制到 Obsidian 库的 .obsidian/themes/Night Lords/
+  python build.py --install    # 构建并复制到 Obsidian 库的 .obsidian/themes/Nox Aeterna/
 """
 import base64
 import json
@@ -18,8 +18,8 @@ ROOT = Path(__file__).resolve().parent
 sys.path.insert(0, str(ROOT / "tools"))
 import ornaments as O  # noqa: E402
 
-THEME_NAME = "Night Lords"
-VERSION = "1.0.0"
+THEME_NAME = "Nox Aeterna"
+VERSION = "1.0.1"
 VAULT = Path(r"C:\Users\DELL\Documents\Obsidian Vault")
 DIST = ROOT
 
@@ -526,7 +526,8 @@ if __name__ == "__main__":
         print("installed ->", dst)
         # README 截图用的示例库(tools/make_demo_vault.py 建的)也同步一份
         demo = Path(__file__).resolve().parent / "demo-vault" / ".obsidian" / "themes" / THEME_NAME
-        if demo.exists():
+        if demo.parent.parent.exists():
+            demo.mkdir(parents=True, exist_ok=True)
             for f in ("theme.css", "manifest.json"):
                 shutil.copy2(out / f, demo / f)
             print("installed ->", demo)

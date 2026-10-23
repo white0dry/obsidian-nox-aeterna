@@ -1,14 +1,14 @@
-<h1 align="center">Night Lords · 午夜领主</h1>
+<h1 align="center">Nox Aeterna · 永夜</h1>
 
-<p align="center"><em>身披午夜，雷电缠身。一款古典哥特风格的 Obsidian 暗色主题。</em></p>
+<p align="center"><em>身披午夜，雷电缠身。一款古典哥特风格的 Obsidian 暗色主题，灵感来自《战锤 40K》的午夜领主。</em></p>
 
 <p align="center"><a href="README.md">English</a> · 简体中文</p>
 
-![午夜领主在 Obsidian 里的样子：左栏文件列表与关系图谱，中间是阅读视图中的笔记，右栏日历与大纲](docs/images/cover-zh.webp)
+![Nox Aeterna 在 Obsidian 里的样子：左栏文件列表与关系图谱，中间是阅读视图中的笔记，右栏日历与大纲](docs/images/cover-zh.webp)
 
 ## 主题风格
 
-午夜领主的配色与纹章取自《战锤 40K》的第八军团：诺斯特拉莫的午夜领主，一颗永不见日出的星球。军团的动力甲是午夜蓝色，绘着游走的闪电，挂着骨骸与蝙蝠翼。主题借用这套纹章，再按旧式印刷书籍的规矩排版。
+Nox Aeterna 是拉丁语的「永夜」，灵感来自《战锤 40K》的第八军团午夜领主。他们来自诺斯特拉莫，一颗永不见日出的星球。军团的动力甲是午夜蓝色，绘着游走的闪电，挂着骨骸与蝙蝠翼。主题借用这套纹章，再按旧式印刷书籍的规矩排版。
 
 - **配色**：深午夜蓝底色，骨白正文，黄铜装饰，血红点缀，界面线框用淡电光蓝。不用纯黑，也不用纯白。
 - **字体**：古典书籍排版。西文正文用 EB Garamond，标题用 Cinzel 大写，中文用思源宋体；空白标签页上有一行哥特黑体字题铭。
@@ -111,9 +111,9 @@ Callout 默认像一块缝在页面上的皮：框内一圈骨白针脚，标题
 
 ## 安装
 
-**在 Obsidian 里安装**：打开「设置 → 外观 → 主题 → 管理」，搜索 **Night Lords**，点「安装并使用」。
+**在 Obsidian 里安装**：打开「设置 → 外观 → 主题 → 管理」，搜索 **Nox Aeterna**，点「安装并使用」。
 
-**手动安装**：把 `theme.css` 和 `manifest.json` 复制到 `<你的库>/.obsidian/themes/Night Lords/`，再到「设置 → 外观」里选择本主题。
+**手动安装**：把 `theme.css` 和 `manifest.json` 复制到 `<你的库>/.obsidian/themes/Nox Aeterna/`，再到「设置 → 外观」里选择本主题。
 
 **建议**：
 
@@ -190,7 +190,7 @@ Callout 默认像一块缝在页面上的皮：框内一圈骨白针脚，标题
 
 ## 声明
 
-本主题为同人作品。《战锤 40K》、午夜领主及其徽记是 Games Workshop Ltd. 的商标。本主题为非官方作品，与 Games Workshop 无关，也未经其认可。
+本主题是以午夜领主为灵感的同人作品。《战锤 40K》、午夜领主及其徽记是 Games Workshop Ltd. 的商标。本主题为非官方作品，与 Games Workshop 无关，也未经其认可。
 
 ## 许可
 

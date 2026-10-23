@@ -18,7 +18,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 DEMO = ROOT / "demo-vault"
 MAIN_VAULT = Path(r"C:\Users\DELL\Documents\Obsidian Vault")
-THEME = "Night Lords"
+THEME = "Nox Aeterna"
 
 
 def write_json(path, obj):

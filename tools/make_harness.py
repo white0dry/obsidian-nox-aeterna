@@ -18,7 +18,7 @@ CHEV = '<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="curr
 TITLE = "夜巡手记"
 
 # ---------------------------------------------------------------- 内容(和 demo-vault/夜巡手记.md 同一套虚构示例，README 截图也用它)
-P1 = ('这是 <strong>Night Lords · 午夜领主</strong> 主题的示例笔记：<strong>粗体</strong>、<em>斜体</em>、'
+P1 = ('这是 <strong>Nox Aeterna · 永夜</strong> 主题的示例笔记：<strong>粗体</strong>、<em>斜体</em>、'
       '<del>删除线</del>、<mark>高亮</mark>、<code>行内代码</code>、'
       '<a class="internal-link" href="#">钟楼</a>（内部链接）、<a class="external-link" href="#">Obsidian 官网</a>（外部链接）、'
       '<a class="tag" href="#">#示例</a> 标签。中文与 English 混排时，主题会自动在两者之间留出间距。')
