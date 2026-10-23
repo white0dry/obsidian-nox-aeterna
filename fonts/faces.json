@@ -1,0 +1,101 @@
+[
+ {
+  "family": "EB Garamond",
+  "style": "italic",
+  "weight": "400 800",
+  "subset": "greek-ext",
+  "file": "EBGaramond-italic-400_800-greek-ext.woff2",
+  "unicode_range": "U+1F00-1FFF",
+  "bytes": 11956
+ },
+ {
+  "family": "EB Garamond",
+  "style": "italic",
+  "weight": "400 800",
+  "subset": "greek",
+  "file": "EBGaramond-italic-400_800-greek.woff2",
+  "unicode_range": "U+0370-0377, U+037A-037F, U+0384-038A, U+038C, U+038E-03A1, U+03A3-03FF",
+  "bytes": 19588
+ },
+ {
+  "family": "EB Garamond",
+  "style": "italic",
+  "weight": "400 800",
+  "subset": "latin-ext",
+  "file": "EBGaramond-italic-400_800-latin-ext.woff2",
+  "unicode_range": "U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF",
+  "bytes": 88576
+ },
+ {
+  "family": "EB Garamond",
+  "style": "italic",
+  "weight": "400 800",
+  "subset": "latin",
+  "file": "EBGaramond-italic-400_800-latin.woff2",
+  "unicode_range": "U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD",
+  "bytes": 47940
+ },
+ {
+  "family": "EB Garamond",
+  "style": "normal",
+  "weight": "400 800",
+  "subset": "greek-ext",
+  "file": "EBGaramond-normal-400_800-greek-ext.woff2",
+  "unicode_range": "U+1F00-1FFF",
+  "bytes": 11484
+ },
+ {
+  "family": "EB Garamond",
+  "style": "normal",
+  "weight": "400 800",
+  "subset": "greek",
+  "file": "EBGaramond-normal-400_800-greek.woff2",
+  "unicode_range": "U+0370-0377, U+037A-037F, U+0384-038A, U+038C, U+038E-03A1, U+03A3-03FF",
+  "bytes": 19868
+ },
+ {
+  "family": "EB Garamond",
+  "style": "normal",
+  "weight": "400 800",
+  "subset": "latin-ext",
+  "file": "EBGaramond-normal-400_800-latin-ext.woff2",
+  "unicode_range": "U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF",
+  "bytes": 113928
+ },
+ {
+  "family": "EB Garamond",
+  "style": "normal",
+  "weight": "400 800",
+  "subset": "latin",
+  "file": "EBGaramond-normal-400_800-latin.woff2",
+  "unicode_range": "U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD",
+  "bytes": 44336
+ },
+ {
+  "family": "Cinzel",
+  "style": "normal",
+  "weight": "400 900",
+  "subset": "latin-ext",
+  "file": "Cinzel-normal-400_900-latin-ext.woff2",
+  "unicode_range": "U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF",
+  "bytes": 14540
+ },
+ {
+  "family": "Cinzel",
+  "style": "normal",
+  "weight": "400 900",
+  "subset": "latin",
+  "file": "Cinzel-normal-400_900-latin.woff2",
+  "unicode_range": "U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD",
+  "bytes": 25904
+ },
+ {
+  "family": "Manufacturing Consent",
+  "style": "normal",
+  "weight": "400",
+  "subset": "latin",
+  "file": "ManufacturingConsent-normal-400-latin.woff2",
+  "unicode_range": "U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD",
+  "bytes": 23296
+ }
+]

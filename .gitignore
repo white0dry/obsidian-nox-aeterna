@@ -1,0 +1,22 @@
+__pycache__/
+# 本地预览：含 Obsidian 自带的 app.css 和从安装包抽出的资源(版权归 Obsidian)，不能发布
+preview/
+assets/cache/
+dist/
+# 示例库里复制进来的主题和第三方插件、随手变的布局(布局备份在 tools/demo_layout.json)
+demo-vault/.obsidian/themes/
+demo-vault/.obsidian/plugins/
+demo-vault/.obsidian/workspace.json
+# 没用上的候选字体和素材
+fonts/CormorantSC-*
+fonts/GrenzeGotisch-*
+fonts/PlayfairDisplaySC-*
+fonts/UnifrakturMaguntia-*
+fonts/NLTextura.woff2
+fonts/missaali/
+tools/make_textura.py
+src/icons/bat-*.svg
+tools/heritage_bats.py
+# ICOOON MONO 素材：条款不许再分发素材文件(用在作品里可以，theme.css 照常内嵌)；缺了构建会换成替代图标，见 DEVELOPMENT.md
+src/icons/skull-hollow.svg
+src/icons/callout/tarot-moon.svg

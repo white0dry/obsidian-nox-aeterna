@@ -1,0 +1,164 @@
+/* ==========================================================================
+   笔记列表附加样式(第十八轮做的，当时把“大纲视图”误解成笔记列表；用户要的是大纲面板)
+   默认不打包：build.py 里 LIST_EXTRAS = True 才会接到主题末尾，并生成 list_css 的按级规则。
+   内容：每级纹章符号(骷髅/蝙蝠/闪电/菱形)、血线(Logseq bullet threading，阅读视图锚点 / 编辑视图
+   contain + `目标 ~ 行` 摘锚点名)、简单指示线(导轨 + 跟随标记)。接回去时还要把下面 Style Settings 项加回：
+   nl-plain-bullets(class-toggle)、nl-list-guide(class-select: nl-list-thread / nl-list-marker / nl-list-plain)、
+   nl-thread-cursor-only(class-toggle)。性能：约 100 行时编辑视图每次悬停换行 ≈ 3ms。
+   ========================================================================== */
+.theme-dark,
+.theme-light {
+  --indentation-guide-color: color-mix(in srgb, var(--nl-blood-700) 62%, transparent);
+  --indentation-guide-color-active: var(--indentation-guide-color);
+  --indentation-guide-editing-indent: calc(var(--list-indent-editing) + 0.16em - 1.5px);
+}
+/* 列表符号：每一级一个扁平纹章剪影——骨白骷髅(红目镜) / 血红蝙蝠 / 铜色闪电 / 骨白菱形，往下循环；
+   图标与各级尺寸由 build.py list_css 生成。图标是背景图不是遮罩(列表项很多，遮罩贵) */
+body:not(.nl-plain-bullets) :is(.markdown-rendered, .markdown-source-view.mod-cm6) .list-bullet::after {
+  width: var(--nl-bul-w);
+  height: var(--nl-bul-h);
+  border: none;
+  border-radius: 0;
+  transform: none;
+  box-shadow: none;
+  background: var(--nl-bul) center / contain no-repeat;
+}
+/* 折叠起来的项：符号换成余烬红(代替原版的光圈) */
+body:not(.nl-plain-bullets) .markdown-rendered li.is-collapsed > .list-bullet::after,
+body:not(.nl-plain-bullets) .markdown-source-view.mod-cm6 .is-collapsed ~ .cm-formatting-list .list-bullet::after {
+  background-image: var(--nl-bul-x);
+}
+/* 朴素符号：铜色菱形，偶数级空心 */
+body.nl-plain-bullets .markdown-rendered ul ul .list-bullet::after,
+body.nl-plain-bullets .markdown-source-view.mod-cm6 .HyperMD-list-line-2 .list-bullet::after,
+body.nl-plain-bullets .markdown-source-view.mod-cm6 .HyperMD-list-line-4 .list-bullet::after {
+  background-color: transparent;
+  border: 1px solid var(--list-marker-color);
+}
+/* 编辑视图的符号盒定宽(= Garamond 连字符宽)，编辑视图血线的横坐标按它算；有序行的“符号宽”按同值处理 */
+.markdown-source-view.mod-cm6 .cm-formatting-list-ul .list-bullet {
+  width: 0.32em;
+}
+/* 纹章图标比原版圆点宽：符号盒右边让出半个图标(中心不动，血线坐标不变)，和阅读视图的符号—文字间距一致；
+   Obsidian 的悬挂缩进是运行时量标记宽度的，会自动跟上 */
+body:not(.nl-plain-bullets) .markdown-source-view.mod-cm6 .cm-formatting-list-ul .list-bullet {
+  margin-inline-end: max(0px, calc(var(--nl-bul-w) / 2 - 0.16em));
+}
+.markdown-source-view.mod-cm6 .HyperMD-list-line:has(.cm-formatting-list-ol) {
+  --nl-bul-w: 0.32em;
+}
+
+/* 血线：缩进线平时是暗血色；悬停(编辑视图里鼠标不在列表上时 = 光标所在行)的那一项，
+   从最顶层的祖先一路往下，每一级竖线流到下一级、圆角拐进它的符号，像血顺着各级淌下来；
+   出现时按层级依次自上而下“流”出(nl-bleed)，不画滴落(廉价) */
+/* 编辑视图：.cm-content 做 fixed 定位的包含块(contain: layout——不裁切、不建合成层，行本身仍是 relative)，
+   目标行的血线段(fixed)就能锚到别的行的符号上，并随内容一起滚动。
+   血线段挂在目标行的 .cm-indent::after(Obsidian 的缩进线用的是 ::before)，规则见 build.py list_css */
+body:not(.nl-list-plain) .markdown-source-view.mod-cm6 .cm-content {
+  contain: layout;
+}
+.markdown-source-view.mod-cm6 .HyperMD-list-line:has(.cm-formatting-list-ol) {
+  --nl-t-pad: var(--list-indent-editing);
+}
+body:not(.nl-list-marker, .nl-list-plain) .markdown-source-view.mod-cm6 .cm-indent::after {
+  position: fixed;
+  box-sizing: border-box;
+  border-inline-start: var(--nl-thread-w) solid var(--nl-thread);
+  border-bottom: var(--nl-thread-w) solid var(--nl-thread);
+  border-end-start-radius: 5px;
+  pointer-events: none;
+  animation: nl-bleed 0.22s ease-out both;
+}
+/*@@LIST-THREAD@@*/
+
+/* 简单指示线(nl-list-marker)：和侧栏大纲同一套——列表左侧(正文左缘 3px)一条淡铜导轨，
+   血红短条 + 骨白小菱形用锚点定位贴到鼠标所在项的第一行，transition 滑过去。
+   编辑视图鼠标不在列表上时回到光标行；锚点名挂在行/符号自身，不扫描兄弟，悬停开销很小 */
+@supports (anchor-name: --nl-x) {
+  /* 阅读视图：顶层列表做包含块 + 导轨；锚点 = 最深的那个悬停项的符号(任务项是勾选框，有序项是编号占位框) */
+  body.nl-list-marker .markdown-rendered :is(ul, ol):not(li *) {
+    position: relative;
+    background: linear-gradient(transparent, var(--nl-rail) 0.6em, var(--nl-rail) calc(100% - 0.6em), transparent) 3px 0 / 1px 100% no-repeat;
+  }
+  body.nl-list-marker .markdown-rendered li:hover:not(:has(li:hover)) > :is(.list-bullet, .task-list-item-checkbox),
+  body.nl-list-marker .markdown-rendered ol > li:hover:not(:has(li:hover))::before {
+    anchor-name: --nl-lm;
+  }
+  body.nl-list-marker .markdown-rendered ol > li:hover:not(:has(li:hover))::before {
+    content: "";
+    position: absolute;
+    visibility: hidden;
+    pointer-events: none;
+    inset-inline-end: calc(100% + 0.3em);
+    width: 1.1em;
+    top: var(--list-spacing);
+    height: calc(var(--line-height-normal) * 1em);
+  }
+  body.nl-list-marker .markdown-rendered :is(ul, ol):not(li *)::before,
+  body.nl-list-marker .markdown-rendered :is(ul, ol):not(li *)::after,
+  body.nl-list-marker .markdown-source-view.mod-cm6 .cm-content::before,
+  body.nl-list-marker .markdown-source-view.mod-cm6 .cm-content::after {
+    content: "";
+    position: absolute;
+    position-anchor: --nl-lm;
+    /* 默认 anchors-visible：锚点不可见就把自己也藏起来——有序项的锚点是隐形的编号占位框，得关掉 */
+    position-visibility: always;
+    pointer-events: none;
+    transition: top 0.26s cubic-bezier(0.2, 0.8, 0.2, 1), opacity 0.2s;
+  }
+  body.nl-list-marker .markdown-rendered :is(ul, ol):not(li *)::before,
+  body.nl-list-marker .markdown-source-view.mod-cm6 .cm-content::before {
+    width: 2px;
+    height: calc(var(--line-height-normal) * 1em);
+    background: var(--nl-crimson);
+  }
+  body.nl-list-marker .markdown-rendered :is(ul, ol):not(li *)::after,
+  body.nl-list-marker .markdown-source-view.mod-cm6 .cm-content::after {
+    width: 5px;
+    height: 5px;
+    background: #d8ccb2;
+    transform: translate(-50%, -50%) rotate(45deg);
+  }
+  body.nl-list-marker .markdown-rendered :is(ul, ol):not(li *)::before {
+    left: 2.5px;
+    top: calc(anchor(center) - var(--line-height-normal) * 0.5em);
+  }
+  body.nl-list-marker .markdown-rendered :is(ul, ol):not(li *)::after {
+    left: 3.5px;
+    top: anchor(center);
+  }
+  body.nl-list-marker .markdown-rendered :is(ul, ol):not(li *):not(:has(li:hover))::before,
+  body.nl-list-marker .markdown-rendered :is(ul, ol):not(li *):not(:has(li:hover))::after {
+    opacity: 0;
+  }
+  /* 编辑视图：列表行背景画导轨；标记是 .cm-content 的 fixed 伪元素(包含块 = .cm-content，见上方 contain)，
+     锚点 = 悬停的列表行(或光标行)本身，标记贴它的第一行 */
+  body.nl-list-marker .markdown-source-view.mod-cm6 .HyperMD-list-line:not(.HyperMD-quote) {
+    background-image: linear-gradient(var(--nl-rail), var(--nl-rail));
+    background-position: 3px 0;
+    background-size: 1px 100%;
+    background-repeat: no-repeat;
+  }
+  body.nl-list-marker:not(.nl-thread-cursor-only) .markdown-source-view.mod-cm6 .cm-content > .HyperMD-list-line:not(.HyperMD-quote):hover,
+  body.nl-list-marker .markdown-source-view.mod-cm6 :is(body.nl-thread-cursor-only .cm-content, .cm-content:not(:has(> .HyperMD-list-line:not(.HyperMD-quote):hover))) > .HyperMD-list-line:not(.HyperMD-quote).cm-active {
+    anchor-name: --nl-lm;
+  }
+  body.nl-list-marker .markdown-source-view.mod-cm6 .cm-content::before,
+  body.nl-list-marker .markdown-source-view.mod-cm6 .cm-content::after {
+    position: fixed;
+  }
+  body.nl-list-marker .markdown-source-view.mod-cm6 .cm-content::before {
+    left: calc(anchor(left) + 2.5px);
+    top: calc(anchor(top) + var(--list-spacing));
+  }
+  body.nl-list-marker .markdown-source-view.mod-cm6 .cm-content::after {
+    left: calc(anchor(left) + 3.5px);
+    top: calc(anchor(top) + var(--list-spacing) + var(--line-height-normal) * 0.5em);
+  }
+  body.nl-list-marker .markdown-source-view.mod-cm6 .cm-content:not(:has(> .HyperMD-list-line:not(.HyperMD-quote):is(:hover, .cm-active)))::before,
+  body.nl-list-marker .markdown-source-view.mod-cm6 .cm-content:not(:has(> .HyperMD-list-line:not(.HyperMD-quote):is(:hover, .cm-active)))::after,
+  body.nl-list-marker.nl-thread-cursor-only .markdown-source-view.mod-cm6 .cm-content:not(:has(> .HyperMD-list-line:not(.HyperMD-quote).cm-active))::before,
+  body.nl-list-marker.nl-thread-cursor-only .markdown-source-view.mod-cm6 .cm-content:not(:has(> .HyperMD-list-line:not(.HyperMD-quote).cm-active))::after {
+    opacity: 0;
+  }
+}

@@ -1,0 +1,2338 @@
+/* ==========================================================================
+   Night Lords · 午夜领主  —  an Obsidian theme
+   Midnight-clad, lightning-wreathed. Classical gothic, for long nights of reading.
+
+   Ave Dominus Nox.
+
+   Fonts (embedded, SIL Open Font License 1.1):
+     EB Garamond — Georg Duffner & Octavio Pardo
+     Cinzel      — Natanael Gama
+     Manufacturing Consent — The Manufacturing Consent Project Authors
+     CJK punctuation glyphs subset from Noto Serif SC — Google / Adobe
+   Chinese text: locally installed 思源宋体 / Noto Serif SC if present, otherwise an embedded
+   GB2312 subset of Noto Serif SC (Adobe, OFL 1.1), then system 宋体 for rare characters.
+   Bat-wing outline after "batwing-emblem" by Lorc, game-icons.net (CC BY 3.0).
+   Callout icons (quill, scroll-unfurled, semi-closed-eye, tied-scroll, candle-light, laurels,
+   claw-slashes, crossed-bones, skull-crossed-bones, spider-web, open-book) by Lorc, game-icons.net (CC BY 3.0).
+   Pinned-tab dagger ("stiletto", mirrored) by Lorc, game-icons.net (CC BY 3.0).
+   Tarot card (question callouts) modified from an ICOOON MONO vector (corner radii reduced).
+   Bone in the callout corners and the outline-pane skull: modified from public-domain engravings via
+   Heritage Library (HTC Heritage Type). Hollow profile skull: ICOOON MONO "頭蓋骨の無料アイコン7", recoloured and thickened.
+   Lightning, textures and the rest of the ornaments are procedurally drawn.
+   Night Lords emblem from the community "wh_icons" set; Warhammer 40,000 and
+   the Night Lords are trademarks of Games Workshop. Fan work, not affiliated.
+
+   Built by build.py from src/theme.src.css — edit the source, not theme.css.
+   ========================================================================== */
+
+/* @settings
+
+name: Night Lords · 午夜领主
+id: night-lords
+settings:
+-   id: nl-settings-lang
+    title: Settings language
+    title.zh: 设置语言
+    type: class-select
+    allowEmpty: false
+    default: nl-lang-auto
+    options:
+    -   label: Follow Obsidian
+        label.zh: 跟随 Obsidian
+        value: nl-lang-auto
+    -   label: 中文
+        label.zh: 中文
+        value: nl-lang-zh
+    -   label: English
+        label.zh: English
+        value: nl-lang-en
+-   id: nl-h-atmos
+    title: Atmosphere
+    title.zh: 氛围
+    type: heading
+    level: 2
+    collapsed: false
+-   id: nl-no-texture
+    title: Disable mottled texture
+    title.zh: 关闭斑驳纹理
+    type: class-toggle
+-   id: nl-texture-opacity
+    title: Texture strength
+    title.zh: 纹理浓度
+    type: variable-number-slider
+    default: 1
+    min: 0
+    max: 1
+    step: 0.05
+-   id: nl-no-storm
+    title: Hide lightning under file list
+    title.zh: 隐藏文件列表底部的闪电纹
+    type: class-toggle
+-   id: nl-storm-opacity
+    title: Lightning brightness
+    title.zh: 闪电纹亮度
+    type: variable-number-slider
+    default: 0.45
+    min: 0.1
+    max: 1
+    step: 0.05
+-   id: nl-no-vignette
+    title: Disable vignette
+    title.zh: 关闭暗角
+    type: class-toggle
+-   id: nl-vignette
+    title: Vignette strength
+    title.zh: 暗角强度
+    type: variable-number-slider
+    default: 0.62
+    min: 0
+    max: 0.95
+    step: 0.01
+-   id: nl-h-orn
+    title: Ornaments
+    title.zh: 装饰
+    type: heading
+    level: 2
+    collapsed: true
+-   id: nl-no-banner
+    title: Hide winged skull under title
+    title.zh: 隐藏标题下的翼骷髅
+    type: class-toggle
+-   id: nl-no-heading-orn
+    title: Hide heading ornaments
+    title.zh: 隐藏标题装饰
+    type: class-toggle
+-   id: nl-no-rule-orn
+    title: Plain horizontal rules
+    title.zh: 分隔线用朴素样式
+    type: class-toggle
+-   id: nl-no-callout-corners
+    title: Hide callout decoration
+    title.zh: 隐藏 Callout 装饰
+    type: class-toggle
+-   id: nl-no-callout-latin
+    title: Hide callout Latin labels
+    title.zh: 隐藏 Callout 拉丁铭牌
+    type: class-toggle
+-   id: nl-no-deco-cards
+    title: Disable Dark Deco card frames
+    title.zh: 关闭 Dark Deco 卡片框
+    type: class-toggle
+-   id: nl-card-gap
+    title: Sidebar card spacing
+    title.zh: 侧栏卡片留白
+    description: Only with card frames on
+    description.zh: 仅在卡片框开启时生效
+    type: variable-number-slider
+    default: 8
+    min: 0
+    max: 24
+    step: 1
+    format: px
+-   id: nl-native-callout-icons
+    title: Native callout icons
+    title.zh: Callout 用原版图标
+    type: class-toggle
+-   id: nl-folder-style
+    title: Folder icons
+    title.zh: 文件夹图标
+    type: class-select
+    allowEmpty: false
+    default: nl-folder-bat
+    options:
+    -   label: Hanging bat
+        label.zh: 倒挂蝙蝠
+        value: nl-folder-bat
+    -   label: Bronze folder
+        label.zh: 铜色文件夹
+        value: nl-folder-classic
+    -   label: Native arrow
+        label.zh: 原版箭头
+        value: nl-folder-native
+-   id: nl-outline-style
+    title: Outline style
+    title.zh: 大纲面板样式
+    type: class-select
+    allowEmpty: false
+    default: nl-outline-thread
+    options:
+    -   label: Blood thread
+        label.zh: 血线
+        value: nl-outline-thread
+    -   label: Marker
+        label.zh: 简单指示线
+        value: nl-outline-marker
+    -   label: Native
+        label.zh: 原版
+        value: nl-outline-native
+-   id: nl-image-style
+    title: Image style
+    title.zh: 图片样式
+    type: class-select
+    allowEmpty: false
+    default: nl-img-frame
+    options:
+    -   label: Bronze frame
+        label.zh: 铜框画匾
+        value: nl-img-frame
+    -   label: Night vignette
+        label.zh: 夜色晕边
+        value: nl-img-vignette
+    -   label: Native
+        label.zh: 原版
+        value: nl-img-native
+-   id: nl-h1-left
+    title: Left-align H1 and note title
+    title.zh: H1 与笔记标题左对齐
+    type: class-toggle
+-   id: nl-h-ui
+    title: Interface
+    title.zh: 界面
+    type: heading
+    level: 2
+    collapsed: true
+-   id: nl-autohide-view-header
+    title: Auto-hide view header
+    title.zh: 自动隐藏正文顶栏
+    type: class-toggle
+-   id: nl-autohide-ribbon
+    title: Auto-hide ribbon
+    title.zh: 自动隐藏左侧功能栏
+    type: class-toggle
+-   id: nl-autohide-vault
+    title: Auto-hide vault switcher
+    title.zh: 自动隐藏左下角仓库栏
+    type: class-toggle
+-   id: nl-autohide-nav
+    title: Auto-collapse sidebar buttons
+    title.zh: 自动收起侧栏面板按钮行
+    type: class-toggle
+    default: true
+-   id: nl-h-type
+    title: Typography
+    title.zh: 排版
+    type: heading
+    level: 2
+    collapsed: true
+-   id: nl-cjk-font
+    title: CJK heading font
+    title.zh: 标题中文字体
+    description: Huiwen Mincho must be installed
+    description.zh: 汇文明朝体需本机安装
+    type: class-select
+    allowEmpty: false
+    default: nl-cjk-noto
+    options:
+    -   label: Noto Serif SC
+        label.zh: 思源宋体
+        value: nl-cjk-noto
+    -   label: Huiwen Mincho
+        label.zh: 汇文明朝体
+        value: nl-cjk-huiwen
+    -   label: STSong
+        label.zh: 华文宋体
+        value: nl-cjk-stsong
+-   id: line-height-normal
+    title: Body line height
+    title.zh: 正文行距
+    type: variable-number-slider
+    default: 1.85
+    min: 1.4
+    max: 2.3
+    step: 0.05
+-   id: nl-align
+    title: Body alignment
+    title.zh: 正文对齐
+    type: class-select
+    allowEmpty: false
+    default: nl-align-left
+    options:
+    -   label: Left
+        label.zh: 左对齐
+        value: nl-align-left
+    -   label: Justify
+        label.zh: 两端对齐
+        value: nl-align-justify
+-   id: nl-no-autospace
+    title: Disable CJK–Latin auto spacing
+    title.zh: 关闭中西文自动间距
+    type: class-toggle
+-   id: nl-latin-quotes
+    title: Latin curly quotes
+    title.zh: 弯引号用西文字形
+    description: For English-heavy notes
+    description.zh: 适合英文为主的笔记
+    type: class-toggle
+-   id: nl-ui-sans
+    title: Sans-serif interface
+    title.zh: 界面使用无衬线字体
+    description: Note text stays serif
+    description.zh: 笔记正文仍为衬线
+    type: class-toggle
+-   id: nl-h-color
+    title: Colours
+    title.zh: 色彩
+    type: heading
+    level: 2
+    collapsed: true
+-   id: nl-crimson
+    title: Accent (crimson)
+    title.zh: 主强调色
+    type: variable-color
+    format: hex
+    default: '#b3262e'
+-   id: nl-ember-light
+    title: Link colour
+    title.zh: 链接色
+    type: variable-color
+    format: hex
+    default: '#e8705f'
+-   id: nl-brass
+    title: Brass
+    title.zh: 黄铜
+    type: variable-color
+    format: hex
+    default: '#d2b07a'
+-   id: nl-lightning
+    title: Lightning blue
+    title.zh: 电光蓝
+    type: variable-color
+    format: hex
+    default: '#9dbbe8'
+-   id: nl-night-850
+    title: Note background
+    title.zh: 笔记底色
+    type: variable-color
+    format: hex
+    default: '#0b1424'
+*/
+
+/*@@FONTS@@*/
+
+/* ==========================================================================
+   1. Palette & Obsidian variables
+   (both .theme-dark and .theme-light: this is a night theme, it stays dark)
+   ========================================================================== */
+.theme-dark,
+.theme-light {
+  color-scheme: dark;
+
+  /* ---- Night Lords palette ---- */
+  --nl-abyss: #03060c;
+  --nl-night-950: #060b15;
+  --nl-night-900: #08101d;
+  --nl-night-850: #0b1424;
+  --nl-night-800: #0f1a2e;
+  --nl-night-750: #132038;
+  --nl-night-700: #1a2a47;
+  --nl-night-600: #24385c;
+  --nl-night-500: #354f7c;
+  --nl-line: #1b2a46;
+
+  --nl-blood-900: #2c080c;
+  --nl-blood-800: #4a0e14;
+  --nl-blood-700: #6e141b;
+  --nl-blood-600: #8e1b22;
+  --nl-crimson: #b3262e;
+  --nl-ember: #d6463f;
+  --nl-ember-light: #e8705f;
+
+  --nl-bronze-800: #4d3a20;
+  --nl-bronze-700: #7a5c33;
+  --nl-bronze: #b08a52;
+  --nl-brass: #d2b07a;
+
+  --nl-bone: #e8dcc4;
+  --nl-parchment: #d3c8b0;
+  --nl-dust: #a49c8a;
+  --nl-ash: #7d8394;
+  --nl-shade: #56637d;
+
+  --nl-lightning: #9dbbe8;
+  --nl-lightning-dim: #6f8fc4;
+  --nl-verdigris: #6f9a86;
+  --nl-amber: #d08a3c;
+  --nl-warp: #9a7bb5;
+
+  /* ---- fonts ---- */
+  --nl-font-latin: "NL Garamond";
+  --nl-font-caps: "NL Cinzel";
+  --nl-font-gothic: "NL Manufacturing Consent";
+  --nl-font-cjk: "Noto Serif SC", "Source Han Serif SC", "Source Han Serif CN", "Source Han Serif", "思源宋体", "NL Noto Serif SC", "Songti SC", "STSong", "SimSun";
+  --nl-font-cjk-display: "Noto Serif SC", "Source Han Serif SC", "Source Han Serif CN", "思源宋体", "NL Noto Serif SC", "Songti SC", "STSong", "SimSun";
+  --nl-punct: "NL CJK Punct";
+  --nl-font-display: var(--nl-punct), var(--nl-font-caps), var(--nl-font-cjk-display), serif;
+  --font-text-theme: var(--nl-punct), var(--nl-font-latin), var(--nl-font-cjk), serif;
+  --font-interface-theme: var(--nl-punct), var(--nl-font-latin), var(--nl-font-cjk), serif;
+  --font-monospace-theme: "JetBrains Mono", "Cascadia Mono", "Cascadia Code", Consolas, "Sarasa Mono SC", "Noto Sans Mono CJK SC", monospace;
+
+  /* ---- atmosphere knobs (Style Settings) ---- */
+  --nl-vignette: 0.62;
+  --nl-texture-opacity: 1;
+  --nl-storm-opacity: 0.45;
+  --nl-banner-h: 48px;
+  /* 侧栏卡片四周留白 gap：卡片左右外边距 = gap；每张卡片上下各留 pad = gap / 2(上下两张卡片之间正好 = gap，
+     拖动线贴着上面那张的底边、落在正中)；最上 / 最下缺的另一半由侧栏自己的上下内边距 edge 补齐(edge + pad = gap)。
+     pad 至少 1px：战旗顶比线框盒高 0.5px，再小会被标签组的 overflow 裁掉 */
+  --nl-card-gap: 8px;
+  --nl-card-pad: max(1px, calc(var(--nl-card-gap) / 2));
+  --nl-card-edge: max(0px, calc(var(--nl-card-gap) - var(--nl-card-pad)));
+
+  /* ---- Obsidian base scale ---- */
+  --color-base-00: var(--nl-night-850);
+  --color-base-05: #0d1727;
+  --color-base-10: var(--nl-night-800);
+  --color-base-20: #111d33;
+  --color-base-25: var(--nl-night-750);
+  --color-base-30: var(--nl-night-700);
+  --color-base-35: var(--nl-night-600);
+  --color-base-40: #2c4168;
+  --color-base-50: var(--nl-shade);
+  --color-base-60: var(--nl-ash);
+  --color-base-70: var(--nl-dust);
+  --color-base-100: var(--nl-parchment);
+
+  --color-red: var(--nl-ember);
+  --color-orange: var(--nl-amber);
+  --color-yellow: #d9b65e;
+  --color-green: var(--nl-verdigris);
+  --color-cyan: #6fa6b5;
+  --color-blue: var(--nl-lightning-dim);
+  --color-purple: var(--nl-warp);
+  --color-pink: #c77d93;
+  --color-red-rgb: 214, 70, 63;
+  --color-orange-rgb: 208, 138, 60;
+  --color-yellow-rgb: 217, 182, 94;
+  --color-green-rgb: 111, 154, 134;
+  --color-cyan-rgb: 111, 166, 181;
+  --color-blue-rgb: 111, 143, 196;
+  --color-purple-rgb: 154, 123, 181;
+  --color-pink-rgb: 199, 125, 147;
+
+  --color-accent: var(--nl-crimson);
+  --color-accent-1: color-mix(in srgb, var(--nl-crimson) 75%, var(--nl-ember));
+  --color-accent-2: var(--nl-ember);
+  --color-accent-hsl: 357, 65%, 42%;
+
+  /* ---- surfaces ---- */
+  --background-primary: var(--nl-night-850);
+  --background-primary-alt: var(--nl-night-800);
+  --background-secondary: var(--nl-night-900);
+  --background-secondary-alt: var(--nl-night-950);
+  --background-modifier-border: var(--nl-line);
+  --background-modifier-border-hover: #2a3f66;
+  --background-modifier-border-focus: var(--nl-bronze-700);
+  --background-modifier-hover: color-mix(in srgb, var(--nl-lightning) 6%, transparent);
+  --background-modifier-active-hover: color-mix(in srgb, var(--nl-crimson) 16%, transparent);
+  --background-modifier-form-field: var(--nl-night-950);
+  --background-modifier-form-field-hover: var(--nl-night-950);
+  --background-modifier-cover: rgba(2, 4, 9, 0.72);
+  --background-modifier-box-shadow: rgba(0, 0, 0, 0.5);
+  --background-modifier-error: var(--nl-crimson);
+  --background-modifier-error-hover: var(--nl-ember);
+  --background-modifier-success: var(--nl-verdigris);
+  --interactive-normal: var(--nl-night-750);
+  --interactive-hover: var(--nl-night-700);
+  --interactive-accent: var(--nl-blood-600);
+  --interactive-accent-hover: var(--nl-crimson);
+  --interactive-accent-hsl: 357, 65%, 42%;
+
+  /* ---- text ---- */
+  --text-normal: var(--nl-parchment);
+  --text-muted: var(--nl-dust);
+  --text-faint: var(--nl-shade);
+  --text-on-accent: var(--nl-bone);
+  --text-on-accent-inverted: var(--nl-night-950);
+  --text-accent: var(--nl-ember-light);
+  --text-accent-hover: var(--nl-brass);
+  --text-error: var(--nl-ember);
+  --text-warning: var(--nl-amber);
+  --text-success: var(--nl-verdigris);
+  --text-selection: color-mix(in srgb, var(--nl-crimson) 40%, transparent);
+  --text-highlight-bg: color-mix(in srgb, var(--nl-crimson) 34%, transparent);
+  --text-highlight-bg-active: color-mix(in srgb, var(--nl-ember) 50%, transparent);
+  --highlight-background: color-mix(in srgb, var(--nl-crimson) 34%, transparent);
+  --caret-color: var(--nl-ember-light);
+
+  /* ---- typography ---- */
+  --line-height-normal: 1.85;
+  --line-height-tight: 1.35;
+  --p-spacing: 1.1rem;
+  --heading-spacing: calc(var(--p-spacing) * 2.4);
+  --file-line-width: 46rem;
+  --bold-weight: 700;
+  --bold-color: #f1e1bf;
+  --italic-color: var(--nl-brass);
+
+  --h1-font: var(--nl-font-display);
+  --h1-size: 1.95em;
+  --h1-weight: 700;
+  --h1-color: var(--nl-bone);
+  --h1-letter-spacing: 0.06em;
+  --h1-line-height: 1.32;
+  --h2-font: var(--nl-font-display);
+  --h2-size: 1.5em;
+  --h2-weight: 650;
+  --h2-color: var(--nl-brass);
+  --h2-letter-spacing: 0.035em;
+  --h2-line-height: 1.38;
+  --h3-font: var(--nl-font-display);
+  --h3-size: 1.26em;
+  --h3-weight: 650;
+  --h3-color: var(--nl-ember-light);
+  --h3-letter-spacing: 0.03em;
+  --h3-line-height: 1.4;
+  --h4-font: var(--nl-font-display);
+  --h4-size: 1.1em;
+  --h4-weight: 600;
+  --h4-color: var(--nl-lightning);
+  --h4-letter-spacing: 0.05em;
+  --h4-line-height: 1.45;
+  --h5-font: var(--font-text);
+  --h5-size: 1.02em;
+  --h5-weight: 700;
+  --h5-color: var(--nl-dust);
+  --h5-variant: small-caps;
+  --h5-letter-spacing: 0.06em;
+  --h6-font: var(--font-text);
+  --h6-size: 0.96em;
+  --h6-weight: 600;
+  --h6-color: var(--nl-ash);
+  --h6-style: italic;
+  --h6-letter-spacing: 0.04em;
+
+  --inline-title-font: var(--nl-font-display);
+  --inline-title-size: 2.2em;
+  --inline-title-weight: 700;
+  --inline-title-color: var(--nl-bone);
+  --inline-title-line-height: 1.3;
+  --inline-title-margin-bottom: 1.6rem;
+
+  /* ---- links & tags ---- */
+  --link-color: var(--nl-ember-light);
+  --link-color-hover: var(--nl-brass);
+  --link-decoration: underline;
+  --link-decoration-hover: underline;
+  --link-decoration-thickness: 1px;
+  --link-external-color: var(--nl-lightning);
+  --link-external-color-hover: #c9d9f3;
+  --link-unresolved-color: var(--nl-ember-light);
+  --link-unresolved-opacity: 0.62;
+  --link-unresolved-decoration-style: dotted;
+  --link-unresolved-decoration-color: color-mix(in srgb, var(--nl-ember) 50%, transparent);
+
+  --tag-color: var(--nl-brass);
+  --tag-color-hover: var(--nl-bone);
+  --tag-background: color-mix(in srgb, var(--nl-bronze) 10%, transparent);
+  --tag-background-hover: color-mix(in srgb, var(--nl-bronze) 20%, transparent);
+  --tag-border-color: color-mix(in srgb, var(--nl-bronze) 38%, transparent);
+  --tag-border-color-hover: color-mix(in srgb, var(--nl-bronze) 65%, transparent);
+  --tag-border-width: 1px;
+  --tag-radius: 2px;
+  --tag-padding-x: 0.55em;
+  --tag-padding-y: 0.12em;
+  --tag-size: 0.84em;
+
+  /* ---- blocks ---- */
+  --blockquote-border-thickness: 3px;
+  --blockquote-border-color: var(--nl-blood-600);
+  --blockquote-color: #cbbfa6;
+  --blockquote-background-color: transparent;
+  --blockquote-font-style: normal;
+
+  --callout-border-width: 1px;
+  --callout-border-opacity: 0.28;
+  --callout-radius: 2px;
+  --callout-padding: 14px 22px 15px 24px;
+  --callout-title-size: 0.86em;
+  --callout-title-weight: 600;
+  --callout-blend-mode: normal;
+  --callout-default: var(--nl-lightning-dim);
+  --callout-info: var(--nl-lightning-dim);
+  --callout-todo: var(--nl-lightning-dim);
+  --callout-tip: var(--nl-bronze);
+  --callout-summary: var(--nl-bronze);
+  --callout-important: var(--nl-ember);
+  --callout-success: var(--nl-verdigris);
+  --callout-question: var(--nl-amber);
+  --callout-warning: var(--nl-amber);
+  --callout-error: var(--nl-crimson);
+  --callout-fail: var(--nl-crimson);
+  --callout-bug: var(--nl-crimson);
+  --callout-example: var(--nl-warp);
+  --callout-quote: #8f8a80;
+
+  --code-background: rgba(4, 7, 14, 0.72);
+  --code-border-width: 1px;
+  --code-border-color: #17243d;
+  --code-radius: 2px;
+  --code-size: 0.86em;
+  --code-normal: #b9c8e0;
+  --code-comment: #5f6d87;
+  --code-function: #e6d4a6;
+  --code-important: var(--nl-ember-light);
+  --code-keyword: var(--nl-ember);
+  --code-operator: #c98a6b;
+  --code-property: #a9bad8;
+  --code-punctuation: #7e89a2;
+  --code-string: #c9a96e;
+  --code-tag: var(--nl-ember);
+  --code-value: var(--nl-lightning);
+
+  --table-border-color: var(--nl-line);
+  --table-header-background: rgba(5, 9, 17, 0.72);
+  --table-header-background-hover: rgba(5, 9, 17, 0.72);
+  --table-header-color: var(--nl-brass);
+  --table-header-font: var(--nl-font-display);
+  --table-header-weight: 600;
+  --table-header-size: 0.9em;
+  --table-text-size: 0.94em;
+  --table-line-height: 1.6;
+  --table-row-alt-background: color-mix(in srgb, var(--nl-lightning) 2.5%, transparent);
+  --table-row-alt-background-hover: color-mix(in srgb, var(--nl-crimson) 8%, transparent);
+  --table-row-background-hover: color-mix(in srgb, var(--nl-crimson) 8%, transparent);
+  --table-selection: color-mix(in srgb, var(--nl-crimson) 22%, transparent);
+  --table-selection-border-color: var(--nl-crimson);
+
+  --hr-color: var(--nl-bronze-700);
+  --hr-thickness: 1px;
+
+  --list-marker-color: var(--nl-bronze);
+  --list-marker-color-hover: var(--nl-ember-light);
+  --list-marker-color-collapsed: var(--nl-ember);
+  --list-bullet-radius: 0;
+  --list-bullet-size: 0.32em;
+  --list-bullet-transform: rotate(45deg);
+  --list-spacing: 0.12em;
+
+  --checkbox-radius: 2px;
+  --checkbox-color: var(--nl-blood-600);
+  --checkbox-color-hover: var(--nl-crimson);
+  --checkbox-border-color: var(--nl-bronze-700);
+  --checkbox-border-color-hover: var(--nl-bronze);
+  --checkbox-marker-color: var(--nl-bone);
+  --checklist-done-color: var(--nl-ash);
+  --checklist-done-decoration: line-through;
+
+  --indentation-guide-color: color-mix(in srgb, var(--nl-bronze) 15%, transparent);
+  --indentation-guide-color-active: color-mix(in srgb, var(--nl-bronze) 38%, transparent);
+  --nl-thread: var(--nl-crimson);
+  --nl-thread-w: 1.6px; /* 125% 缩放下正好 2 物理像素 */
+  --nl-rail: color-mix(in srgb, var(--nl-bronze) 24%, transparent); /* 指示线导轨(侧栏大纲、列表简单样式) */
+
+  --embed-border-start: 2px solid var(--nl-bronze-700);
+  --embed-padding: 0 0 0 var(--size-4-6);
+
+  /* ---- chrome ---- */
+  --radius-s: 2px;
+  --radius-m: 3px;
+  --radius-l: 5px;
+  --radius-xl: 8px;
+  --scrollbar-width: 7px;
+  --scrollbar-height: 7px;
+  --scrollbar-border-width: 2px 2px 2px 1px;
+  --scrollbar-radius: 0;
+  --scrollbar-bg: transparent;
+  --scrollbar-thumb-bg: color-mix(in srgb, var(--nl-lightning) 13%, transparent);
+  --scrollbar-active-thumb-bg: color-mix(in srgb, var(--nl-crimson) 60%, transparent);
+  --divider-color: #142039;
+  --divider-color-hover: var(--nl-blood-600);
+
+  --ribbon-background: var(--nl-night-950);
+  --ribbon-background-collapsed: var(--nl-night-950);
+  --titlebar-background: var(--nl-night-950);
+  --titlebar-background-focused: var(--nl-night-950);
+  --titlebar-border-color: #111b30;
+  --titlebar-text-color: var(--nl-ash);
+  --titlebar-text-color-focused: var(--nl-dust);
+  --status-bar-background: var(--nl-night-950);
+  --status-bar-border-color: #111b30;
+  --status-bar-text-color: var(--nl-ash);
+
+  --tab-container-background: var(--nl-night-900);
+  --tab-background-active: var(--nl-night-850);
+  --tab-text-color: var(--nl-shade);
+  --tab-text-color-active: var(--nl-dust);
+  --tab-text-color-focused: var(--nl-ash);
+  --tab-text-color-focused-active: var(--nl-parchment);
+  --tab-text-color-focused-active-current: var(--nl-bone);
+  --tab-text-color-focused-highlighted: var(--nl-ember-light);
+  --tab-outline-color: #142039;
+  --tab-divider-color: #1b2a46;
+
+  --nav-item-size: 14px; /* 侧栏列表字号：文件列表、大纲等共用(参照 Maple，两边一致；15 嫌大) */
+  --nav-item-color: var(--nl-dust);
+  --nav-item-color-hover: var(--nl-bone);
+  --nav-item-color-active: var(--nl-bone);
+  --nav-item-color-selected: var(--nl-bone);
+  --nav-item-color-highlighted: var(--nl-ember-light);
+  --nav-item-background-hover: color-mix(in srgb, var(--nl-lightning) 5%, transparent);
+  --nav-item-background-active: color-mix(in srgb, var(--nl-crimson) 17%, transparent);
+  --nav-item-background-selected: color-mix(in srgb, var(--nl-crimson) 24%, transparent);
+  --nav-heading-color: var(--nl-brass);
+  --nav-heading-color-hover: var(--nl-bone);
+  --nav-collapse-icon-color: var(--nl-bronze-700);
+  --nav-collapse-icon-color-collapsed: var(--nl-shade);
+  --nav-indentation-guide-color: color-mix(in srgb, var(--nl-bronze) 14%, transparent);
+  --nav-tag-background: transparent;
+  --nav-tag-color: var(--nl-bronze-700);
+  --nav-tag-color-hover: var(--nl-bronze);
+  --nav-tag-color-active: var(--nl-brass);
+  --collapse-icon-color: var(--nl-bronze-700);
+  --collapse-icon-color-collapsed: var(--nl-ember);
+
+  --icon-color: var(--nl-ash);
+  --icon-color-hover: var(--nl-bone);
+  --icon-color-active: var(--nl-ember-light);
+  --icon-color-focused: var(--nl-bone);
+
+  --modal-background: var(--nl-night-900);
+  --modal-border-color: #263a60;
+  --modal-border-width: 1px;
+  --modal-radius: 4px;
+  --modal-shadow: 0 0 0 1px rgba(0, 0, 0, 0.6), 0 24px 80px rgba(0, 0, 0, 0.75);
+  --menu-background: var(--nl-night-900);
+  --menu-border-color: #22355a;
+  --menu-radius: 4px;
+  --menu-shadow: 0 14px 40px rgba(0, 0, 0, 0.7);
+  --prompt-background: var(--nl-night-900);
+  --prompt-border-color: #263a60;
+  --suggestion-background: var(--nl-night-900);
+  --tooltip-background: #050a13;
+  --tooltip-color: var(--nl-parchment);
+  --notice-background: var(--nl-night-800);
+  --notice-color: var(--nl-parchment);
+  --notice-border: 1px solid var(--nl-bronze-800);
+  --settings-background: var(--nl-night-900);
+  --setting-items-background: color-mix(in srgb, var(--nl-lightning) 3%, transparent);
+  --setting-items-border-color: var(--nl-line);
+  --setting-group-heading-color: var(--nl-brass);
+  --pill-background: color-mix(in srgb, var(--nl-bronze) 10%, transparent);
+  --pill-border-color: color-mix(in srgb, var(--nl-bronze) 35%, transparent);
+  --pill-color: var(--nl-parchment);
+
+  --metadata-label-text-color: var(--nl-bronze);
+  --metadata-label-font: var(--font-interface);
+  --metadata-label-font-size: 0.86em;
+  --metadata-input-text-color: var(--nl-parchment);
+  --metadata-border-color: var(--nl-line);
+  --metadata-divider-color: transparent;
+  --metadata-property-background-hover: color-mix(in srgb, var(--nl-lightning) 4%, transparent);
+
+  --graph-line: #22355a;
+  --graph-node: var(--nl-parchment);
+  --graph-node-unresolved: var(--nl-shade);
+  --graph-node-focused: var(--nl-ember);
+  --graph-node-tag: var(--nl-bronze);
+  --graph-node-attachment: var(--nl-lightning-dim);
+  --graph-text: var(--nl-dust);
+
+  --canvas-background: var(--nl-night-850);
+  --canvas-dot-pattern: #1d2d4b;
+  --pdf-background: var(--nl-night-900);
+  --pdf-page-background: var(--nl-night-850);
+}
+
+/* ==========================================================================
+   2. Base typography — 中西混排
+   ========================================================================== */
+body {
+  font-variant-numeric: lining-nums;
+  font-kerning: normal;
+}
+body:not(.nl-no-autospace) .markdown-rendered,
+body:not(.nl-no-autospace) .markdown-source-view.mod-cm6 .cm-content {
+  text-autospace: normal;              /* 中文与英文/数字间自动加 1/8 字空 */
+}
+.markdown-rendered,
+.markdown-source-view.mod-cm6 .cm-scroller {
+  letter-spacing: 0.012em;
+}
+/* 默认左对齐；Style Settings 选「两端对齐」才拉伸 */
+body.nl-align-justify .markdown-rendered p,
+body.nl-align-justify .markdown-rendered li,
+body.nl-align-justify .markdown-rendered blockquote,
+body.nl-align-justify .markdown-source-view.mod-cm6 .cm-content > .cm-line:not(.HyperMD-header):not(.HyperMD-codeblock):not(.HyperMD-table-row) {
+  text-align: justify;
+}
+body.nl-latin-quotes {
+  --nl-punct: "NL CJK Punct Lite";
+}
+body.nl-ui-sans {
+  --font-interface-theme: "Inter", "Segoe UI", "Microsoft YaHei UI", "Noto Sans SC", sans-serif;
+}
+::selection {
+  background: var(--text-selection);
+}
+
+/* bold / italic / strike / highlight
+   斜体：西文用 EB Garamond 真斜体；中文字体没有斜体字形，由浏览器倾斜生成(约 14°) */
+.markdown-rendered em,
+.markdown-source-view .cm-em {
+  font-style: italic;
+  font-synthesis-style: auto;
+}
+.markdown-rendered del,
+.markdown-rendered s,
+.markdown-source-view .cm-strikethrough {
+  color: var(--text-faint);
+  text-decoration-color: color-mix(in srgb, var(--nl-ember) 80%, transparent);
+  text-decoration-thickness: 1.5px;
+}
+.markdown-rendered mark,
+.markdown-source-view .cm-highlight {
+  color: var(--nl-bone);
+  background: linear-gradient(transparent 12%, color-mix(in srgb, var(--nl-crimson) 36%, transparent) 12%, color-mix(in srgb, var(--nl-crimson) 36%, transparent) 92%, transparent 92%);
+  padding: 0 0.12em;
+  border-radius: 1px;
+}
+
+/* links */
+.markdown-rendered a,
+.markdown-source-view .cm-hmd-internal-link .cm-underline,
+.markdown-source-view .cm-link .cm-underline,
+.markdown-source-view .cm-url .cm-underline {
+  text-decoration-color: color-mix(in srgb, currentColor 38%, transparent);
+  text-underline-offset: 0.22em;
+  transition: color 0.15s ease, text-decoration-color 0.15s ease;
+}
+.markdown-rendered a:hover,
+.markdown-source-view .cm-hmd-internal-link .cm-underline:hover {
+  text-decoration-color: currentColor;
+}
+
+/* inline code */
+.markdown-rendered :not(pre) > code,
+.markdown-source-view.mod-cm6 .cm-inline-code {
+  color: #b3c6e6;
+  background: var(--code-background);
+  border: 1px solid var(--code-border-color);
+  border-radius: 2px;
+  padding: 0.08em 0.36em;
+  letter-spacing: 0;
+}
+
+/* 标题中文字体(Style Settings「标题中文字体」：思源宋体默认 / 汇文明朝体 / 华文宋体)。
+   原来是 variable-select 直接写变量，改成 class-select：选中值挂成 body 类名，设置页的下拉框才能按语言换显示文字 */
+body.nl-cjk-huiwen {
+  --nl-font-cjk-display: "Huiwen-mincho", "汇文明朝体", "Noto Serif SC", "Source Han Serif SC", "NL Noto Serif SC", "STSong", "SimSun";
+}
+body.nl-cjk-stsong {
+  --nl-font-cjk-display: "STSong", "Songti SC", "SimSun";
+}
+
+/* ==========================================================================
+   3. Atmosphere — 斑驳纹理 + 暗角
+   性能要点(实测，见 tools/perf.py / tools/trace.py，DPR 1.25 + GPU)：
+   · 纹理是构建时预渲染的 WebP 位图，不用 SVG 滤镜(滤镜每次重绘都要重算噪声)；
+   · 纹理固定不动：画在不滚动的 .view-content 上，里面的滚动容器透明。
+     文字层在合成器里平移，纹理只栅格化一次——实测重绘量与 PaperK 同级，
+     比旧的「纹理画在滚动容器里随内容滚动」还省(不用随滚动栅格化纹理图块)；
+   · 不要用 background-attachment: fixed：Chromium 每滚一帧都整屏重绘；
+   · 暗角是一层独立合成的蒙版(will-change)，叠在内容上方但不参与滚动重绘。
+   ========================================================================== */
+.app-container,
+.horizontal-main-container {
+  background-color: var(--nl-abyss);
+}
+.theme-dark,
+.theme-light {
+  --nl-tex-veil: color-mix(in srgb, var(--background-primary) calc((1 - var(--nl-texture-opacity)) * 100%), transparent);
+}
+.workspace-split.mod-root .view-content {
+  background-color: var(--background-primary);
+  background-image: linear-gradient(var(--nl-tex-veil), var(--nl-tex-veil)), @@RASTER:atmos@@, @@RASTER:grain@@;
+  background-size: auto, 1024px 1024px, 256px 256px;
+  background-repeat: repeat;
+}
+.workspace-split.mod-root .view-content > .markdown-reading-view,
+.workspace-split.mod-root .view-content > .markdown-reading-view > .markdown-preview-view,
+.workspace-split.mod-root .view-content > .markdown-source-view.mod-cm6,
+.workspace-split.mod-root .view-content > .markdown-source-view.mod-cm6 > .cm-editor,
+.workspace-split.mod-root .view-content > .markdown-source-view.mod-cm6 > .cm-editor > .cm-scroller,
+.workspace-split.mod-root .view-content > .markdown-source-view.mod-cm6 .cm-gutters {
+  background-color: transparent;
+}
+body.nl-no-texture .workspace-split.mod-root .view-content {
+  background-image: none;
+}
+
+/* vignette: 烛光照不到的四角 */
+.workspace-split.mod-root .view-content {
+  position: relative;
+}
+.workspace-split.mod-root .view-content::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  will-change: opacity;
+  background:
+    radial-gradient(ellipse 125% 105% at 50% 40%, transparent 48%, rgba(2, 4, 9, calc(var(--nl-vignette) * 0.5)) 78%, rgba(1, 2, 6, var(--nl-vignette)) 100%),
+    linear-gradient(180deg, rgba(1, 3, 8, calc(var(--nl-vignette) * 0.42)), transparent 6%, transparent 92%, rgba(1, 3, 8, calc(var(--nl-vignette) * 0.45)));
+}
+body.nl-no-vignette .workspace-split.mod-root .view-content::after {
+  display: none;
+}
+
+/* side docks: darker, grain only (Dark Deco 卡片开着时，卡片之间的缝和卡片内边距也铺颗粒，见 12 节) */
+.workspace-ribbon,
+.workspace-split.mod-sidedock .workspace-leaf-content,
+.workspace-tab-header-container,
+body:not(.nl-no-deco-cards) .workspace-split.mod-sidedock,
+body:not(.nl-no-deco-cards) .workspace-split.mod-sidedock .workspace-tabs {
+  background-image: @@RASTER:grain@@;
+  background-size: 256px 256px;
+}
+/* 文件列表底部：午夜领主盔甲式的分叉闪电纹 */
+.workspace-split.mod-sidedock .workspace-leaf-content[data-type="file-explorer"] {
+  position: relative;
+}
+.workspace-split.mod-sidedock .workspace-leaf-content[data-type="file-explorer"]::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: var(--nl-storm-opacity);
+  /* 固定像素尺寸贴右下角，不随面板缩放；图内左侧/顶部已渐隐，右缘就是面板边框。
+     (别用 aspect-ratio + max-height：max-height 会按比例连带压窄宽度，图跟着缩、右缘露出切口) */
+  background: @@RASTER:storm@@ right bottom / 560px 560px no-repeat;
+  /* 面板比图矮时，顶部再按固定像素渐隐，不在面板顶边硬切 */
+  -webkit-mask-image: linear-gradient(transparent, #000 140px);
+  mask-image: linear-gradient(transparent, #000 140px);
+}
+.workspace-leaf-content[data-type="file-explorer"] > .nav-files-container {
+  position: relative;
+  z-index: 1;
+}
+/* 文件名压一圈底色光晕，闪电从字后穿过时不抢字 */
+body:not(.nl-no-storm) .workspace-leaf-content[data-type="file-explorer"] .tree-item-inner {
+  text-shadow: 0 0 2px var(--background-secondary), 0 0 5px var(--background-secondary);
+}
+body.nl-no-storm .workspace-leaf-content[data-type="file-explorer"]::before {
+  display: none;
+}
+.workspace-split.mod-left-split .workspace-leaf-content {
+  box-shadow: inset -18px 0 30px -24px rgba(0, 0, 0, 0.8);
+}
+.workspace-split.mod-right-split .workspace-leaf-content {
+  box-shadow: inset 18px 0 30px -24px rgba(0, 0, 0, 0.8);
+}
+
+/* ==========================================================================
+   4. Headings & title
+   ========================================================================== */
+.inline-title:not([data-level]) {
+  letter-spacing: 0.07em;
+  text-shadow: 0 0 26px color-mix(in srgb, var(--nl-crimson) 30%, transparent), 0 2px 1px rgba(0, 0, 0, 0.65);
+}
+body:not(.nl-h1-left) .inline-title:not([data-level]) {
+  text-align: center;
+}
+body:not(.nl-no-banner) .inline-title:not([data-level]) {
+  padding-bottom: calc(var(--nl-banner-h) + 0.55rem);
+  background: @@ORN:banner@@ center bottom / auto var(--nl-banner-h) no-repeat;
+}
+body.nl-h1-left:not(.nl-no-banner) .inline-title:not([data-level]) {
+  background-position: left bottom;
+}
+
+.markdown-rendered h1,
+.markdown-rendered h2,
+.markdown-rendered h3,
+.markdown-rendered h4,
+.HyperMD-header-1,
+.HyperMD-header-2,
+.HyperMD-header-3,
+.HyperMD-header-4 {
+  text-shadow: 0 1px 1px rgba(0, 0, 0, 0.6);
+}
+
+/* Obsidian 只在 p/pre/table/列表 后给标题加大间距；callout、嵌入块后同样需要 */
+.markdown-rendered div.el-div + div > :is(h1, h2, h3, h4, h5, h6) {
+  margin-top: var(--heading-spacing);
+}
+
+/* H1 — centred, underlined with a skull between fading rules */
+body:not(.nl-h1-left) .markdown-rendered h1,
+body:not(.nl-h1-left) .markdown-source-view.mod-cm6 .cm-line.HyperMD-header-1 {
+  text-align: center;
+}
+body:not(.nl-no-heading-orn) .markdown-rendered h1,
+body:not(.nl-no-heading-orn) .markdown-source-view.mod-cm6 .cm-line.HyperMD-header-1 {
+  padding-bottom: 0.62em;
+  background:
+    @@ORN:skull@@ center bottom / auto 0.5em no-repeat,
+    linear-gradient(90deg, transparent 8%, var(--nl-bronze-700) 30%, var(--nl-bronze-700) calc(50% - 1.1em), transparent calc(50% - 1.1em), transparent calc(50% + 1.1em), var(--nl-bronze-700) calc(50% + 1.1em), var(--nl-bronze-700) 70%, transparent 92%) center bottom 0.24em / 100% 1px no-repeat;
+}
+body:not(.nl-no-heading-orn) .markdown-source-view.mod-cm6 .cm-line.HyperMD-header-1 {
+  padding-top: 0.25em;
+  padding-bottom: 0.8em;
+  background-position: center bottom 0.12em, center bottom 0.36em;
+}
+body.nl-h1-left:not(.nl-no-heading-orn) .markdown-rendered h1,
+body.nl-h1-left:not(.nl-no-heading-orn) .markdown-source-view.mod-cm6 .cm-line.HyperMD-header-1 {
+  background:
+    linear-gradient(90deg, var(--nl-bronze-700), transparent 70%) left bottom 0.24em / 100% 1px no-repeat;
+}
+
+/* H2 — 单侧竖直扬起的蝙蝠翼(赛维塔头盔两侧的翼饰) + 黄铜渐隐线
+   翼高 = 1em(与标题字面同高)，对齐第一行：顶边 = padding-top + (行高 - 1em) / 2，
+   再上提 0.14em(翼的重心在下半部的扇贝翼膜，几何居中看着下沉；0.1 偏低、0.18 提过头) */
+body:not(.nl-no-heading-orn) .markdown-rendered h2,
+body:not(.nl-no-heading-orn) .markdown-source-view.mod-cm6 .cm-line.HyperMD-header-2 {
+  padding-inline-start: 1.2em;
+  padding-top: 0.14em;
+  padding-bottom: 0.22em;
+  background:
+    @@ORN:wing@@ left 0 top calc(0em + (var(--h2-line-height) - 1) * 0.5em) / auto 1em no-repeat,
+    linear-gradient(90deg, color-mix(in srgb, var(--nl-bronze) 70%, transparent), color-mix(in srgb, var(--nl-bronze) 18%, transparent) 45%, transparent 88%) left bottom / 100% 1px no-repeat;
+}
+
+/* H3 — ember, a small bronze lozenge before the text */
+.markdown-rendered h3::before {
+  content: "";
+  display: inline-block;
+  width: 0.28em;
+  height: 0.28em;
+  margin-inline-end: 0.55em;
+  vertical-align: 0.22em;
+  background: var(--nl-bronze-700);
+  transform: rotate(45deg);
+}
+body.nl-no-heading-orn .markdown-rendered h3::before {
+  display: none;
+}
+/* 编辑模式(实时预览/源码)：CodeMirror 的行不能加伪元素(会让点击和光标错位)，
+   菱形用四个渐变三角拼成背景，padding 让出位置；颜色仍跟随 --nl-bronze-700。
+   从底边定位：编辑器给标题行加了上方留白(padding-top)，从顶边算会偏高 */
+body:not(.nl-no-heading-orn) .markdown-source-view.mod-cm6 .cm-line.HyperMD-header-3 {
+  --d: 0.2em;
+  --t: calc((var(--h3-line-height) * 1em - 2 * var(--d)) / 2);
+  padding-inline-start: 0.83em;
+  background:
+    linear-gradient(to bottom right, transparent 50%, var(--nl-bronze-700) 50%) left 0 bottom calc(var(--t) + var(--d)) / var(--d) var(--d),
+    linear-gradient(to bottom left, transparent 50%, var(--nl-bronze-700) 50%) left var(--d) bottom calc(var(--t) + var(--d)) / var(--d) var(--d),
+    linear-gradient(to top right, transparent 50%, var(--nl-bronze-700) 50%) left 0 bottom var(--t) / var(--d) var(--d),
+    linear-gradient(to top left, transparent 50%, var(--nl-bronze-700) 50%) left var(--d) bottom var(--t) / var(--d) var(--d);
+  background-repeat: no-repeat;
+}
+
+/* H4 — electric caps */
+.markdown-rendered h4,
+.HyperMD-header-4 {
+  text-transform: uppercase;
+}
+
+/* heading markers in live preview (# signs) */
+.markdown-source-view.mod-cm6 .cm-formatting-header {
+  color: var(--nl-blood-600);
+}
+
+/* view header / tab title */
+.view-header-title,
+.workspace-tab-header-inner-title {
+  font-family: var(--nl-font-display);
+  letter-spacing: 0.04em;
+}
+
+/* 正文顶栏自动隐藏(Style Settings「自动隐藏正文顶栏」，默认关)：主区的视图标题栏(前进后退 / 路径与标题 /
+   切换编辑与阅读视图 / 更多选项)改成浮在内容上、平时收到标签栏后面，只留顶边 6px 透明感应条；
+   鼠标停在顶边 0.12s 后滑出，离开 0.3s 后收回(短暂划过不会弹出)。重命名标题、点开顶栏菜单、拖放高亮时不收。
+   浮层不占位置，滑出时正文不跳动；原版 .view-content 高度本来就是 100%(标签页里)，顶栏挪走后内容直接顶到上边。
+   堆叠标签(标题竖排在侧边)、手机版不动。
+   层级要压过正文里的插件栏：Editing Toolbar 顶部模式的工具栏插在 .markdown-source-view 开头，z-index 是
+   --layer-status-bar(15)，.view-content 只有 position: relative 不成层，工具栏和顶栏比的是同一层——低于它时
+   感应条被工具栏盖住，顶栏滑不出来。顶栏被标签页 overflow: hidden 裁在本页里，抬高不会盖到别处 */
+body.nl-autohide-view-header:not(.is-mobile) .workspace-split.mod-root .workspace-tabs:not(.mod-stacked) .view-header {
+  position: absolute;
+  inset: 0 0 auto 0;
+  z-index: calc(var(--layer-status-bar) + 1);
+  transform: translateY(calc(6px - 100%));
+  opacity: 0;
+  box-shadow:
+    0 1px 0 color-mix(in srgb, var(--nl-lightning) 22%, transparent),
+    0 10px 18px -8px rgba(0, 0, 0, 0.7);
+  transition: transform 160ms ease-in 300ms, opacity 160ms ease-in 300ms;
+}
+body.nl-autohide-view-header:not(.is-mobile) .workspace-split.mod-root .workspace-tabs:not(.mod-stacked) .view-header:is(:hover, .is-highlighted, :has(.view-header-title:focus, .has-active-menu)) {
+  transform: none;
+  opacity: 1;
+  transition: transform 200ms ease-out 120ms, opacity 200ms ease-out 120ms;
+}
+/* 顶栏滑出时把 Editing Toolbar 的顶部工具栏一起往下推一个顶栏高，并铺上底色(免得压在正文上看不清)：
+   不推的话顶栏正好盖住工具栏，鼠标往下挪到工具栏的位置其实还在顶栏上，顶栏不收、工具栏点不到。
+   鼠标从顶栏移到推下来的工具栏上时两者都留着：「悬停在工具栏上」这一态的目标值同样是滑出 / 推下，但过渡延迟
+   写成 1 小时——已经滑出时目标值等于当前值，什么都不动；收着的时候悬停工具栏要等 1 小时才滑出，等于不触发。
+   鼠标离开顶栏和工具栏 0.3s 后两者一起收回。插件自己的「自动隐藏」只改透明度，不冲突 */
+body.nl-autohide-view-header:not(.is-mobile) .workspace-split.mod-root .workspace-tabs:not(.mod-stacked) .workspace-leaf-content #editingToolbarModalBar.top {
+  transition: transform 160ms ease-in 300ms, background-color 160ms ease-in 300ms, box-shadow 160ms ease-in 300ms, opacity 0.5s linear;
+}
+body.nl-autohide-view-header:not(.is-mobile) .workspace-split.mod-root .workspace-tabs:not(.mod-stacked) .workspace-leaf-content:has(> .view-header:hover, > .view-header.is-highlighted, > .view-header .view-header-title:focus, > .view-header .has-active-menu) #editingToolbarModalBar.top {
+  transform: translateY(var(--header-height));
+  background-color: var(--background-primary);
+  box-shadow: 0 10px 18px -8px rgba(0, 0, 0, 0.7);
+  transition: transform 200ms ease-out 120ms, background-color 200ms ease-out 120ms, box-shadow 200ms ease-out 120ms, opacity 0.5s linear;
+}
+body.nl-autohide-view-header:not(.is-mobile) .workspace-split.mod-root .workspace-tabs:not(.mod-stacked) .workspace-leaf-content:has(#editingToolbarModalBar.top:hover) #editingToolbarModalBar.top {
+  transform: translateY(var(--header-height));
+  background-color: var(--background-primary);
+  box-shadow: 0 10px 18px -8px rgba(0, 0, 0, 0.7);
+  transition: transform 0s 3600s, background-color 0s 3600s, box-shadow 0s 3600s, opacity 1s linear;
+}
+body.nl-autohide-view-header:not(.is-mobile) .workspace-split.mod-root .workspace-tabs:not(.mod-stacked) .workspace-leaf-content:has(#editingToolbarModalBar.top:hover) > .view-header {
+  transform: none;
+  opacity: 1;
+  transition: transform 0s 3600s, opacity 0s 3600s;
+}
+@media (prefers-reduced-motion: reduce) {
+  body.nl-autohide-view-header:not(.is-mobile) .workspace-split.mod-root .workspace-tabs:not(.mod-stacked) .view-header,
+  body.nl-autohide-view-header:not(.is-mobile) .workspace-split.mod-root .workspace-tabs:not(.mod-stacked) .view-header:is(:hover, .is-highlighted, :has(.view-header-title:focus, .has-active-menu)),
+  body.nl-autohide-view-header:not(.is-mobile) .workspace-split.mod-root .workspace-tabs:not(.mod-stacked) .workspace-leaf-content #editingToolbarModalBar.top,
+  body.nl-autohide-view-header:not(.is-mobile) .workspace-split.mod-root .workspace-tabs:not(.mod-stacked) .workspace-leaf-content:has(> .view-header:hover, > .view-header.is-highlighted, > .view-header .view-header-title:focus, > .view-header .has-active-menu) #editingToolbarModalBar.top,
+  body.nl-autohide-ribbon:not(.is-mobile, .mod-rtl) .workspace-ribbon.mod-primary,
+  body.nl-autohide-ribbon:not(.is-mobile, .mod-rtl) .workspace-ribbon.mod-primary:is(:hover, :has(.has-active-menu)),
+  body.nl-autohide-ribbon:not(.is-mobile, .mod-rtl) .workspace-ribbon.mod-primary + .workspace-split.mod-left-split:not(.is-sidedock-collapsed),
+  body.nl-autohide-ribbon:not(.is-mobile, .mod-rtl) .workspace-ribbon.mod-primary:is(:hover, :has(.has-active-menu)) + .workspace-split.mod-left-split:not(.is-sidedock-collapsed) {
+    transition-duration: 0s;
+  }
+}
+
+/* 左侧功能栏(ribbon)自动隐藏(Style Settings「自动隐藏左侧功能栏」，默认关)：功能栏照旧排在最左，但右外边距 =
+   负的自身宽度、不再占位置——侧栏卡片 / 正文直接从窗口左边排起，整个版面跟着变宽(侧栏开合、窗口缩放照常自适应)。
+   平时整条移到窗口外，只留 6px 透明感应条(侧栏开着时正好落在卡片外那道 6px 夜色缝里)，鼠标停 0.12s 后滑出，
+   离开 0.3s 后收回；功能栏里有菜单开着时不收。
+   滑出时把左栏往右推(卡片模式 / 普通模式都一样)：左栏(功能栏的下一个兄弟，DOM 顺序 = 左功能栏、左栏、主区…)
+   加一个功能栏宽的左内边距，和功能栏同时长、同缓动地过渡。原版全局 border-box、左栏是写死像素宽 + flex: 0 0 auto，
+   内边距只让左栏内部变窄，外宽不变——主区和编辑器一像素都不动、不重排，只重排侧栏里的内容；用相邻兄弟选择器(+)，
+   悬停只让左栏这一个元素重算样式，不用 :has。左栏收起时(is-sidedock-collapsed，宽 0)不加：border-box 下内边距
+   会把它撑成 44px 宽、挤动主区；这时功能栏浮在正文上(带阴影)——推正文会让编辑器整页重排换行，每次划过左边缘都跳一下。
+   收起左栏的那一刻内边距直接归零、不走 0.3s 延迟的过渡(过渡只挂在未收起的左栏上)，否则收起动画里左栏被内边距撑着
+   ≥44px，最后顿一下。层级压过正文顶栏(16)，浮在正文上时不被顶栏盖住。
+   原版功能栏 margin-top 一个标签栏高，左上角那块(侧栏开关按钮 + 标签栏底色的角块)是绝对定位画在它上方的：
+   这里改成从窗口顶上排起、--nl-rb-top = 一个标签栏高(锁链那段据此加上内边距、下移铁钩和链子)让出这块，
+   position: relative 让开关按钮和角块跟着功能栏一起收放(图标位置不变)。
+   角块原版是窗口拖拽区：收起时改成不可拖，免得看不见的拖拽区挡住侧栏第一个标签。
+   macOS 红绿灯的让位(--frame-left-space = 80px − 功能栏宽)按功能栏不占位重算。从右往左排版(RTL)、手机版不动。
+   注意 1.14 的左功能栏类名是 mod-primary(app.js 把 left 映射成 primary)，没有 mod-left——mod-left 只加在侧栏开关按钮上 */
+body.nl-autohide-ribbon:not(.is-mobile, .mod-rtl) {
+  --frame-ribbon-left: 0px;
+}
+body.nl-autohide-ribbon:not(.is-mobile, .mod-rtl) .workspace-ribbon.mod-primary {
+  --nl-rb-top: var(--header-height);
+  position: relative;
+  margin-top: 0;
+  margin-inline-end: calc(-1 * var(--ribbon-width));
+  z-index: calc(var(--layer-status-bar) + 2);
+  transform: translateX(calc(6px - 100%));
+  opacity: 0;
+  transition: transform 160ms ease-in 300ms, opacity 160ms ease-in 300ms;
+}
+body.nl-autohide-ribbon:not(.is-mobile, .mod-rtl) .workspace-ribbon.mod-primary.is-collapsed {
+  box-shadow: 10px 0 18px -8px rgba(0, 0, 0, 0.7);
+}
+body.nl-autohide-ribbon:not(.is-mobile, .mod-rtl) .workspace-ribbon.mod-primary:is(:hover, :has(.has-active-menu)) {
+  transform: none;
+  opacity: 1;
+  transition: transform 200ms ease-out 120ms, opacity 200ms ease-out 120ms;
+}
+body.nl-autohide-ribbon:not(.is-mobile, .mod-rtl) .workspace-ribbon.mod-primary + .workspace-split.mod-left-split:not(.is-sidedock-collapsed) {
+  transition: padding-inline-start 160ms ease-in 300ms;
+}
+body.nl-autohide-ribbon:not(.is-mobile, .mod-rtl) .workspace-ribbon.mod-primary:is(:hover, :has(.has-active-menu)) + .workspace-split.mod-left-split:not(.is-sidedock-collapsed) {
+  padding-inline-start: var(--ribbon-width);
+  transition: padding-inline-start 200ms ease-out 120ms;
+}
+body.nl-autohide-ribbon:not(.is-mobile, .mod-rtl) .workspace-ribbon.mod-primary:not(:hover)::before {
+  -webkit-app-region: no-drag;
+}
+
+/* 侧栏各面板顶上的按钮行(文件列表、大纲、书签、标签、反向链接、全部属性、同步历史……)收成一对蝙蝠翼
+   (Style Settings「自动收起侧栏面板的按钮行」，默认开——和其他「自动隐藏」开关同一个方向：打开 = 收起；
+   默认值靠 Style Settings 的 class-toggle default: true 加类，没装 Style Settings 时按钮照原版常驻)。
+   仿 Baseline 的「Dot」：按钮行留在原处，收起时每个按钮的图标尺寸、内边距、间距都归零，行高 40 → 22px，
+   正中画一对连在一起的蝙蝠翼(ornaments.nav_wings，36×10，遮罩铺 --icon-color，和别的图标一样暗、悬停变亮)。
+   鼠标移上去 0.1s 后展开：双翼张大淡出，按钮从正中往两边长出来(按钮行本来就居中排，宽度一长自然向两侧铺开)，
+   尺寸用 easeOutQuint 平滑到位、按钮自身再叠一层 easeOutBack 的轻微回弹缩放(回弹只放在 transform 上，
+   行高不过冲，下面的文件树不会抖)。离开 0.3s 后先让按钮缩小淡出，再收行高，最后双翼「落回」原位。
+   只有排序等菜单开着时不收；面板里的搜索框开着照样收(搜索框是 .nav-header 里按钮行之外的另一个子元素，
+   不在收起范围内，收起后留在双翼下面照常可用——同 Baseline；收起时它和双翼之间的间距从原版 4px 放到 10px，
+   否则贴着 10px 高的双翼太挤，展开时随按钮一起回到 4px)。
+   DOM 照 1.14 app.js(QL 类)：.nav-header > .nav-buttons-container > .nav-action-button；.nav-header 大多是
+   .workspace-leaf-content 的直接子元素，但反向链接面板的在 .view-content 里，所以用后代选择器、限定在侧栏
+   (.mod-sidedock，笔记底部嵌入的反向链接不动)。搜索面板顶上是搜索框本身、不用这套结构，不受影响。手机版不动 */
+body.nl-autohide-nav:not(.is-mobile) .workspace-split.mod-sidedock .workspace-leaf-content .nav-header {
+  padding-block: 6px;
+  transition: padding 240ms cubic-bezier(0.65, 0, 0.35, 1) 360ms;
+}
+body.nl-autohide-nav:not(.is-mobile) .workspace-split.mod-sidedock .workspace-leaf-content .nav-header > .nav-buttons-container {
+  position: relative;
+  min-height: 10px;
+  gap: 0;
+  transition: gap 240ms cubic-bezier(0.65, 0, 0.35, 1) 360ms;
+}
+body.nl-autohide-nav:not(.is-mobile) .workspace-split.mod-sidedock .workspace-leaf-content .nav-header > .nav-buttons-container > .nav-action-button {
+  padding: 0;
+  opacity: 0;
+  transform: scale(0.6);
+  transition: padding 240ms cubic-bezier(0.65, 0, 0.35, 1) 360ms, opacity 120ms ease-in 300ms, transform 180ms ease-in 300ms,
+    color 150ms, background-color 150ms;
+}
+body.nl-autohide-nav:not(.is-mobile) .workspace-split.mod-sidedock .workspace-leaf-content .nav-header > .nav-buttons-container > .nav-action-button > svg {
+  width: 0;
+  height: 0;
+  transition: width 240ms cubic-bezier(0.65, 0, 0.35, 1) 360ms, height 240ms cubic-bezier(0.65, 0, 0.35, 1) 360ms;
+}
+body.nl-autohide-nav:not(.is-mobile) .workspace-split.mod-sidedock .workspace-leaf-content .nav-header > .search-input-container {
+  margin-top: 10px;
+  transition: margin-top 240ms cubic-bezier(0.65, 0, 0.35, 1) 360ms;
+}
+body.nl-autohide-nav:not(.is-mobile) .workspace-split.mod-sidedock .workspace-leaf-content .nav-header > .nav-buttons-container::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  width: 36px;
+  height: 10px;
+  margin: auto;
+  pointer-events: none;
+  background-color: var(--icon-color);
+  -webkit-mask: @@ORN:nav-wings@@ center / contain no-repeat;
+  mask: @@ORN:nav-wings@@ center / contain no-repeat;
+  transition: opacity 220ms ease-out 480ms, transform 320ms cubic-bezier(0.22, 1, 0.36, 1) 480ms, background-color 150ms;
+}
+body.nl-autohide-nav:not(.is-mobile) .workspace-split.mod-sidedock .workspace-leaf-content .nav-header:hover > .nav-buttons-container::before {
+  background-color: var(--icon-color-hover);
+}
+/* 展开 */
+body.nl-autohide-nav:not(.is-mobile) .workspace-split.mod-sidedock .workspace-leaf-content .nav-header:is(:hover, :has(.has-active-menu)) {
+  padding-block: var(--size-4-2);
+  transition: padding 300ms cubic-bezier(0.22, 1, 0.36, 1) 100ms;
+}
+body.nl-autohide-nav:not(.is-mobile) .workspace-split.mod-sidedock .workspace-leaf-content .nav-header:is(:hover, :has(.has-active-menu)) > .nav-buttons-container {
+  gap: var(--size-2-1);
+  transition: gap 300ms cubic-bezier(0.22, 1, 0.36, 1) 100ms;
+}
+body.nl-autohide-nav:not(.is-mobile) .workspace-split.mod-sidedock .workspace-leaf-content .nav-header:is(:hover, :has(.has-active-menu)) > .nav-buttons-container > .nav-action-button {
+  padding: var(--size-2-2) var(--size-2-3);
+  opacity: 1;
+  transform: none;
+  transition: padding 300ms cubic-bezier(0.22, 1, 0.36, 1) 100ms, opacity 180ms ease-out 160ms,
+    transform 380ms cubic-bezier(0.34, 1.56, 0.64, 1) 100ms, color 150ms, background-color 150ms;
+}
+body.nl-autohide-nav:not(.is-mobile) .workspace-split.mod-sidedock .workspace-leaf-content .nav-header:is(:hover, :has(.has-active-menu)) > .nav-buttons-container > .nav-action-button > svg {
+  width: var(--icon-size);
+  height: var(--icon-size);
+  transition: width 300ms cubic-bezier(0.22, 1, 0.36, 1) 100ms, height 300ms cubic-bezier(0.22, 1, 0.36, 1) 100ms;
+}
+body.nl-autohide-nav:not(.is-mobile) .workspace-split.mod-sidedock .workspace-leaf-content .nav-header:is(:hover, :has(.has-active-menu)) > .search-input-container {
+  margin-top: 4px;
+  transition: margin-top 300ms cubic-bezier(0.22, 1, 0.36, 1) 100ms;
+}
+body.nl-autohide-nav:not(.is-mobile) .workspace-split.mod-sidedock .workspace-leaf-content .nav-header:is(:hover, :has(.has-active-menu)) > .nav-buttons-container::before {
+  opacity: 0;
+  transform: scale(1.8, 1.4);
+  transition: opacity 140ms ease-out 100ms, transform 220ms ease-out 100ms, background-color 150ms;
+}
+@media (prefers-reduced-motion: reduce) {
+  body.nl-autohide-nav:not(.is-mobile) .workspace-split.mod-sidedock .workspace-leaf-content .nav-header,
+  body.nl-autohide-nav:not(.is-mobile) .workspace-split.mod-sidedock .workspace-leaf-content .nav-header *,
+  body.nl-autohide-nav:not(.is-mobile) .workspace-split.mod-sidedock .workspace-leaf-content .nav-header > .nav-buttons-container::before {
+    transition-duration: 0s !important;
+  }
+}
+
+/* 左下角仓库栏自动隐藏(Style Settings「自动隐藏左下角仓库栏」，默认关)：平时这一行收成透明感应条，
+   上面的面板 / 卡片一直排到底；鼠标停在左栏底边 0.12s 后滑出，最后一张卡片跟着变矮把位置让出来(推开、不盖住，
+   和功能栏推开左栏同一个思路)，离开 0.3s 后收回；仓库切换菜单 / 右键菜单开着时不收。
+   高度从 6px 过渡到 auto 靠 interpolate-size: allow-keywords(Chromium 129+，Obsidian 1.14 的 Electron 39 = Chromium 142)；
+   内容同时淡入、从下往上浮 8px。感应条：卡片模式 16px 高、收起时铺满侧栏全宽，往上盖住最后一张卡片的下边框和
+   内边距(那里没内容，不挡点击)；普通模式 14px 高，往上盖 8px(只占 6px 版面)。第一版只有最底下 6px、卡片模式还缩在
+   卡片宽度里，用户嫌太低太窄。感应条盖住卡片的那段，鼠标要落到它而不是卡片上：卡片是定位元素、画在普通块上面，
+   所以这一行 position: relative + z-index: 1(卡片线框 z 6 本来就 pointer-events: none)。
+   卡片模式下这一行的盒子始终贴到侧栏最底边(下边距 −edge 吃掉侧栏下内边距)：
+   收起时上边距 edge − 16 让最后一张卡片到侧栏底仍是 gap；盒子左右也始终铺满侧栏、用内边距 gap + 4 让文字和卡片对齐
+   (滑出后若像静态页脚那样用外边距缩进，鼠标停在左右留白里就掉出盒子，收回又滑出、来回抖)；
+   滑出后上边距 edge、下内边距 gap，文字离卡片和底边都是 gap。盒子不能像静态页脚那样用下外边距留白——
+   滑出时盒子会往上缩离开鼠标所在的最底边，悬停一丢又收回去，来回抖。
+   开销只在左栏里：滑出 / 收回时左栏各卡片重排高度，主区不动 */
+body.nl-autohide-vault:not(.is-mobile) .workspace-split.mod-left-split > .workspace-sidedock-vault-profile {
+  interpolate-size: allow-keywords;
+  position: relative;
+  z-index: 1;
+  height: 14px;
+  margin-top: -8px;
+  padding-block: 0;
+  overflow: hidden;
+  background-color: transparent;
+  border-top-color: transparent;
+  transition: height 200ms cubic-bezier(0.4, 0, 0.2, 1) 300ms, margin 200ms cubic-bezier(0.4, 0, 0.2, 1) 300ms,
+    padding 200ms cubic-bezier(0.4, 0, 0.2, 1) 300ms, background-color 160ms 300ms, border-color 160ms 300ms;
+}
+body.nl-autohide-vault:not(.is-mobile, .nl-no-deco-cards) .workspace-split.mod-left-split > .workspace-sidedock-vault-profile {
+  height: 16px;
+  margin: calc(var(--nl-card-edge) - 16px) 0 calc(-1 * var(--nl-card-edge));
+  padding-inline: calc(var(--nl-card-gap) + 4px);
+}
+body.nl-autohide-vault:not(.is-mobile) .workspace-split.mod-left-split > .workspace-sidedock-vault-profile > * {
+  opacity: 0;
+  transform: translateY(8px);
+  transition: opacity 120ms ease-in 300ms, transform 200ms ease-in 300ms;
+}
+/* 滑出 */
+body.nl-autohide-vault:not(.is-mobile) .workspace-split.mod-left-split > .workspace-sidedock-vault-profile:is(:hover, :has(.has-active-menu)) {
+  height: auto;
+  margin-top: 0;
+  padding-block: var(--size-4-2);
+  background-color: var(--background-secondary);
+  border-top-color: var(--divider-color);
+  transition: height 280ms cubic-bezier(0.22, 1, 0.36, 1) 120ms, margin 280ms cubic-bezier(0.22, 1, 0.36, 1) 120ms,
+    padding 280ms cubic-bezier(0.22, 1, 0.36, 1) 120ms, background-color 160ms 120ms, border-color 160ms 120ms;
+}
+body.nl-autohide-vault:not(.is-mobile, .nl-no-deco-cards) .workspace-split.mod-left-split > .workspace-sidedock-vault-profile:is(:hover, :has(.has-active-menu)) {
+  margin-top: var(--nl-card-edge);
+  padding-block: 0 var(--nl-card-gap);
+  background-color: transparent;
+  border-top-color: transparent;
+}
+body.nl-autohide-vault:not(.is-mobile) .workspace-split.mod-left-split > .workspace-sidedock-vault-profile:is(:hover, :has(.has-active-menu)) > * {
+  opacity: 1;
+  transform: none;
+  transition: opacity 200ms ease-out 180ms, transform 320ms cubic-bezier(0.22, 1, 0.36, 1) 120ms;
+}
+@media (prefers-reduced-motion: reduce) {
+  body.nl-autohide-vault .workspace-split.mod-left-split > .workspace-sidedock-vault-profile,
+  body.nl-autohide-vault .workspace-split.mod-left-split > .workspace-sidedock-vault-profile > * {
+    transition-duration: 0s !important;
+  }
+}
+
+/* ==========================================================================
+   5. Horizontal rule — bone-white winged skull, heraldic lightning running out into double rules
+   (闪电末端分成两股 1px 细叉，一笔画成上下两条铜色线通到两端；整条是一张不定宽 SVG，见 ornaments.rule_center)
+   ========================================================================== */
+body:not(.nl-no-rule-orn) .markdown-rendered hr,
+body:not(.nl-no-rule-orn) .markdown-source-view.mod-cm6 hr {
+  border: none;
+  height: 34px;
+  margin-block: 2.2rem;
+  /* 双线别再拆成 CSS 渐变：和 SVG 各自对齐像素网格，125% 缩放下接口会错开 1 个物理像素 */
+  background: @@ORN:rule@@ center / 100% 32px no-repeat;
+}
+body:not(.nl-no-rule-orn) .markdown-source-view.mod-cm6 hr {
+  margin-block: 0.6rem;
+}
+
+/* ==========================================================================
+   6. Blockquote
+   ========================================================================== */
+.markdown-rendered blockquote {
+  padding: 0.5em 1.1em 0.5em 1.3em;
+  background: linear-gradient(90deg, color-mix(in srgb, var(--nl-blood-600) 13%, transparent), color-mix(in srgb, var(--nl-blood-600) 3%, transparent) 60%, transparent);
+  border-radius: 0 2px 2px 0;
+}
+.markdown-source-view.mod-cm6.is-live-preview .HyperMD-quote {
+  background-image: linear-gradient(90deg, color-mix(in srgb, var(--nl-blood-600) 13%, transparent), color-mix(in srgb, var(--nl-blood-600) 3%, transparent) 60%, transparent);
+}
+.markdown-rendered blockquote strong,
+.markdown-source-view.mod-cm6 .HyperMD-quote .cm-strong {
+  color: #f3e3c0;
+}
+
+/* ==========================================================================
+   7. Callouts — framed like a reliquary plaque
+   ========================================================================== */
+.callout {
+  position: relative;
+  background-color: color-mix(in oklch, var(--callout-color) 7%, rgba(4, 8, 16, 0.5));
+  box-shadow: inset 3px 0 0 color-mix(in oklch, var(--callout-color) 72%, transparent);
+}
+/* 缝皮补丁：框内一圈骨白虚线针脚，像缝在页面上的一块皮，标题下分隔线也换成虚线(Style Settings「隐藏 Callout 装饰」关掉)。
+   四条边各一道重复渐变，任何尺寸都整齐；不随类型变色——类型色由左侧色条承担。只用背景，不用 mask(上百个 callout 各带遮罩会拖慢滚动)。
+   (2026-10-23 之前是四角角花：剥皮缝线 / 骨角 / 经典黄铜双线，用户嫌插画式角花和 Dark Deco 不搭，已删) */
+body:not(.nl-no-callout-corners) .callout::after {
+  content: "";
+  position: absolute;
+  inset: 6px 6px 6px 9px;
+  pointer-events: none;
+  --nl-stitch: rgba(216, 204, 178, 0.42);   /* 骨白针脚 */
+  --nl-stitch-x: repeating-linear-gradient(to right, var(--nl-stitch) 0 6px, transparent 6px 10px);
+  --nl-stitch-y: repeating-linear-gradient(to bottom, var(--nl-stitch) 0 6px, transparent 6px 10px);
+  background:
+    var(--nl-stitch-x) left top / 100% 1.2px, var(--nl-stitch-x) left bottom / 100% 1.2px,
+    var(--nl-stitch-y) left top / 1.2px 100%, var(--nl-stitch-y) right top / 1.2px 100%;
+  background-repeat: no-repeat;
+}
+body:not(.nl-no-callout-corners) .callout:not(.is-collapsed) .callout-title {
+  border-bottom-style: dashed;
+}
+.callout-title {
+  font-family: var(--nl-font-display);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: color-mix(in oklch, var(--callout-color) 82%, var(--nl-bone));
+  align-items: center;
+}
+/* callout 图标：内置 Lucide 线条图标换成午夜领主风的单色纹章剪影(羽毛笔/卷轴/眼/古书/徽/闪电/骷髅……)，
+   遮罩着色、跟随类型颜色；图标只有 20px，遮罩很便宜。映射表在 tools/ornaments.py 的 CALLOUT_ICONS */
+.callout {
+  --nl-glyph-size: 20px;
+}
+/*@@CALLOUT-ICONS@@*/
+/* 拉丁铭牌：标题前一行铜色小字(NOTA · 笔记、CAVE · 警告……)，词表在 tools/ornaments.py 的 CALLOUT_LATIN，
+   按类型(含别名)给 --nl-latin；先在每个 callout 上清空，嵌在别的 callout 里的自定义类型不会继承外层的词 */
+.callout {
+  --nl-latin: initial;
+}
+body:not(.nl-no-callout-latin) .callout-title-inner::before {
+  content: var(--nl-latin) "\2009·\2009";
+  font-size: 0.78em;
+  letter-spacing: 0.22em;
+  color: var(--nl-bronze);
+}
+.callout:not(.is-collapsed) .callout-title {
+  padding-bottom: 0.45em;
+  margin-bottom: 0.55em;
+  border-bottom: 1px solid color-mix(in oklch, var(--callout-color) 22%, transparent);
+}
+.callout-content {
+  color: var(--text-normal);
+}
+.callout-content > :first-child {
+  margin-top: 0;
+}
+.callout-content > :last-child {
+  margin-bottom: 0;
+}
+
+/* ==========================================================================
+   8. Tables
+   ========================================================================== */
+.markdown-rendered table {
+  border-top: 1px solid var(--nl-bronze-800);
+  border-bottom: 1px solid var(--nl-bronze-800);
+}
+.markdown-rendered thead th,
+.markdown-source-view.mod-cm6 .cm-table-widget th {
+  letter-spacing: 0.05em;
+  border-bottom: 2px solid var(--nl-blood-600);
+  text-shadow: 0 1px 1px rgba(0, 0, 0, 0.6);
+}
+.markdown-rendered td,
+.markdown-rendered th {
+  padding: 0.4em 0.75em;
+}
+
+/* ==========================================================================
+   9. Code blocks
+   ========================================================================== */
+.markdown-rendered pre {
+  border: 1px solid var(--code-border-color);
+  border-left: 2px solid var(--nl-blood-700);
+  box-shadow: inset 0 0 40px rgba(0, 0, 0, 0.35);
+}
+.markdown-source-view.mod-cm6 .cm-line.HyperMD-codeblock {
+  border-inline-start: 2px solid var(--nl-blood-700);
+}
+.markdown-rendered pre code {
+  letter-spacing: 0;
+}
+
+/* ---- Mermaid ----
+   Obsidian 用 Mermaid 的浅色默认配色出图(淡紫底、紫边、深灰字)，深色模式下再给整张图套
+   invert + hue-rotate 滤镜，于是成了紫色。常用的九种图(流程、状态、时序、类、ER、甘特、饼、
+   思维导图、时间线)按元素直接改成主题色并去掉滤镜(规则由 build.py mermaid_css 生成)；
+   其余类型仍用反色滤镜，只是去掉饱和度、偏一点暖色，不再发紫。
+   浅色模式下 Obsidian 不加滤镜，深灰线条会贴在深色底上看不见，所以两种模式都要处理。 */
+.mermaid {
+  /* Mermaid 在正文之外量好文字宽度再定框的大小：正文的字距、中西文自动间距会让字比框宽，末尾被裁掉 */
+  letter-spacing: normal;
+  text-autospace: no-autospace;
+  --nl-mm-fill: var(--nl-night-750);
+  --nl-mm-line: var(--nl-bronze);
+  --nl-mm-line-soft: color-mix(in srgb, var(--nl-bronze) 40%, transparent);
+  --nl-mm-text: var(--nl-parchment);
+  --nl-mm-title: var(--nl-brass);
+  --nl-mm-label: var(--nl-dust);
+  --nl-mm-edge: var(--nl-dust);
+  --nl-mm-bg: var(--background-primary);
+  --nl-mm-group: color-mix(in srgb, var(--nl-abyss) 45%, transparent);
+  --nl-mm-group-line: var(--nl-blood-600);
+  --nl-mm-note: var(--nl-blood-900);
+  --nl-mm-note-line: var(--nl-blood-600);
+  --nl-mm-note-text: var(--nl-bone);
+  --nl-mm-accent: var(--nl-crimson);
+  --nl-mm-loop: var(--nl-lightning-dim);
+  /* 分组色(思维导图分支、时间线时段、饼图扇区、甘特图分区)：亮色画线、暗色铺底 */
+  --nl-mm-c0: var(--nl-crimson);
+  --nl-mm-d0: var(--nl-blood-800);
+  --nl-mm-c1: var(--nl-bronze);
+  --nl-mm-d1: var(--nl-bronze-800);
+  --nl-mm-c2: var(--nl-lightning-dim);
+  --nl-mm-d2: var(--nl-night-600);
+  --nl-mm-c3: var(--nl-verdigris);
+  --nl-mm-d3: color-mix(in srgb, var(--nl-verdigris) 30%, var(--nl-night-900));
+  --nl-mm-c4: var(--nl-amber);
+  --nl-mm-d4: color-mix(in srgb, var(--nl-amber) 28%, var(--nl-night-900));
+  --nl-mm-c5: var(--nl-ash);
+  --nl-mm-d5: var(--nl-night-700);
+}
+:is(.theme-dark, .theme-light) .mermaid > svg {
+  filter: invert(1) hue-rotate(180deg) saturate(0.35) sepia(0.2);
+}
+/*@@MERMAID@@*/
+
+/* ==========================================================================
+   10. Lists & tasks
+   ========================================================================== */
+.markdown-rendered ol > li::marker,
+.markdown-source-view.mod-cm6 .cm-formatting-list-ol {
+  color: var(--nl-bronze);
+  font-family: var(--nl-font-caps);
+  font-weight: 600;
+}
+.markdown-rendered ul ul .list-bullet::after,
+.markdown-source-view.mod-cm6 .HyperMD-list-line-2 .list-bullet::after,
+.markdown-source-view.mod-cm6 .HyperMD-list-line-4 .list-bullet::after {
+  background-color: transparent;
+  border: 1px solid var(--list-marker-color);
+}
+/* 血线出现时自上而下“流”出(大纲面板用) */
+@keyframes nl-bleed {
+  from {
+    clip-path: inset(0 0 100% 0);
+  }
+  to {
+    clip-path: inset(0);
+  }
+}
+input[type="checkbox"]:checked {
+  box-shadow: 0 0 6px color-mix(in srgb, var(--nl-crimson) 55%, transparent);
+}
+
+/* ==========================================================================
+   11. Images, embeds, properties, footnotes
+   ========================================================================== */
+/* 图片(Style Settings「图片样式」三选一)：
+   铜框画匾(默认)：和属性框同一副 Dark Deco 线框(铜色双线 + 蝙蝠翼扇角花)，四周一圈深色衬底，像装裱的画；
+   夜色晕边：不加框，四边渐隐进夜色、略压暗；原版：Obsidian 原样。
+   框画在 img 自己的边框上(border-image)：img 是替换元素没有伪元素，外面也不一定有包装(外链图片直接在 p 里)。
+   只认带 src 的 img——实时预览里 CodeMirror 插了很多没有 src 的空 img(cm-widgetBuffer)；表格里的小图不加。
+   CSS 判断不了图片原始尺寸，小图标也会套上框：单张不想要就在图片后写 |noframe(进 alt 文字) */
+body:not(.nl-img-vignette, .nl-img-native) :is(.markdown-rendered, .markdown-source-view.mod-cm6) img[src]:not(.emoji, :is(td, th) img, [alt*="noframe" i]) {
+  box-sizing: border-box;
+  border: 26px solid transparent;
+  border-image: @@ORN:deco-frame-img@@ 26 stretch;
+  border-radius: 0;
+  background-color: var(--nl-night-950);
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.55);
+}
+/* 写了尺寸的图(![[x.png|200]] → width="200")：画面保持写的尺寸，框加在外面 */
+body:not(.nl-img-vignette, .nl-img-native) :is(.markdown-rendered, .markdown-source-view.mod-cm6) img[src][width]:not(.emoji, :is(td, th) img, [alt*="noframe" i]) {
+  box-sizing: content-box;
+  max-width: calc(100% - 52px);
+}
+/* 晕边宽度随图变：100px 以下不晕(小图标、缩略图边缘不被吃掉)，往上渐宽，宽约 190px、高约 200px 起封顶 7% / 9%。
+   只是遮罩渐隐，画面本身不模糊 */
+body.nl-img-vignette :is(.markdown-rendered, .markdown-source-view.mod-cm6) img[src]:not(.emoji, :is(td, th) img, [alt*="noframe" i]) {
+  --nl-vig-x: clamp(0px, (100% - 100px) * 0.15, 7%);
+  --nl-vig-y: clamp(0px, (100% - 100px) * 0.18, 9%);
+  border-radius: 0;
+  -webkit-mask-image: linear-gradient(to right, transparent, #000 var(--nl-vig-x), #000 calc(100% - var(--nl-vig-x)), transparent),
+    linear-gradient(to bottom, transparent, #000 var(--nl-vig-y), #000 calc(100% - var(--nl-vig-y)), transparent);
+  -webkit-mask-composite: source-in;
+  mask-image: linear-gradient(to right, transparent, #000 var(--nl-vig-x), #000 calc(100% - var(--nl-vig-x)), transparent),
+    linear-gradient(to bottom, transparent, #000 var(--nl-vig-y), #000 calc(100% - var(--nl-vig-y)), transparent);
+  mask-composite: intersect;
+  filter: saturate(0.85) brightness(0.92);
+}
+/* 属性框(Dark Deco)：铜色双线框 + 蝙蝠翼扇角花(和正文的分割线、标题饰同色)，「笔记属性」几个字把上框线断开。
+   框画在容器 ::before 上，从标题行中线(10px)往下，上边中段不画(ornaments.deco_frame top=False)；
+   标题行用 ::after 接着画到右上角花，两条线对齐框的外线、内线(切片 26px → 外线 1.5px、内线 5.5px；20px 时用户嫌角花小)。
+   折叠箭头挪到标题后面(原版绝对定位在标题左边 22px，会落到框外)，常显成淡铜色记号(原版只在悬停时出现，
+   平时那 10px 空着像断了一截)。折叠后只剩标题和一条线 */
+.metadata-container {
+  position: relative;
+  border: none;
+  background: transparent;
+  padding: 0 16px 12px;
+}
+.metadata-container::before {
+  content: "";
+  position: absolute;
+  inset: 10px 0 0 0;
+  pointer-events: none;
+  border: 26px solid transparent;
+  border-image: @@ORN:deco-frame-prop@@ 26 stretch;
+}
+.metadata-container.is-collapsed::before,
+.workspace-leaf-content[data-type="file-properties"] .metadata-container::before {
+  display: none;
+}
+.metadata-properties-heading {
+  display: flex;
+  align-items: flex-start;
+  gap: 5px;
+  height: 24px;
+  margin: 0 -16px 6px;
+  padding: 0 26px 0 32px;
+}
+.metadata-container.is-collapsed .metadata-properties-heading {
+  margin-bottom: 0;
+  padding-inline-end: 0;
+}
+.metadata-properties-heading > .collapse-indicator {
+  position: static;
+  order: 1;
+  padding: 0;
+  opacity: 0.5;
+}
+.metadata-properties-heading > :is(.collapse-indicator, .metadata-properties-title) {
+  line-height: 24px;
+}
+.metadata-properties-heading::after {
+  content: "";
+  order: 2;
+  flex: 1;
+  box-sizing: border-box;
+  margin-top: 11px;
+  height: 5px;
+  border-top: 1px solid color-mix(in srgb, var(--nl-bronze) 62%, transparent);
+  border-bottom: 1px solid color-mix(in srgb, var(--nl-bronze) 32%, transparent);
+}
+.metadata-property-key-input,
+.metadata-properties-heading {
+  letter-spacing: 0.04em;
+}
+.markdown-rendered .footnotes {
+  font-size: 0.9em;
+  color: var(--text-muted);
+}
+
+/* ==========================================================================
+   12. Workspace chrome
+   ========================================================================== */
+.mod-root .workspace-tab-header.is-active {
+  background-color: var(--nl-night-850);
+}
+
+/* ---- Dark Deco · 主区标签：标签栏两道淡蓝底线(外 45%、内 22%，相隔 3px)，当前标签的双线框(两个上角 45° 切角，
+   ornaments.deco_tab_frame)从底线上升起：外框落在下面那道、内框落在上面那道，两道底线都在当前标签下面断开
+   (原版的标签本来就往下盖住底线 1px，当前标签的底色再盖住上面那道)——和侧栏卡片的双线框同一个语言。
+   顶边正中挂一枚血红阶梯尖。其余标签之间是细竖线串一粒小菱形；当前标签两侧的分隔符藏掉，免得夹着边框显得局促。
+   借用 Obsidian 画标签底部圆弧「耳朵」的 ::before / ::after(切角后耳朵用不上)：::before 画框(border-image，
+   底边不画)，::after 画血红尖。
+   原版悬停在别的标签上时给整个标签铺底色、底边再压一道深色内阴影，会把底线盖掉：改成只给标签内层一层淡色。
+   标签下内边距 4px → 1px、上内边距 1px → 3px：标题落在框线和底线之间的正中(原来偏上) ---- */
+.workspace-split.mod-root .workspace-tab-header-container {
+  border-bottom-color: color-mix(in srgb, var(--nl-lightning) 45%, transparent);
+}
+.workspace-split.mod-root .workspace-tab-header-container::before {
+  content: "";
+  position: absolute;
+  inset: auto 0 3px 0;
+  height: 1px;
+  pointer-events: none;
+  background-color: color-mix(in srgb, var(--nl-lightning) 22%, transparent);
+}
+.workspace .mod-root .workspace-tab-header-container .workspace-tab-header {
+  padding-top: 3px;
+  padding-bottom: 1px;
+}
+.workspace-split.mod-root .workspace-tab-header-container .workspace-tab-header:not(.is-active):hover {
+  background-color: transparent;
+  box-shadow: none;
+}
+.workspace-split.mod-root .workspace-tab-header-container .workspace-tab-header:not(.is-active):hover::before,
+.workspace-split.mod-root .workspace-tab-header-container .workspace-tab-header:not(.is-active):hover::after {
+  box-shadow: none;
+}
+.workspace-split.mod-root .workspace-tab-header-container .workspace-tab-header:not(.is-active):hover .workspace-tab-header-inner {
+  background-color: var(--background-modifier-hover);
+}
+body .workspace-split.mod-root .workspace-tab-header-container .workspace-tab-header.is-active {
+  clip-path: polygon(0 7px, 7px 0, calc(100% - 7px) 0, 100% 7px, 100% 100%, 0 100%);
+  border-radius: 0;
+}
+body .workspace-split.mod-root .workspace-tab-header-container .workspace-tab-header.is-active::before,
+body .workspace-split.mod-root .workspace-tab-header-container .workspace-tab-header.is-active::after {
+  content: "";
+  display: block;
+  position: absolute;
+  border-radius: 0;
+  box-shadow: none;
+  clip-path: none;
+}
+body .workspace-split.mod-root .workspace-tab-header-container .workspace-tab-header.is-active::before {
+  inset: 0;
+  width: auto;
+  height: auto;
+  border: 8px solid transparent;
+  border-bottom-width: 0;
+  border-image: @@ORN:deco-tab-frame@@ 8 8 0 8 / 8px 8px 0 8px stretch;
+}
+body .workspace-split.mod-root .workspace-tab-header-container .workspace-tab-header.is-active::after {
+  inset: 0 auto auto 50%;
+  width: 16px;
+  height: 7px;
+  margin-left: -8px;
+  background: @@ORN:deco-tab-mark@@ center / 16px 7px no-repeat;
+}
+.workspace .mod-root .workspace-tab-header-container .workspace-tab-header-inner::after {
+  width: 5px;
+  height: 16px;
+  inset-inline-end: -2.5px;
+  background: @@ORN:deco-tab-sep@@ center / 5px 16px no-repeat;
+}
+.workspace .mod-root .workspace-tab-header-container .workspace-tab-header:has(+ .workspace-tab-header.is-active) .workspace-tab-header-inner::after {
+  opacity: 0;
+}
+
+/* ---- 锁定标签的钉子：换成斜插下去的细刃匕首(ornaments.pin_glyph：game-icons.net · Lorc「stiletto」，水平翻转)。
+   原版 lucide 图标的线条藏掉，svg 本身铺 currentColor、用剪影做遮罩，颜色照旧跟着原版的钉子色 / 悬停色走 ---- */
+.workspace-tab-header-status-icon.mod-pinned > svg > * {
+  display: none;
+}
+.workspace-tab-header-status-icon.mod-pinned > svg {
+  background-color: currentColor;
+  -webkit-mask: @@ORN:pin@@ center / contain no-repeat;
+  mask: @@ORN:pin@@ center / contain no-repeat;
+}
+
+/* ---- Dark Deco · 侧栏当前标签 = 悬挂的军团战旗(ornaments.deco_banner：暗血红旗面 + 铜色细边 + 三齿下摆)，
+   宽 32 居中挂在 28 宽的标签头上。原版给当前标签 z-index: 1(自成一层)，旗再高的 z-index 也翻不出这一层，
+   卡片线框(z 6)会从旗上穿过去：卡片模式下把当前标签整层抬到 7，层里旗在下、图标在上。
+   卡片框开着(默认)：仿 Fancy-a-Story，旗顶比卡片外框线高一点、盖住两道框线(版面见下一段)；
+   关掉时旗挂在横杆下，顶边贴着标签栏 overflow 的裁切线(标签头上方 1px)，旗比标签头宽 4px，
+   标签栏左边补 2px 内边距，免得最左一面旗的圆钮被裁掉 ---- */
+body .workspace-split.mod-sidedock .workspace-tab-header-container .workspace-tab-header.is-active {
+  background-color: transparent;
+}
+body:not(.nl-no-deco-cards) .workspace-split.mod-sidedock .workspace-tab-header-container .workspace-tab-header.is-active {
+  z-index: 7;
+}
+body .workspace-split.mod-sidedock .workspace-tab-header-container .workspace-tab-header.is-active::before {
+  content: "";
+  display: block;
+  position: absolute;
+  inset: -7.5px auto auto 50%;
+  width: 32px;
+  height: 40px;
+  margin-left: -16px;
+  z-index: 0;
+  border-radius: 0;
+  box-shadow: none;
+  clip-path: none;
+  background: @@ORN:deco-banner@@ center top / 32px 40px no-repeat;
+}
+body.nl-no-deco-cards .workspace-split.mod-sidedock .workspace-tab-header-container .workspace-tab-header.is-active::before {
+  top: -1px;
+  height: 32px;
+  background: @@ORN:deco-banner-rod@@ center top / 32px 32px no-repeat;
+}
+body.nl-no-deco-cards .workspace-split.mod-sidedock .workspace-tab-header-container-inner {
+  padding-inline-start: 2px;
+}
+.workspace-split.mod-sidedock .workspace-tab-header.is-active .workspace-tab-header-inner {
+  position: relative;
+  z-index: 1;
+  background: transparent;
+}
+.workspace-split.mod-sidedock .workspace-tab-header.is-active .workspace-tab-header-inner-icon {
+  color: var(--nl-bone);
+}
+
+/* ---- Dark Deco · 侧栏卡片(Style Settings「关闭 Dark Deco 卡片框」可关)：每个标签组(.workspace-tabs = 标签栏 + 内容)
+   是一张卡片，淡蓝双线框 + 蝙蝠翼扇角花(ornaments.deco_frame：border-image 九宫格，四角 32px 不拉伸)，
+   卡片之间露出更深的夜色。原版给 .workspace-tabs 写死了 100% 宽，加外边距会把卡片挤出侧栏(左栏压进正文、
+   右栏被窗口切掉)，所以宽度改回 auto。
+   版面(从侧栏顶边量，默认留白 gap = 6px；Style Settings「侧栏卡片四周留白」调 --nl-card-gap)：卡片左右外边距 = gap；
+   盒子上下各留 pad = gap / 2 = 3px 不铺底色(padding-block + background-clip: content-box)、卡片之间不加外边距，
+   侧栏自己上下再留 edge = 3px，四边和卡片之间都是 gap(第一版每张卡片上下各留 gap − 1，卡片之间成了两倍，用户指出)；
+   线框从 6px 开始，外框线 7.85px、内框线 12.77px；战旗顶在 5.5px，比外框线高一点。上下两张卡片之间的拖动线
+   (1.14 每个标签组自带一根 hr，贴着它自己的底边，标签组又是 overflow: hidden，线挪不出去)因此正好落在两张卡片
+   空隙的正中——原来上留 3px、下靠 6px 外边距隔开，线贴在上面那张的底线上(用户指出)。标签栏往上提 3px 盖住这条空白(否则旗顶会被它的 overflow 裁掉)，
+   上下内边距 10 / 10px：标签头在卡片内容顶上 7px 处、高 27px，图标中线在侧栏顶下 26.5px，图标笔画离内框线约 7px(原来 6px 内边距时只有 3px，
+   用户嫌贴线，整排下移 4px，战旗顶不动、旗面加长 4px)。原版标签栏写死 40px 高，加了上内边距要同步加高 4px，
+   否则标签头被压扁、图标只下移一半；
+   左边让出角花，第一面旗离角花伸出的骨刺约 5px。
+   右上那组顶着窗口按钮(隐藏标题栏时)：仿 Fancy-a-Story，按钮底色透明、叠在卡片上，整组往左挪 20px 让出右上角花、
+   往下挪 7px(= edge + pad + 1)，按钮图标和侧栏标签图标中线对齐；左移量 = gap + 14px，留白变了也照样让出角花
+   (右栏收起时按钮叠在主区标签栏上，挪 4.5px、左移 20px，和主区标签标题中线对齐)(原版底色规则带 .is-focused，选择器要多加一级 .titlebar 才压得住)。
+   内容区内边距 8px：框的内线在 6.8px 处，内容不压线。侧栏的拖动线平时藏起来，悬停 / 拖动时才显出 ---- */
+body:not(.nl-no-deco-cards) .workspace-split.mod-sidedock {
+  padding-block: var(--nl-card-edge);
+  background-color: var(--nl-night-950);
+}
+body:not(.nl-no-deco-cards) .workspace-split.mod-sidedock .workspace-tabs {
+  width: auto;
+  margin: 0 var(--nl-card-gap);
+  padding-block: var(--nl-card-pad);
+  background-color: var(--nl-night-900);
+  background-clip: content-box;
+}
+body:not(.nl-no-deco-cards) .workspace-split.mod-sidedock .workspace-tabs::after {
+  content: "";
+  position: absolute;
+  inset: var(--nl-card-pad) 0;
+  z-index: 6;
+  pointer-events: none;
+  border: 32px solid transparent;
+  border-image: @@ORN:deco-frame@@ 32 stretch;
+}
+body:not(.nl-no-deco-cards) .workspace-split.mod-sidedock .workspace-tab-header-container {
+  height: calc(var(--header-height) + 4px);
+  background: none;
+  border-bottom: none;
+}
+body:not(.nl-no-deco-cards) .workspace-split.mod-sidedock .workspace-tab-header-container-inner {
+  margin-top: -3px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  padding-inline-start: 20px;
+}
+body:not(.nl-no-deco-cards) .workspace-split.mod-sidedock .workspace-tab-container {
+  padding: 0 8px 8px;
+}
+body:not(.nl-no-deco-cards) .workspace-split.mod-sidedock .workspace-leaf-content {
+  box-shadow: none;
+}
+body.is-hidden-frameless:not(.is-fullscreen, .mod-macos, .nl-no-deco-cards) .titlebar .titlebar-button-container.mod-right {
+  top: 4.5px;
+  inset-inline-end: 20px;
+  background-color: transparent;
+}
+body.is-hidden-frameless:not(.is-fullscreen, .mod-macos, .nl-no-deco-cards):has(.workspace.is-right-sidedock-open) .titlebar .titlebar-button-container.mod-right {
+  top: calc(var(--nl-card-edge) + var(--nl-card-pad) + 1px);
+  inset-inline-end: calc(var(--nl-card-gap) + 14px);
+}
+body.is-hidden-frameless:not(.is-fullscreen, .mod-macos, .nl-no-deco-cards) .workspace-tabs.mod-top-right-space .workspace-tab-header-container {
+  padding-right: calc(var(--size-4-2) + var(--frame-right-space) + 20px);
+}
+body:not(.nl-no-deco-cards) .workspace-split.mod-sidedock .workspace-leaf-resize-handle {
+  border-color: transparent;
+}
+body:not(.nl-no-deco-cards) .workspace-split.mod-sidedock .workspace-leaf-resize-handle:is(:hover, .is-active, .mobile-tap) {
+  border-color: var(--divider-color-hover);
+}
+/* 调侧栏宽度的竖线(1.14：左右栏各自 containerEl 里的那根 hr，贴着侧栏靠正文的那条边)原版压在正文区的边上；
+   卡片模式下往卡片方向挪半个留白，落在卡片和正文之间那道空隙的正中(线是 1px 边框画在 hr 的靠正文那侧，再让 0.5px) */
+body:not(.nl-no-deco-cards) .workspace-split.mod-primary-split > .workspace-leaf-resize-handle {
+  inset-inline-end: calc(var(--nl-card-gap) / 2 - 0.5px);
+}
+body:not(.nl-no-deco-cards) .workspace-split.mod-secondary-split > .workspace-leaf-resize-handle {
+  inset-inline-start: calc(var(--nl-card-gap) / 2 - 0.5px);
+}
+/* 左栏底部仓库栏(1.14 app.js zO：左栏 containerEl 里的 .workspace-sidedock-vault-profile，order: 1 排在所有卡片后面)：
+   卡片模式下去掉原版通栏底色和上分隔线，当成卡片下面的一行页脚，左右和卡片对齐(原版写死 100% 宽，加外边距要改回 auto，否则右边撑出侧栏)；
+   上边距 edge + 最后一张卡片的下留白 pad = gap，下边距 pad + 侧栏下内边距 edge = gap——和卡片之间、四边同一个留白 */
+body:not(.nl-no-deco-cards, .is-mobile) .workspace-split.mod-left-split > .workspace-sidedock-vault-profile {
+  width: auto;
+  margin: var(--nl-card-edge) var(--nl-card-gap) var(--nl-card-pad);
+  padding: 0 4px;
+  background: none;
+  border-top: none;
+}
+.nav-file-title.is-active,
+.tree-item-self.is-active {
+  box-shadow: inset 2px 0 0 var(--nl-crimson);
+}
+.nav-folder-title-content,
+.tree-item-self.mod-collapsible .tree-item-inner {
+  letter-spacing: 0.02em;
+}
+
+/* ---- 文件列表：字号/行距和大纲面板一致 ----
+   参照 Maple：两边共用 --nav-item-size(界面字号)，行高也基本一样。这里统一成 14px 字、28px 行
+   (125% 缩放下 35 物理像素，每行图标落在同一像素相位上)；行间不留 margin，免得错开 28 的网格 */
+.workspace-leaf-content[data-type="file-explorer"] .tree-item-self {
+  padding-block: 4px;
+  line-height: 20px;
+  margin-bottom: 0;
+}
+
+/* ---- 文件列表：文件夹图标 + 随悬停点亮的缩进线 ----
+   折叠箭头换成图标(合上 / 打开两态)，Style Settings 三选一(nl-folder-style)：
+   蝙蝠(默认：同一只倒挂在横杆上的旧骨白蝙蝠，合上 = 翅膀裹起来，打开 = 翅膀向两侧张开、翼膜血红) /
+   铜色纹章文件夹 / 原版箭头。(收翅蝙蝠正立画像盾牌、倒挂不带横杆像豆荚，14px 下都认不出；
+   认蝙蝠靠尖耳朵和扇贝翼缘，倒挂的要有横杆和脚爪交代姿势)
+   箭头槽在文字前、16px 宽，槽的中线正好对着子级缩进线，缩进线就像从里面垂下来；点图标照旧折叠/展开。
+   文件不加图标(试过笔记/图片的菱形记号，用户觉得意义不明，已去掉) */
+body {
+  --nl-folder: @@ORN:bat-roost@@;
+  --nl-folder-open: @@ORN:bat-open@@;
+}
+body.nl-folder-classic {
+  --nl-folder: @@ORN:folder@@;
+  --nl-folder-open: @@ORN:folder-open@@;
+}
+body:not(.nl-folder-native) .nav-folder-title > .collapse-icon {
+  opacity: 1;
+}
+body:not(.nl-folder-native) .nav-folder-title > .collapse-icon > .svg-icon {
+  display: none;
+}
+body:not(.nl-folder-native) .nav-folder-title > .collapse-icon::after {
+  content: "";
+  flex: none;
+  width: 22px;
+  height: 14px;
+  background: var(--nl-folder) center / contain no-repeat;
+}
+body:not(.nl-folder-native) .nav-folder-title > .collapse-icon:not(.is-collapsed)::after {
+  background-image: var(--nl-folder-open);
+}
+/* 铜色文件夹是实心块，墨量约为蝙蝠的 2.2 倍，撑满槽会显得比蝙蝠大一号：画小到 13px 宽，
+   和蝙蝠看起来一样大(槽宽不变，切换样式时文字起点不动) */
+body.nl-folder-classic .nav-folder-title > .collapse-icon::after {
+  background-size: 13px auto;
+}
+body:not(.nl-folder-native) .nav-folder-title > .collapse-icon::after {
+  filter: brightness(1);
+}
+body:not(.nl-folder-native) .nav-folder-title:hover > .collapse-icon::after {
+  filter: brightness(1.3);
+}
+/* 非 md 文件的类型标签(PNG / PDF…)：铜色细框 */
+.nav-file-tag {
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--nl-bronze) 28%, transparent);
+  border-radius: 1px;
+}
+/* 文件列表的滚动容器单独成合成层：容器是透明的(底下卡片 / 侧栏的颗粒纹理要透出来、不跟着滚)，
+   DPR < 1.5(本机 125%)时 Chromium 为保 LCD 次像素文字不走合成器滚动，每滚一帧在主线程重画整块可见区
+   ——纹理底图、蝙蝠文件夹图标、每一行文字全部重画。will-change 后文字层在合成器里平移，只栅格化新露出的图块：
+   实测滚动每帧 4.6 → 2.2ms(和原版持平)，绘制 152 → 86ms、栅格化 73 → 24ms / 120 帧(用户反馈文件夹滚动卡顿)。
+   代价：这层透明，里面的文字改走灰度抗锯齿。大纲试过同样处理没有提速(大纲的开销在血线悬停换锚点的样式 / 布局上)，不加 */
+.workspace-leaf-content[data-type="file-explorer"] > .nav-files-container {
+  will-change: transform;
+}
+/* 缩进线：鼠标所在那一项挂着的那条线亮成铜色(只亮直属的一条，不连带上级)；当前文件所在的那条染血红。
+   不加 border-color 过渡：滚动时内容从鼠标下面划过、悬停项每隔几帧就换，过渡会让每帧都在重算样式
+   (实测文件列表滚动样式重算 90 → 50ms / 400 帧，效果不变，只是变色从渐变改成瞬间) */
+.nav-files-container .tree-item-children:has(> .tree-item > .tree-item-self.is-active) {
+  border-inline-start-color: color-mix(in srgb, var(--nl-crimson) 55%, transparent);
+}
+.nav-files-container .tree-item-children:has(> .tree-item > .tree-item-self:hover),
+body.nl-outline-marker .workspace-leaf-content[data-type="outline"] .tree-item-children:has(> .tree-item > .tree-item-self:hover) {
+  border-inline-start-color: color-mix(in srgb, var(--nl-bronze) 60%, transparent);
+}
+
+/* ---- 大纲面板 · 血线(默认)：照 Maple 的「Logseq 样式的大纲」(pengx17 bullet_threading)，圆点换成骷髅、线换成血红 ----
+   平时不画任何线；鼠标悬停某个标题时，从它最顶层的祖先开始：每一级在父骷髅正下方画竖线，
+   一直流到通往目标的那一项，圆角拐进它的骷髅。线的两端都压在骷髅后面(骷髅 z2 > 线 z1)。
+   **每一级只有一根线**：挂在这一级的子级容器 .tree-item-children::before 上，下端用 CSS 锚点定位到路径上那一项
+   (锚点名按深度编号，build.py outline_css 生成)。同一级里鼠标往下移，这根线只是 transition 平滑地往下延伸；
+   进入新的一级时才生成新线、播一次从上往下流出的动画(按深度延迟，逐级流下)。
+   (以前每个兄弟各画一段、路径项画拐角，每移一行就新生成一段并重播动画，看起来一顿一顿)
+   几何：界面字 14px、行高 --nl-ol-row = 32px(125% 下 40 物理像素，每行骷髅落在同一像素相位上，否则大小不一；
+   28 时用户觉得比文件列表挤)；行高相关的位置都跟着这个变量算；
+   行首内边距 28px、每级缩进 28px；骷髅 12×12，中心在文字起点左边 13px、行中线上；
+   有子级的标题用实心骷髅，没有子级的用空心骷髅(用户指定的 ICOOON MONO 侧面骷髅线稿，改色加粗；对应 Maple 的实心点 / 空心圈)，
+   所以拐角停在骷髅左缘(容器左缘 +38.5)，不伸进空心骷髅里。
+   **骷髅必须跟着文字起点定位**：Obsidian 的虚拟列表给每个 .tree-item-self 写内联 !important
+   margin-inline-start: -c; padding-inline-start: c + 28(c = 该项缩进)，把行拉到面板最左边，
+   按行左缘定位的东西在深层会全挤到最左一列。所以骷髅挂在 .tree-item-inner::before(绝对定位、left 留 auto
+   = 文字起点，再 margin 往左退)，线挂在没被拉伸的容器上：父骷髅中心在子级容器左缘 +15px、上方半行 */
+body:not(.nl-outline-marker, .nl-outline-native) .workspace-leaf-content[data-type="outline"] {
+  --nl-ol-row: 32px;
+}
+body:not(.nl-outline-marker, .nl-outline-native) .workspace-leaf-content[data-type="outline"] .view-content {
+  isolation: isolate;
+}
+body:not(.nl-outline-marker, .nl-outline-native) .workspace-leaf-content[data-type="outline"] .tree-item {
+  position: relative;
+}
+body:not(.nl-outline-marker, .nl-outline-native) .workspace-leaf-content[data-type="outline"] .tree-item-self {
+  margin: 0;
+  padding-block: 0;
+  padding-inline-start: 28px;
+  white-space: nowrap;
+}
+body:not(.nl-outline-marker, .nl-outline-native) .workspace-leaf-content[data-type="outline"] .tree-item-self.is-active {
+  box-shadow: none;
+}
+body:not(.nl-outline-marker, .nl-outline-native) .workspace-leaf-content[data-type="outline"] .tree-item-inner {
+  height: var(--nl-ol-row);
+  line-height: var(--nl-ol-row);
+  min-width: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+body:not(.nl-outline-marker, .nl-outline-native) .workspace-leaf-content[data-type="outline"] .tree-item-children {
+  position: relative;
+  margin-inline-start: 0;
+  padding-inline-start: 28px;
+  border-inline-start: none;
+}
+/* 骷髅(折叠后换成余烬红) */
+body:not(.nl-outline-marker, .nl-outline-native) .workspace-leaf-content[data-type="outline"] .tree-item-self > .collapse-icon > .svg-icon {
+  opacity: 0;
+}
+body:not(.nl-outline-marker, .nl-outline-native) .workspace-leaf-content[data-type="outline"] .tree-item-inner::before {
+  content: "";
+  position: absolute;
+  z-index: 2;
+  top: calc((var(--nl-ol-row) - 12px) / 2);
+  margin-inline-start: -19px;
+  width: 12px;
+  height: 12px;
+  background: var(--nl-ol-skull) center / contain no-repeat;
+  pointer-events: none;
+}
+body:not(.nl-outline-marker, .nl-outline-native) .workspace-leaf-content[data-type="outline"] .tree-item-self:not(.mod-collapsible) > .tree-item-inner::before {
+  background-image: var(--nl-ol-skull-o);
+}
+body:not(.nl-outline-marker, .nl-outline-native) .workspace-leaf-content[data-type="outline"] .tree-item.is-collapsed > .tree-item-self > .tree-item-inner::before {
+  background-image: var(--nl-ol-skull-x);
+}
+@supports (anchor-name: --nl-x) {
+  /* 每一级一根线：从父骷髅中心(容器左缘 +15、上方半行)往下，圆角拐到路径项骷髅左缘(容器左缘 +38.5，骷髅中心 +43)；
+     下端 bottom 由 outline_css 按深度生成的锚点规则给出 */
+  body:not(.nl-outline-marker, .nl-outline-native) .workspace-leaf-content[data-type="outline"] .tree-item-children::before {
+    position: absolute;
+    z-index: 1;
+    box-sizing: border-box;
+    left: calc(15px - var(--nl-thread-w) / 2);
+    top: calc(var(--nl-ol-row) / -2);
+    width: calc(23.5px + var(--nl-thread-w) / 2);
+    border-inline-start: var(--nl-thread-w) solid var(--nl-thread);
+    border-bottom: var(--nl-thread-w) solid var(--nl-thread);
+    border-end-start-radius: 6px;
+    pointer-events: none;
+    transition: bottom 0.24s cubic-bezier(0.3, 0.7, 0.4, 1);
+    animation: nl-bleed 0.2s ease-out both;
+    animation-delay: calc(var(--nl-d) * 100ms);
+  }
+  /* 路径上的层(:hover 沿祖先传递)；悬停的是某项自己那一行时，它的子级里没有悬停项，不画 */
+  body:not(.nl-outline-marker, .nl-outline-native) .workspace-leaf-content[data-type="outline"] .tree-item-children:has(> .tree-item:hover)::before {
+    content: "";
+  }
+}
+@supports not (anchor-name: --nl-x) {
+  /* 旧内核(无锚点定位)：每个兄弟各画一段竖线、路径项画拐角(同一级移动时会一段段重新生成) */
+  body:not(.nl-outline-marker, .nl-outline-native) .workspace-leaf-content[data-type="outline"] .tree-item::after {
+    position: absolute;
+    z-index: 1;
+    left: calc(-13px - var(--nl-thread-w) / 2);
+    top: calc(var(--nl-ol-row) / -2);
+    bottom: calc(var(--nl-ol-row) / 2);
+    width: var(--nl-thread-w);
+    background: var(--nl-thread);
+    pointer-events: none;
+  }
+  body:not(.nl-outline-marker, .nl-outline-native) .workspace-leaf-content[data-type="outline"] .tree-item::before {
+    position: absolute;
+    z-index: 1;
+    box-sizing: border-box;
+    left: calc(-13px - var(--nl-thread-w) / 2);
+    top: calc(var(--nl-ol-row) / -2);
+    width: calc(23.5px + var(--nl-thread-w) / 2);
+    height: calc(var(--nl-ol-row) + var(--nl-thread-w) / 2);
+    border-inline-start: var(--nl-thread-w) solid var(--nl-thread);
+    border-bottom: var(--nl-thread-w) solid var(--nl-thread);
+    border-end-start-radius: 6px;
+    pointer-events: none;
+  }
+  body:not(.nl-outline-marker, .nl-outline-native) .workspace-leaf-content[data-type="outline"] .tree-item:hover > .tree-item-children > .tree-item::after {
+    content: "";
+  }
+  body:not(.nl-outline-marker, .nl-outline-native) .workspace-leaf-content[data-type="outline"] .tree-item:hover > .tree-item-children > .tree-item:is(:hover, :hover ~ .tree-item)::after,
+  body:not(.nl-outline-marker, .nl-outline-native) .workspace-leaf-content[data-type="outline"] .tree-item:hover > .tree-item-self:hover + .tree-item-children .tree-item::after {
+    content: none;
+  }
+  body:not(.nl-outline-marker, .nl-outline-native) .workspace-leaf-content[data-type="outline"] .tree-item:hover > .tree-item-children > .tree-item:hover::before {
+    content: "";
+  }
+}
+/*@@OUTLINE-THREAD@@*/
+
+/* ---- 大纲面板 · 简单指示线(nl-outline-marker)：左侧导轨 + 跟随鼠标滑动的指示标记 ----
+   CSS 锚点定位(Chromium 125+)：悬停的标题挂上锚点名，标记用 anchor() 定位，transition 让它滑过去；
+   鼠标不在大纲里时锚点落回当前标题(.is-active，Obsidian 随光标/滚动更新)，所以滚动笔记时标记也会跟着走。
+   不支持锚点定位的旧版本仍用 .is-active 的血红内边线 */
+@supports (anchor-name: --nl-x) {
+  body.nl-outline-marker .workspace-leaf-content[data-type="outline"] .view-content > div:has(> .tree-item) {
+    position: relative;
+    background: linear-gradient(transparent, var(--nl-rail) 16px, var(--nl-rail) calc(100% - 16px), transparent) left / 1px 100% no-repeat;
+  }
+  body.nl-outline-marker .workspace-leaf-content[data-type="outline"] .view-content > div:has(> .tree-item)::before,
+  body.nl-outline-marker .workspace-leaf-content[data-type="outline"] .view-content > div:has(> .tree-item)::after {
+    content: "";
+    position: absolute;
+    position-anchor: --nl-outline;
+    position-visibility: anchors-valid;
+    pointer-events: none;
+    transition: top 0.26s cubic-bezier(0.2, 0.8, 0.2, 1), bottom 0.26s cubic-bezier(0.2, 0.8, 0.2, 1), opacity 0.2s;
+  }
+  /* 血红指示条：和导轨重合，高 = 那一行 */
+  body.nl-outline-marker .workspace-leaf-content[data-type="outline"] .view-content > div:has(> .tree-item)::before {
+    left: -0.5px;
+    width: 2px;
+    top: anchor(top);
+    bottom: anchor(bottom);
+    background: var(--nl-crimson);
+  }
+  /* 条中间一枚骨白小菱形(和 H3、缝线角花的菱形同一语言) */
+  body.nl-outline-marker .workspace-leaf-content[data-type="outline"] .view-content > div:has(> .tree-item)::after {
+    left: 0.5px;
+    top: anchor(center);
+    width: 5px;
+    height: 5px;
+    background: #d8ccb2;
+    transform: translate(-50%, -50%) rotate(45deg);
+  }
+  /* 锚点：鼠标在大纲里时挂在悬停项上，不在时落回当前标题。判断「鼠标在不在大纲里」用整块列表自己的 :hover
+     (只在进出时变一次)，不能用 :not(:has(.tree-item-self:hover))——那样每换一个悬停项都要遍历整棵树、
+     整树重算样式，实测滚动每帧 53ms(样式重算 18 秒 / 400 帧)。没有锚点(鼠标停在两行之间的缝里、没有当前标题)
+     时 position-visibility: anchors-valid 直接隐藏标记，代替原来那组 :has 判断 */
+  body.nl-outline-marker .workspace-leaf-content[data-type="outline"] .tree-item-self:hover,
+  body.nl-outline-marker .workspace-leaf-content[data-type="outline"] .view-content > div:not(:hover) .tree-item-self.is-active {
+    anchor-name: --nl-outline;
+  }
+  body.nl-outline-marker .workspace-leaf-content[data-type="outline"] .tree-item-self.is-active {
+    box-shadow: none;
+  }
+}
+.workspace-ribbon {
+  border-inline-end: 1px solid #0f1a2e;
+}
+.side-dock-ribbon-action:hover,
+.clickable-icon:hover {
+  color: var(--nl-ember-light);
+}
+
+/* ---- 左侧功能栏 = 午夜领主挂战利品的颅骨锁链：顶上一枚 J 形铁钩挂下第一节链环(ornaments.ribbon_head，一张图：钩弯最低点在中线上，
+   链环插进钩弯、下端伸到第一枚铁环的圆底后面)，每个按钮是一枚铁环
+   (圆形底 + 1.5px 环)，环与环之间各用一节链环连起来，最后一枚铁环下面再垂 4 节链环、
+   末端挂一颗冷铁骷髅坠(ribbon_tail：bullet_skull 改铁灰 + 暗红眼窝，16px)。铁环用图标色(--icon-color)，
+   铁钩 / 链环 / 骷髅暗一档(ornaments.C_CHAIN / C_STEEL_SKULL)，视线落在按钮上、链子只当背景(用户要求)。整套画在按钮组 .side-dock-actions 上，
+   链长跟着按钮数走，骷髅紧跟最后一个按钮；链尾顶端也伸进最后一枚铁环的圆底后面 1.5px，接缝不露。
+   链环每个空隙单独画一节(后一个按钮的 ::before，ribbon_link_oval：只有椭圆，10px 高填满 10px 按钮间距，
+   两端约 1px 藏在铁环后面，看着是链环穿过铁环)，所以每个空隙露出的链节一模一样。链环 z-index: −1，
+   落到功能栏这一层(按钮本身不成层：无 z-index / transform)，画在所有铁环和图标下面——悬停时铁环外扩，
+   盖住链环两端，而不是被链环压住(用户指出放大时链环叠在铁环和图标上面)。按钮间距用回 10px(用户更喜欢原来的密度)。
+   (改过的地方，都是用户指出：第一版链子垂到窗口底、骨白骷髅在角落抢视觉中心；第二版是一条连续平铺的链子垫在
+   铁环后面，环距 38 不是链节 16 的整数倍，每个空隙露出的截面都不一样、看着杂乱，链尾也只露一节、太短)
+   悬停：铁环向外扩 1.5px(阴影：先一圈底色、再一圈血红，圆底和底色同色，看着就是环变大了)，图标 16 → 18px、变血红，
+   不加外发光。不用 transform: scale——缩放动画开始 / 结束时按钮会在合成层和普通绘制之间切换，半像素取整不同，
+   图标会轻轻跳一下(用户指出抖动)；阴影过渡只重绘、图标改尺寸是矢量重绘，都不切合成层，从原理上不会跳。
+   (更早只变色时 1.5px 的环落在半像素上，半透明换不透明，两侧抗锯齿深浅不一，看着也像位移；现在环悬停时整体外移)
+   (之前两轮预览被否：装饰艺术风的窄卡片 / 立柱 / 旗杆——「不贴午夜领主主题」；闪电甲片、剥皮缝线没选中)
+   功能栏原版不是定位元素(加 position 会把左上角开关和角块挪位)，钩 / 链 / 骷髅都是背景或按钮自己的伪元素；
+   --nl-rb-top 是功能栏盒顶被角块占掉的高度：平时功能栏从角块下面排起 = 0，
+   自动隐藏模式下功能栏从窗口顶排起 = 一个标签栏高(见「左侧功能栏自动隐藏」那段) ---- */
+body:not(.is-mobile) .workspace-ribbon.mod-primary {
+  --nl-rb-top: 0px;
+  padding-top: calc(var(--nl-rb-top) + 4px);
+}
+body:not(.is-mobile) .workspace-ribbon.mod-primary .side-dock-actions {
+  gap: 10px;
+  padding: 28px 0 75px;
+  background-image: @@ORN:rb-head@@, @@ORN:rb-tail@@;
+  background-repeat: no-repeat;
+  background-position: center 1px, center bottom 5.5px;
+  background-size: 14px 27px, 16px auto;
+}
+body:not(.is-mobile) .workspace-ribbon.mod-primary .side-dock-ribbon-action {
+  position: relative;
+  width: 28px;
+  height: 28px;
+  padding: 6px;
+  border-radius: 50%;
+  background-color: var(--nl-night-950);
+  box-shadow: 0 0 0 0 var(--nl-night-950), 0 0 0 1.5px var(--icon-color);
+  transition: color 150ms, box-shadow 220ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+body:not(.is-mobile) .workspace-ribbon.mod-primary .side-dock-ribbon-action > .svg-icon {
+  transition: width 220ms cubic-bezier(0.22, 1, 0.36, 1), height 220ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+body:not(.is-mobile) .workspace-ribbon.mod-primary .side-dock-ribbon-action + .side-dock-ribbon-action::before {
+  content: "";
+  position: absolute;
+  top: -10px;
+  left: 50%;
+  z-index: -1;
+  width: 10px;
+  height: 10px;
+  margin-left: -5px;
+  pointer-events: none;
+  background: @@ORN:rb-link-oval@@ center / 10px 10px no-repeat;
+}
+body:not(.is-mobile) .workspace-ribbon.mod-primary .side-dock-ribbon-action:hover {
+  color: #e5484f;
+  background-color: var(--nl-night-950);
+  box-shadow: 0 0 0 1.5px var(--nl-night-950), 0 0 0 3px var(--nl-crimson);
+}
+body:not(.is-mobile) .workspace-ribbon.mod-primary .side-dock-ribbon-action:hover > .svg-icon {
+  width: calc(var(--icon-size) + 2px);
+  height: calc(var(--icon-size) + 2px);
+}
+@media (prefers-reduced-motion: reduce) {
+  body:not(.is-mobile) .workspace-ribbon.mod-primary .side-dock-ribbon-action,
+  body:not(.is-mobile) .workspace-ribbon.mod-primary .side-dock-ribbon-action > .svg-icon {
+    transition-duration: 0s;
+  }
+}
+
+/* ---- 提示框 = 血印：夜色底、左边一道血红竖条 + 一圈淡血红细边，箭头也染成血红(和功能栏锁链方案一起选定) ----
+   原版箭头是边框三角：默认(朝上)用 border-bottom 上色，mod-right / mod-left / mod-top 各用对应那条边，
+   要分开改，不能一条规则全上色(会把三角另外两条透明边也染红，形状就坏了)。报错提示(.mod-error)照原版 */
+.tooltip:not(.mod-error) {
+  border-radius: 1px;
+  padding: 6px 12px 6px 14px;
+  box-shadow: inset 2px 0 0 var(--nl-crimson), inset 0 0 0 1px color-mix(in srgb, var(--nl-crimson) 35%, transparent), 0 4px 14px rgba(0, 0, 0, 0.6);
+}
+.tooltip:not(.mod-error, .mod-right, .mod-left, .mod-top) .tooltip-arrow {
+  border-bottom-color: var(--nl-crimson);
+}
+.tooltip.mod-right:not(.mod-error) .tooltip-arrow {
+  border-right-color: var(--nl-crimson);
+}
+.tooltip.mod-left:not(.mod-error) .tooltip-arrow {
+  border-left-color: var(--nl-crimson);
+}
+.tooltip.mod-top:not(.mod-error) .tooltip-arrow {
+  border-top-color: var(--nl-crimson);
+}
+button.mod-cta {
+  background-color: var(--nl-blood-600);
+  color: var(--nl-bone);
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--nl-ember) 40%, transparent);
+}
+button.mod-cta:hover {
+  background-color: var(--nl-crimson);
+}
+.modal,
+.prompt,
+.menu,
+.suggestion-container {
+  box-shadow: inset 0 1px 0 color-mix(in srgb, var(--nl-bronze) 18%, transparent), var(--shadow-l);
+}
+.modal-title,
+.setting-item-heading .setting-item-name {
+  font-family: var(--nl-font-display);
+  letter-spacing: 0.05em;
+}
+
+/* ---- Dark Deco · 弹窗(和侧栏卡片同一个开关)：命令面板、设置、悬浮预览等套同一副线框，往里缩 3px。
+   角花沿边伸进来约 25px：弹窗内边距放到 24px、命令面板输入的文字右移、右上角关闭按钮挪到角花左边。
+   位置/内边距用 :where() 压低优先级，设置页这类自带布局(.modal.mod-sidebar-layout 内边距 0)照旧 ---- */
+body:not(.nl-no-deco-cards) :is(.modal, .prompt, .popover.hover-popover) {
+  border-radius: 2px;
+}
+body:not(.nl-no-deco-cards) :is(.modal, .prompt) {
+  box-shadow: var(--shadow-l);
+}
+:where(body:not(.nl-no-deco-cards)) .modal {
+  position: relative;
+  padding: var(--size-4-6);
+}
+body:not(.nl-no-deco-cards) :is(.modal, .prompt, .popover.hover-popover)::after {
+  content: "";
+  position: absolute;
+  inset: 3px;
+  z-index: 20;
+  pointer-events: none;
+  border: 32px solid transparent;
+  border-image: @@ORN:deco-frame@@ 32 stretch;
+}
+:where(body:not(.nl-no-deco-cards)) input.prompt-input {
+  padding-inline-start: 34px;
+}
+:where(body:not(.nl-no-deco-cards)) .prompt-input-container .search-input-clear-button {
+  inset-inline-end: 32px;
+}
+:where(body:not(.nl-no-deco-cards)) .prompt-instructions {
+  padding-bottom: 16px;
+}
+body:not(.nl-no-deco-cards) .modal > :is(.modal-close-button, .modal-header-button):not(.mod-start) {
+  top: 10px;
+  inset-inline-end: 30px;
+}
+body:not(.nl-no-deco-cards) .modal > :is(.modal-close-button, .modal-header-button).mod-start {
+  top: 10px;
+  inset-inline-start: 30px;
+}
+/* 设置、插件市场在 1.14 里是单独弹出的窗口(body.is-popout-modal)：标题栏(.titlebar，最小化/最大化/关闭)在窗口最上面，
+   设置面板是 body 下的 .modal、排在标题栏下面——线框画在面板上会把标题栏那一行漏在框外。
+   这种窗口改成整窗一副线框(body::after 固定铺满窗口)，面板自己的不画；标题栏加高 10px，文字和按钮往下、往里挪，避开框线和右上角花。
+   macOS 的红绿灯由系统摆放、没法验证，照旧画在面板上 */
+body.is-popout-modal:not(.nl-no-deco-cards, .mod-macos)::after {
+  content: "";
+  position: fixed;
+  inset: 3px;
+  z-index: 40;
+  pointer-events: none;
+  border: 32px solid transparent;
+  border-image: @@ORN:deco-frame@@ 32 stretch;
+}
+body.is-popout-modal:not(.nl-no-deco-cards, .mod-macos) > .modal::after {
+  content: none;
+}
+body.is-popout-modal.is-frameless.is-hidden-frameless:not(.is-fullscreen, .nl-no-deco-cards, .mod-macos) {
+  --titlebar-height: 40px;
+}
+/* 标题文字和按钮是标题栏里的绝对定位元素：整体下移 10px(落在框内线下面)、高度减同样多，右边按钮让出角花 */
+body.is-popout-modal.is-hidden-frameless:not(.is-fullscreen, .nl-no-deco-cards, .mod-macos) .titlebar :is(.titlebar-text, .titlebar-button-container) {
+  top: 10px;
+  height: calc(100% - 10px);
+}
+body.is-popout-modal.is-hidden-frameless:not(.is-fullscreen, .nl-no-deco-cards, .mod-macos) .titlebar .titlebar-button-container.mod-right {
+  inset-inline-end: 36px;
+}
+.suggestion-item.is-selected,
+.menu-item.selected:not(.is-disabled):not(.is-label) {
+  background-color: color-mix(in srgb, var(--nl-crimson) 20%, transparent);
+}
+.search-result-file-matched-text,
+.markdown-rendered .search-highlight > div {
+  color: var(--nl-bone);
+  background-color: color-mix(in srgb, var(--nl-crimson) 40%, transparent);
+}
+
+/* ==========================================================================
+   13. New tab — Ave Dominus Nox
+   ========================================================================== */
+.workspace-leaf-content[data-type="empty"] .empty-state-container::before {
+  content: "Ave Dominus Nox";
+  display: block;
+  padding-top: 178px;
+  background: @@ORN:emblem@@ center top / auto 150px no-repeat;
+  font-family: var(--nl-font-gothic);
+  font-weight: 400;
+  letter-spacing: 0.02em;
+  font-size: 2.6em;
+  line-height: 1.2;
+  color: #d8ccb2; /* 骨白 = 上方徽记骷髅的颜色；徽的翅膀是血红 */
+  text-shadow: none;
+}
+.workspace-leaf-content[data-type="empty"] .empty-state-container {
+  max-height: none;
+}
+.workspace-leaf-content[data-type="empty"] .empty-state-title {
+  font-family: var(--nl-font-display);
+  letter-spacing: 0.08em;
+  color: var(--nl-dust);
+  margin-top: 0.4em;
+}
+.workspace-leaf-content[data-type="empty"] .empty-state-action {
+  font-family: var(--font-interface);
+  letter-spacing: 0.04em;
+}
+
+/* ==========================================================================
+   14. Print / export — fall back to ink on paper
+   ========================================================================== */
+@media print {
+  .markdown-rendered,
+  .markdown-rendered * {
+    text-shadow: none !important;
+  }
+}
+
+/* ==========================================================================
+   Style Settings「设置语言」：跟随 Obsidian(默认，插件按界面语言在 title / title.zh 里挑) / 强制中文 / 强制 English。
+   强制时按 data-id 换掉设置项名称和说明的文字，规则由 build.py settings_lang_css 从上面的 @settings 生成
+   ========================================================================== */
+/*@@SETTINGS-LANG@@*/
