@@ -542,6 +542,44 @@ def callout_glyph(name):
     return f'<svg {SVG} viewBox="{vb}">' + "".join(f'<path d="{d}"/>' for d in ds) + "</svg>"
 
 
+# ---- 任务清单复选框(2026-10-23)：铜双线框；打勾 = 血红爪痕划过框(claw-slashes 遮罩)；
+# 扩展状态 = 只留外框 + 框里一枚自绘几何符号。第一轮用 callout 剪影 / 匕首 / 闪电混搭，用户嫌不成系列；
+# 参照 Horo / DDLC / AnuPpuccin：同一个容器 + 同一种画法的符号 + 少量颜色。符号都在 16×16 里以 8,8 为中心
+C_TASK_ASH = "#6b6458"   # 已取消的框
+
+
+def task_frame(col=C_BRONZE, inner=True):
+    """16×16 铜框，不填底(深色衬底和进行中的半格在 CSS 里垫)：外框 1–15；inner = 再加一道淡内框 3.4–12.6"""
+    inner_rect = (f'<rect x="3.4" y="3.4" width="9.2" height="9.2" fill="none" stroke="{col}" stroke-opacity=".55" stroke-width=".7"/>'
+                  if inner else "")
+    return f'<svg {SVG} viewBox="0 0 16 16"><rect x="1" y="1" width="14" height="14" fill="none" stroke="{col}" stroke-width="1"/>{inner_rect}</svg>'
+
+
+TASK_GLYPHS = {   # 扩展状态字符(同 Minimal 一套) -> (符号, 颜色类别 red / brass / ash)
+    "-": ('<rect x="4.6" y="7.25" width="6.8" height="1.5"/>', "ash"),                                   # 已取消
+    ">": ('<polygon points="5.8,4.6 11,8 5.8,11.4"/>', "brass"),                                         # 推迟
+    "<": ('<polygon points="10.2,4.6 5,8 10.2,11.4"/>', "brass"),                                        # 已排期
+    "!": ('<rect x="7.25" y="4.2" width="1.5" height="5"/><circle cx="8" cy="11.1" r=".95"/>', "red"),  # 重要
+    "?": ('<path d="M5.9,6.4 C5.9,5 6.9,4.2 8.1,4.2 C9.4,4.2 10.2,5.1 10.2,6.1 C10.2,7.2 9.4,7.6 8.8,8 C8.3,8.4 8.2,8.7 8.2,9.4" '
+          'fill="none" stroke="#000" stroke-width="1.5" stroke-linecap="round"/><circle cx="8.2" cy="11.2" r=".95"/>', "brass"),  # 疑问
+    "*": ('<polygon points="8,3.8 9.1,6.9 12.2,8 9.1,9.1 8,12.2 6.9,9.1 3.8,8 6.9,6.9"/>', "brass"),     # 星标：Deco 四角星
+    '"': ('<circle cx="6.1" cy="6.8" r="1.5"/><path d="M7.55,6.9 C7.55,8.9 6.8,10.3 5.1,11.1 L4.8,10.5 C5.8,9.9 6.2,9.1 6.2,8 Z"/>'
+          '<circle cx="10" cy="6.8" r="1.5"/><path d="M11.45,6.9 C11.45,8.9 10.7,10.3 9,11.1 L8.7,10.5 C9.7,9.9 10.1,9.1 10.1,8 Z"/>', "brass"),  # 引语
+    "i": ('<circle cx="8" cy="4.9" r=".95"/><rect x="7.25" y="6.6" width="1.5" height="5.2"/>', "brass"),  # 信息
+    "b": ('<polygon points="5.6,4 10.4,4 10.4,12.2 8,10.2 5.6,12.2"/>', "red"),                          # 书签
+    "l": ('<path fill-rule="evenodd" d="M8,12.4 C6.3,10.2 5.2,8.7 5.2,7 A2.8,2.8 0 0 1 10.8,7 C10.8,8.7 9.7,10.2 8,12.4 Z '
+          'M8,5.9 A1.1,1.1 0 1 0 8,8.1 A1.1,1.1 0 1 0 8,5.9 Z"/>', "brass"),                             # 地点
+    "I": ('<path d="M8,3.8 C9.9,5.9 10.7,7.4 10.7,9.1 A2.7,2.7 0 0 1 5.3,9.1 C5.3,7.7 6.2,6.6 6.9,5.6 '
+          'C7.1,6.8 7.5,7.3 8,7.6 C8.3,6.4 8.3,5.2 8,3.8 Z"/>', "brass"),                                  # 想法：火苗
+}
+
+
+def task_glyph(ch, scale=1.12):
+    """→ 遮罩用 SVG(黑色符号，略放大到占满外框)"""
+    body = TASK_GLYPHS[ch][0]
+    return f'<svg {SVG} viewBox="0 0 16 16"><g transform="translate(8 8) scale({scale}) translate(-8 -8)">{body}</g></svg>'
+
+
 def emblem_faint():
     """空白页水印：极淡的徽 + 微弱红目。"""
     defs = _eyes_defs("e", hot="#ff5a3c", mid="#a3161c", dark="#2a0508")

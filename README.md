@@ -11,7 +11,7 @@
 - Dark only.
 - Typography for English and Simplified Chinese, with automatic CJK–Latin spacing.
 - Fonts are embedded, so the theme works offline and makes no network requests.
-- 34 Style Settings options, with a settings page in English or Chinese. Most decorations can be turned off.
+- 35 Style Settings options, with a settings page in English or Chinese. Most decorations can be turned off.
 - Built for the desktop app and tested on Obsidian 1.14 (Windows).
 
 ## Screenshots
@@ -23,6 +23,8 @@ Taken with the sample vault in [`demo-vault/`](demo-vault). Open that folder as 
 ![Title, properties and inline styles](docs/images/note-title.webp)
 
 ![Headings, blockquote, lists and tasks](docs/images/note-lists.webp)
+
+Besides `[ ]` and `[x]`, task lists support `[/]` in progress, `[-]` cancelled, `[>]` deferred, `[<]` scheduled, `[!]` important, `[?]` question, `[*]` star, `["]` quote, `[i]` info, `[b]` bookmark, `[l]` location and `[I]` idea.
 
 ![Table and H4 to H6](docs/images/note-table.webp)
 
@@ -80,7 +82,7 @@ Add `|noframe` after an image to leave that image unframed.
 | Group | Options |
 |---|---|
 | Atmosphere | Texture and its strength (1) · Lightning under the file list and its brightness (0.45) · Vignette and its strength (0.62) |
-| Ornaments | Title ornament · Heading ornaments · Ornamental horizontal rule · Callout decoration · Callout Latin labels · Card frames · Sidebar card spacing (8 px) · Themed or native callout icons · Folder icons (3 styles) · Outline style (3 styles) · Image style (3 styles) · Left-aligned H1 and note title |
+| Ornaments | Title ornament · Heading ornaments · Ornamental horizontal rule · Callout decoration · Callout Latin labels · Card frames · Sidebar card spacing (8 px) · Themed or native callout icons · Folder icons (3 styles) · Outline style (3 styles) · Image style (3 styles) · Themed or native task checkboxes · Left-aligned H1 and note title |
 | Interface | Auto-hide view header · Auto-hide ribbon · Auto-hide vault switcher · Auto-collapse sidebar buttons (on). Hidden items reappear on hover. |
 | Typography | Chinese heading font (Noto Serif SC / Huiwen Mincho, installed separately / STSong) · Body line height (1.85) · Body alignment · CJK–Latin spacing · Latin curly quotes · Sans-serif interface |
 | Colours | Accent `#b3262e` · Links `#e8705f` · Brass `#d2b07a` · Lightning blue `#9dbbe8` · Note background `#0b1424` |

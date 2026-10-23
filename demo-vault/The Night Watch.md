@@ -45,6 +45,8 @@ Tonight:
 
 - [x] Oil the gears of the bell tower
 - [x] Count the lightning strikes at the East Gate
+- [/] Copy out the third chapter of the Rule
+- [!] Close the gates before the third bell
 - [ ] Return the copy of *[[The Rule of the Watch]]* to the archive
 
 #### Watchkeeper's Kit

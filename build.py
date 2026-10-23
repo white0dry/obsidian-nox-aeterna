@@ -121,6 +121,9 @@ def ornaments() -> dict:
         "ORN:deco-tab-mark": svg_uri(O.deco_tab_mark()),
         "ORN:deco-tab-sep": svg_uri(O.deco_tab_sep()),
         "ORN:pin": svg_uri(O.pin_glyph()),
+        # 任务清单复选框：铜双线框 + 打勾的爪痕遮罩
+        "ORN:task-frame": svg_uri(O.task_frame()),
+        "ORN:task-claw": svg_uri(O.callout_glyph("claw-slashes")),
         "ORN:nav-wings": svg_uri(O.nav_wings()),
         "ORN:rb-link-oval": svg_uri(O.ribbon_link_oval()),
         "ORN:rb-head": svg_uri(O.ribbon_head()),
@@ -151,6 +154,42 @@ def callout_icon_css() -> str:
         "width: var(--nl-glyph-size); height: var(--nl-glyph-size); transform: translate(-50%, -50%); "
         "background-color: var(--callout-color); "
         "-webkit-mask: var(--nl-glyph) center / contain no-repeat; mask: var(--nl-glyph) center / contain no-repeat; }")
+    return "\n".join(out)
+
+
+TASK_COLORS = {"red": "var(--nl-crimson)", "brass": "var(--nl-brass)", "ash": "color-mix(in srgb, var(--nl-dust) 78%, transparent)"}
+
+
+def task_css() -> str:
+    """任务清单扩展状态：每个字符一条规则——只留外框(取消用灰框)，::after 遮罩画符号、按颜色类别着色。
+    选择器同时认阅读视图(li[data-task] > input，松散列表多一层 p)和实时预览(.HyperMD-task-line[data-task])"""
+    def sel(ch, suffix=""):
+        q = f"[data-task='{ch}']"
+        box = "input.task-list-item-checkbox"
+        return (f"body:not(.nl-native-tasks) :is(.markdown-rendered li{q} > {box}, .markdown-rendered li{q} > p > {box}, "
+                f".markdown-source-view.mod-cm6 .HyperMD-task-line{q} {box}){suffix}")
+    dark = "linear-gradient(rgba(4, 8, 16, 0.6), rgba(4, 8, 16, 0.6))"
+    alt = svg_uri(O.task_frame(inner=False))
+    ash = svg_uri(O.task_frame(col=O.C_TASK_ASH, inner=False))
+    out = ["/* ---- task states (generated from ornaments.TASK_GLYPHS) ---- */",
+           # 进行中：内框左半垫血红(跟主强调色走)，不画爪痕
+           f"{sel('/')} {{ background-image: {svg_uri(O.task_frame())}, linear-gradient(var(--nl-crimson), var(--nl-crimson)), {dark}; "
+           "background-position: center, 3.4px 3.4px, 1px 1px; background-size: 100% 100%, 4.6px 9.2px, 14px 14px; }",
+           f"{sel('/', '::after')} {{ display: none; }}"]
+    for ch, (_, kind) in O.TASK_GLYPHS.items():
+        out.append(f"{sel(ch)} {{ background-image: {ash if kind == 'ash' else alt}, {dark}; }}")
+        out.append(f"{sel(ch, '::after')} {{ top: 0; left: 0; width: 16px; height: 16px; background-color: {TASK_COLORS[kind]}; "
+                   f"-webkit-mask-image: {svg_uri(O.task_glyph(ch))}; mask-image: {svg_uri(O.task_glyph(ch))}; }}")
+    # 只有完成(x 及 Obsidian 认作勾选的其他字符)和取消划线变灰，这些扩展状态保持正文样式。
+    # Obsidian 自己只给 x 划线，取消 [-] 要补上
+    done = "text-decoration: var(--checklist-done-decoration); color: var(--checklist-done-color);"
+    out.append(f"body:not(.nl-native-tasks) .markdown-rendered li.task-list-item[data-task='-'], "
+               f"body:not(.nl-native-tasks) .markdown-source-view.mod-cm6 .HyperMD-task-line[data-task='-'] {{ {done} }}")
+    keep = ", ".join(f"[data-task='{ch}']" for ch in ["/"] + [c for c in O.TASK_GLYPHS if c != "-"])
+    out.append(f"body:not(.nl-native-tasks) .markdown-rendered li.task-list-item:is({keep}) {{ text-decoration: none; color: var(--text-normal); }}")
+    out.append(f"body:not(.nl-native-tasks) .markdown-source-view.mod-cm6 .HyperMD-task-line:is({keep}), "
+               f"body:not(.nl-native-tasks) .markdown-source-view.mod-cm6 .HyperMD-task-line:is({keep}) * "
+               "{ text-decoration: none; color: var(--text-normal); }")
     return "\n".join(out)
 
 
@@ -492,6 +531,7 @@ def build() -> Path:
     css = re.sub(r"@@([A-Z]+:[a-z0-9-]+)@@", sub, src)
     css = css.replace("/*@@FONTS@@*/", font_faces())
     css = css.replace("/*@@CALLOUT-ICONS@@*/", callout_icon_css())
+    css = css.replace("/*@@TASK-STATES@@*/", task_css())
     css = css.replace("/*@@OUTLINE-THREAD@@*/", outline_css())
     css = css.replace("/*@@SETTINGS-LANG@@*/", settings_lang_css(src))
     css = css.replace("/*@@MERMAID@@*/", mermaid_css())

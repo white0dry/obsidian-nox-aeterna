@@ -134,6 +134,10 @@ settings:
     title: Native callout icons
     title.zh: Callout 用原版图标
     type: class-toggle
+-   id: nl-native-tasks
+    title: Native task checkboxes
+    title.zh: 任务复选框用原版样式
+    type: class-toggle
 -   id: nl-folder-style
     title: Folder icons
     title.zh: 文件夹图标
@@ -1510,6 +1514,46 @@ body:not(.nl-no-callout-latin) .callout-title-inner::before {
 input[type="checkbox"]:checked {
   box-shadow: 0 0 6px color-mix(in srgb, var(--nl-crimson) 55%, transparent);
 }
+/* 任务清单复选框(2026-10-23，Style Settings「任务复选框用原版样式」关掉)：
+   未完成 = 铜双线框(Dark Deco 线框缩小版)；打勾 = 三道血红爪痕斜着划过框；进行中 [/] = 内框左半垫血红；
+   扩展状态 [-] [>] [<] [!] [?] [*] ["] [i] [b] [l] [I](同 Minimal 一套字符)= 只留外框，框里一枚自绘几何符号，
+   只用三种颜色：血红(重要、书签)、黄铜(其余)、灰(取消)。只有完成和取消划线变灰；
+   其他字符 Obsidian 也算勾选，按完成画爪痕。框是背景图，爪痕 / 符号是 ::after 遮罩(颜色跟主强调色、黄铜设置走)，
+   都只有 16px，不碍性能。符号和规则由 build.py task_css 按 ornaments.TASK_GLYPHS 生成 */
+body:not(.nl-native-tasks) :is(.markdown-rendered, .markdown-source-view.mod-cm6) input.task-list-item-checkbox {
+  -webkit-appearance: none;
+  appearance: none;
+  position: relative;
+  width: 16px;
+  height: 16px;
+  border: 0;
+  border-radius: 0;
+  background: @@ORN:task-frame@@ center / 100% 100% no-repeat,
+    linear-gradient(rgba(4, 8, 16, 0.6), rgba(4, 8, 16, 0.6)) 1px 1px / 14px 14px no-repeat;
+  box-shadow: none;
+}
+body:not(.nl-native-tasks) :is(.markdown-rendered, .markdown-source-view.mod-cm6) input.task-list-item-checkbox:hover {
+  border: 0;
+  filter: brightness(1.25);
+}
+body:not(.nl-native-tasks) :is(.markdown-rendered, .markdown-source-view.mod-cm6) input.task-list-item-checkbox:checked {
+  background-color: transparent;
+  box-shadow: none;
+}
+/* 爪痕比框大一圈，斜着划出框外 */
+body:not(.nl-native-tasks) :is(.markdown-rendered, .markdown-source-view.mod-cm6) input.task-list-item-checkbox:checked::after {
+  content: "";
+  display: block;
+  position: absolute;
+  top: -4px;
+  left: -3px;
+  width: 23px;
+  height: 23px;
+  background-color: var(--nl-crimson);
+  -webkit-mask: @@ORN:task-claw@@ center / contain no-repeat;
+  mask: @@ORN:task-claw@@ center / contain no-repeat;
+}
+/*@@TASK-STATES@@*/
 
 /* ==========================================================================
    11. Images, embeds, properties, footnotes
