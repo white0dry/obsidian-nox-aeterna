@@ -194,6 +194,6 @@ This is a fan work inspired by the Night Lords. *Warhammer 40,000*, the Night Lo
 
 ## License
 
-The theme code is covered by [LICENSE](LICENSE). Third-party artwork and fonts keep their own licenses, listed above.
+The theme code is released under the [MIT License](LICENSE). Third-party artwork and fonts keep their own licenses; see [THIRD-PARTY-NOTICES.md](THIRD-PARTY-NOTICES.md).
 
 Want to modify the theme? See [DEVELOPMENT.md](DEVELOPMENT.md) (in Chinese) for the source layout, the build and the implementation notes.

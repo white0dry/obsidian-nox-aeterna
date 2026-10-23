@@ -19,35 +19,3 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
-
--------------------------------------------------------------------------------
-Third-party material
--------------------------------------------------------------------------------
-
-The MIT License above covers the theme's own code, build scripts and the
-ornaments drawn by those scripts. It does not cover the following material,
-which is included under its own terms:
-
-* Fonts embedded in theme.css: EB Garamond, Cinzel, Manufacturing Consent and
-  a subset of Noto Serif SC. SIL Open Font License 1.1; see fonts/OFL.txt.
-
-* Icons by Lorc from game-icons.net, licensed under Creative Commons
-  Attribution 3.0 (https://creativecommons.org/licenses/by/3.0/): batwing-emblem,
-  quill, scroll-unfurled, semi-closed-eye, tied-scroll, candle-light, laurels,
-  claw-slashes, crossed-bones, skull-crossed-bones, spider-web, open-book and
-  stiletto. They have been recoloured, re-centred, mirrored or traced into
-  new shapes for this theme.
-
-* Skull artwork modified from a public-domain engraving distributed by
-  Heritage Library (HTC Heritage Type), used under that library's licence.
-
-* Tarot card and hollow skull icons modified from ICOOON MONO
-  (https://icooon-mono.com/), used under its terms of use.
-
-* The Night Lords emblem is a trademark of Games Workshop Ltd. It appears in
-  this unofficial fan work and is not licensed under the MIT License.
-
-* Paintings in demo-vault/Assets are in the public domain:
-  Johan Christian Dahl, View of Dresden by Moonlight (1839), and
-  Abraham-Louis-Rodolphe Ducros, Night Storm at Cefalu (c. 1800-1805),
-  both via Wikimedia Commons.

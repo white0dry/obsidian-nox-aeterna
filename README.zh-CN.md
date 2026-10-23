@@ -194,6 +194,6 @@ Callout 默认像一块缝在页面上的皮：框内一圈骨白针脚，标题
 
 ## 许可
 
-主题代码的许可见 [LICENSE](LICENSE)。第三方图形素材和字体沿用各自的许可，见上文。
+主题代码以 [MIT 许可证](LICENSE) 发布。第三方图形素材和字体沿用各自的许可，见 [THIRD-PARTY-NOTICES.md](THIRD-PARTY-NOTICES.md)。
 
 想修改主题？源码结构、构建方法和实现细节见 [DEVELOPMENT.md](DEVELOPMENT.md)。
