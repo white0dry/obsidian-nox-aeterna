@@ -43,20 +43,20 @@ The order of the round:
 
 Tonight:
 
-- [ ] Return the copy of *[[The Rule of the Watch]]* to the archive
-- [x] Oil the gears of the bell tower
-- [/] Copy out the third chapter of the Rule
-- [-] Mend the loose flagstone on the old bridge
-- [>] Take the lamp hoods to the coppersmith on North Street
-- [<] Change the rota at the next new moon
-- [!] Close the gates before the third bell
-- [?] Who lit the blue lamp by the East Gate?
-- [*] The original copy of the watchkeepers' oath
-- ["] The night is long, and we keep watch
-- [i] The archive is closed on Wednesdays
-- [b] The old map in the top room of the tower
-- [l] The third bridge outside the East Gate
-- [I] Scatter the bats with the silver bells
+- [ ] `[ ]` To do: return *[[The Rule of the Watch]]* to the archive
+- [x] `[x]` Done: oil the gears of the bell tower
+- [/] `[/]` In progress: copy out chapter three of the Rule
+- [-] `[-]` Cancelled: mend the flagstone on the old bridge
+- [>] `[>]` Deferred: take the lamp hoods to the coppersmith
+- [<] `[<]` Scheduled: change the rota at the new moon
+- [!] `[!]` Important: close the gates before the third bell
+- [?] `[?]` Question: who lit the blue lamp by the East Gate?
+- [*] `[*]` Star: the original copy of the watchkeepers' oath
+- ["] `["]` Quote: the night is long, and we keep watch
+- [i] `[i]` Info: the archive is closed on Wednesdays
+- [b] `[b]` Bookmark: the old map in the top room of the tower
+- [l] `[l]` Location: the third bridge outside the East Gate
+- [I] `[I]` Idea: scatter the bats with the silver bells
 
 #### Watchkeeper's Kit
 

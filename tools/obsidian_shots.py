@@ -226,7 +226,7 @@ def shot_note(o):
                 ("note-media", bl[img_h]["top"] - 24, bl[foot]["bottom"] + 24)]
         full = o.grab()
         for name, y0, y1 in cuts:   # 任务清单只占左半边，裁窄一点
-            R.save_webp(o.crop(full, (x, y0, min(w, 600) if name == "note-tasks" else w, y1 - y0)), name + suffix(lang))
+            R.save_webp(o.crop(full, (x, y0, min(w, 720) if name == "note-tasks" else w, y1 - y0)), name + suffix(lang))
         # Callout：前 14 个(不含最后那个可折叠的)，各自带一圈底色裁下来，两列拼图
         cs = [c for c in d["callouts"] if not c[4]][:14]
         pad = 10

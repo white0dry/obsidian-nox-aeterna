@@ -24,9 +24,7 @@
 
 ![标题、引用与列表](docs/images/note-lists-zh.webp)
 
-<p align="center"><img src="docs/images/note-tasks-zh.webp" width="480" alt="包含全部状态的任务清单"></p>
-
-任务清单除了 `[ ]` 和 `[x]`，还支持以下状态（与上图从上到下的顺序一致）：`[/]` 进行中、`[-]` 已取消、`[>]` 推迟、`[<]` 已排期、`[!]` 重要、`[?]` 疑问、`[*]` 星标、`["]` 引语、`[i]` 信息、`[b]` 书签、`[l]` 地点、`[I]` 想法。
+<p align="center"><img src="docs/images/note-tasks-zh.webp" width="600" alt="包含全部状态的任务清单"></p>
 
 ![表格与四到六级标题](docs/images/note-table-zh.webp)
 
