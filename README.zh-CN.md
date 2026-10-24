@@ -108,4 +108,4 @@
 
 ## 许可
 
-主题代码以 [MIT 许可证](LICENSE) 发布。第三方素材沿用各自的许可，见 [THIRD-PARTY-NOTICES.md](THIRD-PARTY-NOTICES.md)。源码结构和构建方法见 [DEVELOPMENT.md](DEVELOPMENT.md)。
+主题代码以 [MIT 许可证](LICENSE) 发布。第三方素材沿用各自的许可，见 [THIRD-PARTY-NOTICES.md](THIRD-PARTY-NOTICES.md)。

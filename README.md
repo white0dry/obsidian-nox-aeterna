@@ -108,4 +108,4 @@ This is an unofficial fan work. *Warhammer 40,000*, the Night Lords and their em
 
 ## License
 
-The theme code is released under the [MIT License](LICENSE). Third-party material keeps its own licenses; see [THIRD-PARTY-NOTICES.md](THIRD-PARTY-NOTICES.md). For the source layout and build, see [DEVELOPMENT.md](DEVELOPMENT.md) (in Chinese).
+The theme code is released under the [MIT License](LICENSE). Third-party material keeps its own licenses; see [THIRD-PARTY-NOTICES.md](THIRD-PARTY-NOTICES.md).

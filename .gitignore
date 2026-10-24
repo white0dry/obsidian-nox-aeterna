@@ -17,6 +17,6 @@ fonts/missaali/
 tools/make_textura.py
 src/icons/bat-*.svg
 tools/heritage_bats.py
-# ICOOON MONO 素材：条款不许再分发素材文件(用在作品里可以，theme.css 照常内嵌)；缺了构建会换成替代图标，见 DEVELOPMENT.md
+# ICOOON MONO 素材：条款不许再分发素材文件(用在作品里可以，theme.css 照常内嵌)；缺了构建会换成替代图标
 src/icons/skull-hollow.svg
 src/icons/callout/tarot-moon.svg
