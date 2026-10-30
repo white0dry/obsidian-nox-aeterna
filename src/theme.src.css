@@ -2095,7 +2095,19 @@ body:not(.nl-outline-marker, .nl-outline-native) .workspace-leaf-content[data-ty
 /* ---- 大纲面板 · 简单指示线(nl-outline-marker)：左侧导轨 + 跟随鼠标滑动的指示标记 ----
    CSS 锚点定位(Chromium 125+)：悬停的标题挂上锚点名，标记用 anchor() 定位，transition 让它滑过去；
    鼠标不在大纲里时锚点落回当前标题(.is-active，Obsidian 随光标/滚动更新)，所以滚动笔记时标记也会跟着走。
-   不支持锚点定位的旧版本仍用 .is-active 的血红内边线 */
+   不支持锚点定位的旧版本仍用 .is-active 的血红内边线。
+   **行与行之间的 2px 缝要补上**：原版每行 margin-bottom 2px，鼠标划过缝时没有悬停项、锚点丢失，标记掉下去再跳回来、
+   而且从 auto 回来没有过渡(圣血天使主题做同款时用户发现：每移动鼠标标记都会跳)。每行挂一条往下伸 3px 的透明 ::after 当悬停区
+   (盖住缝，多出的 1px 被下一行盖住——下一行排在后面、画在上面，悬停 / 点击都归它) */
+body.nl-outline-marker .workspace-leaf-content[data-type="outline"] .tree-item-self {
+  position: relative;
+}
+body.nl-outline-marker .workspace-leaf-content[data-type="outline"] .tree-item-self::after {
+  content: "";
+  position: absolute;
+  inset: 100% 0 auto;
+  height: 3px;
+}
 @supports (anchor-name: --nl-x) {
   body.nl-outline-marker .workspace-leaf-content[data-type="outline"] .view-content > div:has(> .tree-item) {
     position: relative;
@@ -2106,7 +2118,6 @@ body:not(.nl-outline-marker, .nl-outline-native) .workspace-leaf-content[data-ty
     content: "";
     position: absolute;
     position-anchor: --nl-outline;
-    position-visibility: anchors-valid;
     pointer-events: none;
     transition: top 0.26s cubic-bezier(0.2, 0.8, 0.2, 1), bottom 0.26s cubic-bezier(0.2, 0.8, 0.2, 1), opacity 0.2s;
   }
@@ -2118,19 +2129,21 @@ body:not(.nl-outline-marker, .nl-outline-native) .workspace-leaf-content[data-ty
     bottom: anchor(bottom);
     background: var(--nl-crimson);
   }
-  /* 条中间一枚骨白小菱形(和 H3、缝线角花的菱形同一语言) */
+  /* 条中间一枚骨白小菱形(和 H3、缝线角花的菱形同一语言)。
+     上下沿都用 anchor() 给、不写 height：没有锚点(没有当前标题、鼠标又不在任何一行上)时 anchor() 失效，top / bottom 退成 auto，
+     高度 = 内容高 = 0，什么都不画(血红条同理)。以前靠 position-visibility: anchors-valid 隐藏，但 Obsidian 1.14.5 的内核
+     (Chrome 150)不认这个值、整条作废，菱形退回静态位置、停在大纲最底下 */
   body.nl-outline-marker .workspace-leaf-content[data-type="outline"] .view-content > div:has(> .tree-item)::after {
-    left: 0.5px;
-    top: anchor(center);
+    left: -2px;
+    top: calc(anchor(center) - 2.5px);
+    bottom: calc(anchor(center) - 2.5px);
     width: 5px;
-    height: 5px;
     background: #d8ccb2;
-    transform: translate(-50%, -50%) rotate(45deg);
+    transform: rotate(45deg);
   }
   /* 锚点：鼠标在大纲里时挂在悬停项上，不在时落回当前标题。判断「鼠标在不在大纲里」用整块列表自己的 :hover
      (只在进出时变一次)，不能用 :not(:has(.tree-item-self:hover))——那样每换一个悬停项都要遍历整棵树、
-     整树重算样式，实测滚动每帧 53ms(样式重算 18 秒 / 400 帧)。没有锚点(鼠标停在两行之间的缝里、没有当前标题)
-     时 position-visibility: anchors-valid 直接隐藏标记，代替原来那组 :has 判断 */
+     整树重算样式，实测滚动每帧 53ms(样式重算 18 秒 / 400 帧) */
   body.nl-outline-marker .workspace-leaf-content[data-type="outline"] .tree-item-self:hover,
   body.nl-outline-marker .workspace-leaf-content[data-type="outline"] .view-content > div:not(:hover) .tree-item-self.is-active {
     anchor-name: --nl-outline;
