@@ -1971,26 +1971,38 @@ body.nl-outline-marker .workspace-leaf-content[data-type="outline"] .tree-item-c
    (以前每个兄弟各画一段、路径项画拐角，每移一行就新生成一段并重播动画，看起来一顿一顿)
    几何：界面字 14px、行高 --nl-ol-row = 32px(125% 下 40 物理像素，每行骷髅落在同一像素相位上，否则大小不一；
    28 时用户觉得比文件列表挤)；行高相关的位置都跟着这个变量算；
-   行首内边距 28px、每级缩进 28px；骷髅 12×12，中心在文字起点左边 13px、行中线上；
+   看上去行首 28px、每级缩进 28px；骷髅 12×12，中心在文字起点左边 13px、行中线上；
    有子级的标题用实心骷髅，没有子级的用空心骷髅(用户指定的 ICOOON MONO 侧面骷髅线稿，改色加粗；对应 Maple 的实心点 / 空心圈)，
    所以拐角停在骷髅左缘(容器左缘 +38.5)，不伸进空心骷髅里。
-   **骷髅必须跟着文字起点定位**：Obsidian 的虚拟列表给每个 .tree-item-self 写内联 !important
-   margin-inline-start: -c; padding-inline-start: c + 28(c = 该项缩进)，把行拉到面板最左边，
-   按行左缘定位的东西在深层会全挤到最左一列。所以骷髅挂在 .tree-item-inner::before(绝对定位、left 留 auto
-   = 文字起点，再 margin 往左退)，线挂在没被拉伸的容器上：父骷髅中心在子级容器左缘 +15px、上方半行 */
+   **横向不能动 Obsidian 量的东西**：大纲的虚拟列表量每行的缩进 c(这一项离列表左缘多远)和行首内边距 pad，
+   给每个 .tree-item-self 写内联 !important 的 margin-inline-start: -c、padding-inline-start: c + pad，把行拉到面板最左边；
+   **只在重绘大纲时量**(换笔记、标题变动)，切换大纲样式、启动时 Style Settings 延迟 100ms 才挂上类，都不会重量。
+   1.0.3 以前血线模式把行首内边距 / 每级缩进改成 28px：在另外两种模式下量过再切回血线，文字起点每级少 4px、线偏到骷髅右边；
+   反过来选了简单指示线 / 原版的人，启动时大纲若先按血线量，文字右移 4px、深层的行往左伸出面板(圣血天使做同款时用户发现)。
+   所以这两样一律保持原版(子级容器只把缩进线变透明)，多出来的缩进加在文字元素 .tree-item-inner 的 margin 上(Obsidian 不量它)：
+   --nl-ol-shift = 28 - pad + 深度 × (28 - 原版每级缩进)，原版缩进从 app.css 的同一组变量算；折叠箭头(按行首内边距摆)跟着挪同样多。
+   **骷髅必须跟着文字起点定位**：按行左缘定位的东西在深层会全挤到最左一列，所以骷髅挂在 .tree-item-inner::before
+   (绝对定位、left 留 auto = 文字起点，再 margin 往左退)；线按父项 .tree-item 定位(子级容器不定位)：
+   父骷髅中心 = 父项左缘 + 15 + 深度 × 多出的缩进、父项那一行的中线。不按子级容器定位：容器左边那道透明缩进线 1px，
+   Obsidian 的内核在 125% 下画成 0.8px，按 1px 算线会偏 0.2px */
 body:not(.nl-outline-marker, .nl-outline-native) .workspace-leaf-content[data-type="outline"] {
   --nl-ol-row: 32px;
+  /* 原版的横向几何(app.css)：行首内边距 = --nav-item-padding 的起始边；每级缩进 = 子级容器的外边距 + 缩进线 + 内边距；每级要多缩进多少 */
+  --nl-ol-pad: var(--size-4-6);
+  --nl-ol-indent: calc(var(--nav-item-children-margin-start, var(--nav-item-children-margin-left)) + var(--nav-indentation-guide-width)
+    + var(--nav-item-children-padding-start, var(--nav-item-children-padding-left)));
+  --nl-ol-extra: calc(28px - var(--nl-ol-indent));
 }
 body:not(.nl-outline-marker, .nl-outline-native) .workspace-leaf-content[data-type="outline"] .view-content {
   isolation: isolate;
 }
 body:not(.nl-outline-marker, .nl-outline-native) .workspace-leaf-content[data-type="outline"] .tree-item {
   position: relative;
+  --nl-ol-shift: calc(28px - var(--nl-ol-pad) + var(--nl-d) * var(--nl-ol-extra));
 }
 body:not(.nl-outline-marker, .nl-outline-native) .workspace-leaf-content[data-type="outline"] .tree-item-self {
   margin: 0;
   padding-block: 0;
-  padding-inline-start: 28px;
   white-space: nowrap;
 }
 body:not(.nl-outline-marker, .nl-outline-native) .workspace-leaf-content[data-type="outline"] .tree-item-self.is-active {
@@ -2003,14 +2015,15 @@ body:not(.nl-outline-marker, .nl-outline-native) .workspace-leaf-content[data-ty
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  margin-inline-start: var(--nl-ol-shift);
 }
 body:not(.nl-outline-marker, .nl-outline-native) .workspace-leaf-content[data-type="outline"] .tree-item-children {
-  position: relative;
-  margin-inline-start: 0;
-  padding-inline-start: 28px;
-  border-inline-start: none;
+  border-inline-start-color: transparent;
 }
-/* 骷髅(折叠后换成余烬红) */
+/* 骷髅(折叠后换成余烬红)；折叠箭头只隐藏图形、挪到骷髅底下，点骷髅照样折叠 / 展开 */
+body:not(.nl-outline-marker, .nl-outline-native) .workspace-leaf-content[data-type="outline"] .tree-item-self > .collapse-icon {
+  margin-inline-start: calc(var(--nl-ol-shift) - 21px);
+}
 body:not(.nl-outline-marker, .nl-outline-native) .workspace-leaf-content[data-type="outline"] .tree-item-self > .collapse-icon > .svg-icon {
   opacity: 0;
 }
@@ -2032,14 +2045,14 @@ body:not(.nl-outline-marker, .nl-outline-native) .workspace-leaf-content[data-ty
   background-image: var(--nl-ol-skull-x);
 }
 @supports (anchor-name: --nl-x) {
-  /* 每一级一根线：从父骷髅中心(容器左缘 +15、上方半行)往下，圆角拐到路径项骷髅左缘(容器左缘 +38.5，骷髅中心 +43)；
-     下端 bottom 由 outline_css 按深度生成的锚点规则给出 */
+  /* 每一级一根线：从父骷髅中心(父项左缘 + 15 + 深度 × 多出的缩进、父项那一行的中线)往下，圆角拐到路径项骷髅左缘
+     (父骷髅中心往右 23.5，路径项骷髅中心往右 28)；--nl-d 继承自父项 = 父项深度；下端 bottom 由 outline_css 按深度生成的锚点规则给出 */
   body:not(.nl-outline-marker, .nl-outline-native) .workspace-leaf-content[data-type="outline"] .tree-item-children::before {
     position: absolute;
     z-index: 1;
     box-sizing: border-box;
-    left: calc(15px - var(--nl-thread-w) / 2);
-    top: calc(var(--nl-ol-row) / -2);
+    left: calc(15px + var(--nl-d) * var(--nl-ol-extra) - var(--nl-thread-w) / 2);
+    top: calc(var(--nl-ol-row) / 2);
     width: calc(23.5px + var(--nl-thread-w) / 2);
     border-inline-start: var(--nl-thread-w) solid var(--nl-thread);
     border-bottom: var(--nl-thread-w) solid var(--nl-thread);
@@ -2059,7 +2072,7 @@ body:not(.nl-outline-marker, .nl-outline-native) .workspace-leaf-content[data-ty
   body:not(.nl-outline-marker, .nl-outline-native) .workspace-leaf-content[data-type="outline"] .tree-item::after {
     position: absolute;
     z-index: 1;
-    left: calc(-13px - var(--nl-thread-w) / 2);
+    left: calc(15px - var(--nl-ol-indent) + (var(--nl-d) - 1) * var(--nl-ol-extra) - var(--nl-thread-w) / 2);
     top: calc(var(--nl-ol-row) / -2);
     bottom: calc(var(--nl-ol-row) / 2);
     width: var(--nl-thread-w);
@@ -2070,7 +2083,7 @@ body:not(.nl-outline-marker, .nl-outline-native) .workspace-leaf-content[data-ty
     position: absolute;
     z-index: 1;
     box-sizing: border-box;
-    left: calc(-13px - var(--nl-thread-w) / 2);
+    left: calc(15px - var(--nl-ol-indent) + (var(--nl-d) - 1) * var(--nl-ol-extra) - var(--nl-thread-w) / 2);
     top: calc(var(--nl-ol-row) / -2);
     width: calc(23.5px + var(--nl-thread-w) / 2);
     height: calc(var(--nl-ol-row) + var(--nl-thread-w) / 2);
