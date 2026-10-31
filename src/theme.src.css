@@ -245,6 +245,17 @@ settings:
     min: 1.4
     max: 2.3
     step: 0.05
+-   id: file-line-width
+    title: Body width
+    title.zh: 正文宽度
+    description: Maximum width of the note text while Obsidian's "Readable line length" is on (default 46)
+    description.zh: 打开 Obsidian 的「限制行宽」时，正文的最大宽度(默认 46)
+    type: variable-number-slider
+    default: 46
+    min: 30
+    max: 90
+    step: 1
+    format: rem
 -   id: nl-align
     title: Body alignment
     title.zh: 正文对齐

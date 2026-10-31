@@ -84,7 +84,7 @@ Add `|noframe` after an image to leave that image unframed.
 | Atmosphere | Texture and its strength (1) · Lightning under the file list and its brightness (0.45) · Vignette and its strength (0.62) |
 | Ornaments | Title ornament · Heading ornaments · Ornamental horizontal rule · Callout decoration · Callout Latin labels · Card frames · Sidebar card spacing (8 px) · Themed or native callout icons · Folder icons (3 styles) · Outline style (3 styles) · Image style (3 styles) · Themed or native task checkboxes · Left-aligned H1 and note title |
 | Interface | Auto-hide view header · Auto-hide ribbon · Auto-hide vault switcher · Auto-collapse sidebar buttons (on). Hidden items reappear on hover. |
-| Typography | Chinese heading font (Noto Serif SC / Huiwen Mincho, installed separately / STSong) · Body line height (1.85) · Body alignment · CJK–Latin spacing · Latin curly quotes · Sans-serif interface |
+| Typography | Chinese heading font (Noto Serif SC / Huiwen Mincho, installed separately / STSong) · Body line height (1.85) · Body width (46rem, with Readable line length on) · Body alignment · CJK–Latin spacing · Latin curly quotes · Sans-serif interface |
 | Colours | Accent `#b3262e` · Links `#e8705f` · Brass `#d2b07a` · Lightning blue `#9dbbe8` · Note background `#0b1424` |
 
 ## Compatibility
