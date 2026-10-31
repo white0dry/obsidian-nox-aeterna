@@ -1300,7 +1300,10 @@ body.nl-autohide-vault:not(.is-mobile, .nl-no-deco-cards) .workspace-split.mod-l
   background-color: transparent;
   border-top-color: transparent;
 }
-body.nl-autohide-vault:not(.is-mobile) .workspace-split.mod-left-split > .workspace-sidedock-vault-profile:is(:hover, :has(.has-active-menu)) > * {
+/* 1.0.7 性能(用户：大纲里拖标题严重卡顿)：原来写成 :has(…)) > *——:has() 后面接通配符，浏览器把所有「:has() 后面还接着选择器」的规则
+   合成一套失效范围，有一条接通配符，任何一个 :has() 锚点被查到(拖动、滚动时到处都在发生)，它底下整棵子树都要重算。
+   写明仓库栏的两个子元素(仓库切换器、操作按钮)：拖动每帧 16 → 6ms，和去掉全部 :has() 一样 */
+body.nl-autohide-vault:not(.is-mobile) .workspace-split.mod-left-split > .workspace-sidedock-vault-profile:is(:hover, :has(.has-active-menu)) > :is(.workspace-drawer-vault-switcher, .workspace-drawer-vault-actions) {
   opacity: 1;
   transform: none;
   transition: opacity 200ms ease-out 180ms, transform 320ms cubic-bezier(0.22, 1, 0.36, 1) 120ms;
@@ -1723,13 +1726,30 @@ body .workspace-split.mod-root .workspace-tab-header-container .workspace-tab-he
   margin-left: -8px;
   background: @@ORN:deco-tab-mark@@ center / 16px 7px no-repeat;
 }
-.workspace .mod-root .workspace-tab-header-container .workspace-tab-header-inner::after {
+/* 1.0.7 性能(用户：大纲里拖标题严重卡顿)：原来分隔挂在每个标签右边，当前标签左邻那道靠 .workspace-tab-header:has(+ .is-active) 藏——
+   is-active 在 Obsidian 里到处在换(拖动时的落点线、大纲当前标题、文件列表当前行)，:has() 参数里有它，每换一次浏览器就沿祖先查 :has()，
+   碰上高层锚点就把几百个元素重算一遍。现在分隔挂在下一个标签的左边(标签之间没有缝，位置不变：[-2.5, +2.5]px)，第一个标签左边不画；
+   最后一个标签右边那道挂在它标题的 ::after 上(标题是 static，绝对定位按标签定位、不被标题的 overflow 裁)；竖向位置写死(原来的静态位置)。
+   当前标签两侧不画 = 它自己左边那道(原版就把当前标签的 inner::after 设成透明) + 下一个标签左边那道 + 它是最后一个时标题上那道，都不用 :has() */
+.workspace .mod-root .workspace-tab-header-container .workspace-tab-header-inner::after,
+.workspace .mod-root .workspace-tab-header-container .workspace-tab-header:last-child .workspace-tab-header-inner-title::after {
+  content: "";
+  position: absolute;
+  top: 10.1px;
   width: 5px;
   height: 16px;
-  inset-inline-end: -2.5px;
   background: @@ORN:deco-tab-sep@@ center / 5px 16px no-repeat;
+  pointer-events: none;
 }
-.workspace .mod-root .workspace-tab-header-container .workspace-tab-header:has(+ .workspace-tab-header.is-active) .workspace-tab-header-inner::after {
+.workspace .mod-root .workspace-tab-header-container .workspace-tab-header-inner::after {
+  inset-inline-end: auto;
+  inset-inline-start: -2.5px;
+}
+.workspace .mod-root .workspace-tab-header-container .workspace-tab-header:last-child .workspace-tab-header-inner-title::after {
+  inset-inline-end: -2.5px;
+}
+.workspace .mod-root .workspace-tab-header-container .workspace-tab-header:is(:first-child, .is-active, .is-active + .workspace-tab-header) .workspace-tab-header-inner::after,
+.workspace .mod-root .workspace-tab-header-container .workspace-tab-header.is-active .workspace-tab-header-inner-title::after {
   opacity: 0;
 }
 
@@ -1999,9 +2019,26 @@ body:not(.nl-folder-native) .nav-folder-title:hover > .collapse-icon::after {
 }
 /* 缩进线：鼠标所在那一项挂着的那条线亮成铜色(只亮直属的一条，不连带上级)；当前文件所在的那条染血红。
    不加 border-color 过渡：滚动时内容从鼠标下面划过、悬停项每隔几帧就换，过渡会让每帧都在重算样式
-   (实测文件列表滚动样式重算 90 → 50ms / 400 帧，效果不变，只是变色从渐变改成瞬间) */
-.nav-files-container .tree-item-children:has(> .tree-item > .tree-item-self.is-active) {
-  border-inline-start-color: color-mix(in srgb, var(--nl-crimson) 55%, transparent);
+   (实测文件列表滚动样式重算 90 → 50ms / 400 帧，效果不变，只是变色从渐变改成瞬间)。
+   1.0.7 性能(用户：大纲里拖标题严重卡顿)：血红那条原来写成 .tree-item-children:has(> .tree-item > .tree-item-self.is-active)，
+   is-active 在 Obsidian 里到处在换(拖动时的落点线、大纲当前标题、标签)，:has() 参数里有它，每换一次浏览器就沿祖先查 :has()。
+   现在由当前文件那一行自己画：::after 上下拉到很长，子级容器 overflow-y: clip 把它裁成正好父文件夹那一整段(横向不裁，行照样拉满宽)；
+   横向位置：行是 flex，绝对定位留 auto = 文字起点，往左退行首内边距 + 子级容器内边距 = 缩进线右缘，再 translate -100% 退一条线宽
+   (线宽按设备像素取整，125% 下 1px = 0.8px，translate 跟着取整后的宽度走，和原线重合)。叠在原线上面，所以这一段悬停时保持血红、不变铜色 */
+.nav-files-container .tree-item-children {
+  overflow-y: clip;
+}
+.nav-files-container .tree-item-children > .tree-item > .tree-item-self.is-active::after {
+  content: "";
+  position: absolute;
+  top: -100vh;
+  bottom: -100vh;
+  inset-inline-start: auto;
+  margin-inline-start: calc(-1 * (var(--size-4-6) + var(--nav-item-children-padding-start, var(--nav-item-children-padding-left))));
+  width: 0;
+  border-inline-start: var(--nav-indentation-guide-width) solid color-mix(in srgb, var(--nl-crimson) 55%, transparent);
+  translate: -100% 0;
+  pointer-events: none;
 }
 .nav-files-container .tree-item-children:has(> .tree-item > .tree-item-self:hover),
 body.nl-outline-marker .workspace-leaf-content[data-type="outline"] .tree-item-children:has(> .tree-item > .tree-item-self:hover) {
@@ -2042,8 +2079,14 @@ body:not(.nl-outline-marker, .nl-outline-native) .workspace-leaf-content[data-ty
 body:not(.nl-outline-marker, .nl-outline-native) .workspace-leaf-content[data-type="outline"] .view-content {
   isolation: isolate;
 }
+/* 1.0.7：虚拟列表的几层包装 div 比面板宽 9~10px，底下挂一条横向滚动条；收起长标题时溢出没了、滚动条消失，面板高 9px，
+   按面板定位的血线(下面 @supports 里)下端跟着动、又过渡一次。大纲行都是单行省略号，用不着横向滚动 */
+@supports (anchor-name: --nl-x) {
+  body:not(.nl-outline-marker, .nl-outline-native) .workspace-leaf-content[data-type="outline"] .view-content {
+    overflow-x: hidden;
+  }
+}
 body:not(.nl-outline-marker, .nl-outline-native) .workspace-leaf-content[data-type="outline"] .tree-item {
-  position: relative;
   --nl-ol-shift: calc(28px - var(--nl-ol-pad) + var(--nl-d) * var(--nl-ol-extra));
 }
 body:not(.nl-outline-marker, .nl-outline-native) .workspace-leaf-content[data-type="outline"] .tree-item-self {
@@ -2091,14 +2134,14 @@ body:not(.nl-outline-marker, .nl-outline-native) .workspace-leaf-content[data-ty
   background-image: var(--nl-ol-skull-x);
 }
 @supports (anchor-name: --nl-x) {
-  /* 每一级一根线：从父骷髅中心(父项左缘 + 15 + 深度 × 多出的缩进、父项那一行的中线)往下，圆角拐到路径项骷髅左缘
-     (父骷髅中心往右 23.5，路径项骷髅中心往右 28)；--nl-d 继承自父项 = 父项深度；下端 bottom 由 outline_css 按深度生成的锚点规则给出 */
+  /* 每一级一根线：从父骷髅中心(父项文字起点左边 13px、父项那一行的中线)往下，圆角拐到路径项骷髅左缘
+     (父骷髅中心往右 23.5，路径项骷髅中心往右 28)；--nl-d 继承自父项 = 父项深度(逐级流出的延迟用)。
+     1.0.7：.tree-item 不再定位，线按大纲滚动区 .view-content(Obsidian 写了内联 position: relative)定位，
+     上、左、下三边由 outline_css 按深度生成的锚点规则给出(收起 / 展开子项时父项高度变，原来按父项量的 bottom 跟着变、播出一次跳动) */
   body:not(.nl-outline-marker, .nl-outline-native) .workspace-leaf-content[data-type="outline"] .tree-item-children::before {
     position: absolute;
     z-index: 1;
     box-sizing: border-box;
-    left: calc(15px + var(--nl-d) * var(--nl-ol-extra) - var(--nl-thread-w) / 2);
-    top: calc(var(--nl-ol-row) / 2);
     width: calc(23.5px + var(--nl-thread-w) / 2);
     border-inline-start: var(--nl-thread-w) solid var(--nl-thread);
     border-bottom: var(--nl-thread-w) solid var(--nl-thread);
@@ -2114,7 +2157,10 @@ body:not(.nl-outline-marker, .nl-outline-native) .workspace-leaf-content[data-ty
   }
 }
 @supports not (anchor-name: --nl-x) {
-  /* 旧内核(无锚点定位)：每个兄弟各画一段竖线、路径项画拐角(同一级移动时会一段段重新生成) */
+  /* 旧内核(无锚点定位)：每个兄弟各画一段竖线、路径项画拐角(同一级移动时会一段段重新生成)；线段按各自的 .tree-item 定位 */
+  body:not(.nl-outline-marker, .nl-outline-native) .workspace-leaf-content[data-type="outline"] .tree-item {
+    position: relative;
+  }
   body:not(.nl-outline-marker, .nl-outline-native) .workspace-leaf-content[data-type="outline"] .tree-item::after {
     position: absolute;
     z-index: 1;
