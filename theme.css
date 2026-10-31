@@ -1288,7 +1288,8 @@ body.nl-autohide-ribbon:not(.is-mobile, .mod-rtl) .workspace-ribbon.mod-primary:
 
 /* 侧栏各面板顶上的按钮行(文件列表、大纲、书签、标签、反向链接、全部属性、同步历史……)收成一对蝙蝠翼
    (Style Settings「自动收起侧栏面板的按钮行」，默认开——和其他「自动隐藏」开关同一个方向：打开 = 收起；
-   默认值靠 Style Settings 的 class-toggle default: true 加类，没装 Style Settings 时按钮照原版常驻)。
+   1.0.8 起没装 / 没启用 Style Settings 时也按默认开：body 上没有插件启用时加的 css-settings-manager 就算开，
+   :is() 里两个选项都是单个类，特异性和原来的 body.nl-autohide-nav 一样)。
    仿 Baseline 的「Dot」：按钮行留在原处，收起时每个按钮的图标尺寸、内边距、间距都归零，行高 40 → 22px，
    正中画一对连在一起的蝙蝠翼(ornaments.nav_wings，36×10，遮罩铺 --icon-color，和别的图标一样暗、悬停变亮)。
    鼠标移上去 0.1s 后展开：双翼张大淡出，按钮从正中往两边长出来(按钮行本来就居中排，宽度一长自然向两侧铺开)，
@@ -1300,33 +1301,33 @@ body.nl-autohide-ribbon:not(.is-mobile, .mod-rtl) .workspace-ribbon.mod-primary:
    DOM 照 1.14 app.js(QL 类)：.nav-header > .nav-buttons-container > .nav-action-button；.nav-header 大多是
    .workspace-leaf-content 的直接子元素，但反向链接面板的在 .view-content 里，所以用后代选择器、限定在侧栏
    (.mod-sidedock，笔记底部嵌入的反向链接不动)。搜索面板顶上是搜索框本身、不用这套结构，不受影响。手机版不动 */
-body.nl-autohide-nav:not(.is-mobile) .workspace-split.mod-sidedock .workspace-leaf-content .nav-header {
+body:is(.nl-autohide-nav, :not(.css-settings-manager)):not(.is-mobile) .workspace-split.mod-sidedock .workspace-leaf-content .nav-header {
   padding-block: 6px;
   transition: padding 240ms cubic-bezier(0.65, 0, 0.35, 1) 360ms;
 }
-body.nl-autohide-nav:not(.is-mobile) .workspace-split.mod-sidedock .workspace-leaf-content .nav-header > .nav-buttons-container {
+body:is(.nl-autohide-nav, :not(.css-settings-manager)):not(.is-mobile) .workspace-split.mod-sidedock .workspace-leaf-content .nav-header > .nav-buttons-container {
   position: relative;
   min-height: 10px;
   gap: 0;
   transition: gap 240ms cubic-bezier(0.65, 0, 0.35, 1) 360ms;
 }
-body.nl-autohide-nav:not(.is-mobile) .workspace-split.mod-sidedock .workspace-leaf-content .nav-header > .nav-buttons-container > .nav-action-button {
+body:is(.nl-autohide-nav, :not(.css-settings-manager)):not(.is-mobile) .workspace-split.mod-sidedock .workspace-leaf-content .nav-header > .nav-buttons-container > .nav-action-button {
   padding: 0;
   opacity: 0;
   transform: scale(0.6);
   transition: padding 240ms cubic-bezier(0.65, 0, 0.35, 1) 360ms, opacity 120ms ease-in 300ms, transform 180ms ease-in 300ms,
     color 150ms, background-color 150ms;
 }
-body.nl-autohide-nav:not(.is-mobile) .workspace-split.mod-sidedock .workspace-leaf-content .nav-header > .nav-buttons-container > .nav-action-button > svg {
+body:is(.nl-autohide-nav, :not(.css-settings-manager)):not(.is-mobile) .workspace-split.mod-sidedock .workspace-leaf-content .nav-header > .nav-buttons-container > .nav-action-button > svg {
   width: 0;
   height: 0;
   transition: width 240ms cubic-bezier(0.65, 0, 0.35, 1) 360ms, height 240ms cubic-bezier(0.65, 0, 0.35, 1) 360ms;
 }
-body.nl-autohide-nav:not(.is-mobile) .workspace-split.mod-sidedock .workspace-leaf-content .nav-header > .search-input-container {
+body:is(.nl-autohide-nav, :not(.css-settings-manager)):not(.is-mobile) .workspace-split.mod-sidedock .workspace-leaf-content .nav-header > .search-input-container {
   margin-top: 10px;
   transition: margin-top 240ms cubic-bezier(0.65, 0, 0.35, 1) 360ms;
 }
-body.nl-autohide-nav:not(.is-mobile) .workspace-split.mod-sidedock .workspace-leaf-content .nav-header > .nav-buttons-container::before {
+body:is(.nl-autohide-nav, :not(.css-settings-manager)):not(.is-mobile) .workspace-split.mod-sidedock .workspace-leaf-content .nav-header > .nav-buttons-container::before {
   content: "";
   position: absolute;
   inset: 0;
@@ -1339,43 +1340,43 @@ body.nl-autohide-nav:not(.is-mobile) .workspace-split.mod-sidedock .workspace-le
   mask: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9Ii05Ni44IC0zNC45IDE5My43IDUzLjciPjxwYXRoIGQ9Ik0tOTYuODQsLTI0LjkyQy04MS4xMCwtMjQuNzYgLTYzLjAwLC0xMC43MiAtNjEuNzAsNS4yMEMtNDcuNzgsLTQuNzEgLTM2LjExLDIuNTEgLTIzLjk5LDE4Ljg0Qy0yMS42OSw4LjkzIC0xMi43NywyLjkxIC0wLjQ3LDUuNjdMMC4xMywtNi41NUMtMTQuMDEsLTAuOTQgLTMxLjI1LC0xMS4wMSAtMjkuMzIsLTI4LjMwQy01MS41MiwtMzcuNzMgLTc3Ljc3LC0zNy4zMyAtOTYuODQsLTI0LjkyWk05Ni44NCwtMjQuOTJDNzcuNzcsLTM3LjMzIDUxLjUyLC0zNy43MyAyOS4zMiwtMjguMzBDMzEuMjUsLTExLjAxIDE0LjAxLC0wLjk0IC0wLjEzLC02LjU1TDAuNDcsNS42N0MxMi43NywyLjkxIDIxLjY5LDguOTMgMjMuOTksMTguODRDMzYuMTEsMi41MSA0Ny43OCwtNC43MSA2MS43MCw1LjIwQzYzLjAwLC0xMC43MiA4MS4xMCwtMjQuNzYgOTYuODQsLTI0LjkyWk0wLjQ3LDUuNjcgTDAuMTMsLTYuNTUgTC0wLjEzLC02LjU1IEwtMC40Nyw1LjY3WiIgZmlsbD0iIzAwMCIvPjwvc3ZnPg==") center / contain no-repeat;
   transition: opacity 220ms ease-out 480ms, transform 320ms cubic-bezier(0.22, 1, 0.36, 1) 480ms, background-color 150ms;
 }
-body.nl-autohide-nav:not(.is-mobile) .workspace-split.mod-sidedock .workspace-leaf-content .nav-header:hover > .nav-buttons-container::before {
+body:is(.nl-autohide-nav, :not(.css-settings-manager)):not(.is-mobile) .workspace-split.mod-sidedock .workspace-leaf-content .nav-header:hover > .nav-buttons-container::before {
   background-color: var(--icon-color-hover);
 }
 /* 展开 */
-body.nl-autohide-nav:not(.is-mobile) .workspace-split.mod-sidedock .workspace-leaf-content .nav-header:is(:hover, :has(.has-active-menu)) {
+body:is(.nl-autohide-nav, :not(.css-settings-manager)):not(.is-mobile) .workspace-split.mod-sidedock .workspace-leaf-content .nav-header:is(:hover, :has(.has-active-menu)) {
   padding-block: var(--size-4-2);
   transition: padding 300ms cubic-bezier(0.22, 1, 0.36, 1) 100ms;
 }
-body.nl-autohide-nav:not(.is-mobile) .workspace-split.mod-sidedock .workspace-leaf-content .nav-header:is(:hover, :has(.has-active-menu)) > .nav-buttons-container {
+body:is(.nl-autohide-nav, :not(.css-settings-manager)):not(.is-mobile) .workspace-split.mod-sidedock .workspace-leaf-content .nav-header:is(:hover, :has(.has-active-menu)) > .nav-buttons-container {
   gap: var(--size-2-1);
   transition: gap 300ms cubic-bezier(0.22, 1, 0.36, 1) 100ms;
 }
-body.nl-autohide-nav:not(.is-mobile) .workspace-split.mod-sidedock .workspace-leaf-content .nav-header:is(:hover, :has(.has-active-menu)) > .nav-buttons-container > .nav-action-button {
+body:is(.nl-autohide-nav, :not(.css-settings-manager)):not(.is-mobile) .workspace-split.mod-sidedock .workspace-leaf-content .nav-header:is(:hover, :has(.has-active-menu)) > .nav-buttons-container > .nav-action-button {
   padding: var(--size-2-2) var(--size-2-3);
   opacity: 1;
   transform: none;
   transition: padding 300ms cubic-bezier(0.22, 1, 0.36, 1) 100ms, opacity 180ms ease-out 160ms,
     transform 380ms cubic-bezier(0.34, 1.56, 0.64, 1) 100ms, color 150ms, background-color 150ms;
 }
-body.nl-autohide-nav:not(.is-mobile) .workspace-split.mod-sidedock .workspace-leaf-content .nav-header:is(:hover, :has(.has-active-menu)) > .nav-buttons-container > .nav-action-button > svg {
+body:is(.nl-autohide-nav, :not(.css-settings-manager)):not(.is-mobile) .workspace-split.mod-sidedock .workspace-leaf-content .nav-header:is(:hover, :has(.has-active-menu)) > .nav-buttons-container > .nav-action-button > svg {
   width: var(--icon-size);
   height: var(--icon-size);
   transition: width 300ms cubic-bezier(0.22, 1, 0.36, 1) 100ms, height 300ms cubic-bezier(0.22, 1, 0.36, 1) 100ms;
 }
-body.nl-autohide-nav:not(.is-mobile) .workspace-split.mod-sidedock .workspace-leaf-content .nav-header:is(:hover, :has(.has-active-menu)) > .search-input-container {
+body:is(.nl-autohide-nav, :not(.css-settings-manager)):not(.is-mobile) .workspace-split.mod-sidedock .workspace-leaf-content .nav-header:is(:hover, :has(.has-active-menu)) > .search-input-container {
   margin-top: 4px;
   transition: margin-top 300ms cubic-bezier(0.22, 1, 0.36, 1) 100ms;
 }
-body.nl-autohide-nav:not(.is-mobile) .workspace-split.mod-sidedock .workspace-leaf-content .nav-header:is(:hover, :has(.has-active-menu)) > .nav-buttons-container::before {
+body:is(.nl-autohide-nav, :not(.css-settings-manager)):not(.is-mobile) .workspace-split.mod-sidedock .workspace-leaf-content .nav-header:is(:hover, :has(.has-active-menu)) > .nav-buttons-container::before {
   opacity: 0;
   transform: scale(1.8, 1.4);
   transition: opacity 140ms ease-out 100ms, transform 220ms ease-out 100ms, background-color 150ms;
 }
 @media (prefers-reduced-motion: reduce) {
-  body.nl-autohide-nav:not(.is-mobile) .workspace-split.mod-sidedock .workspace-leaf-content .nav-header,
-  body.nl-autohide-nav:not(.is-mobile) .workspace-split.mod-sidedock .workspace-leaf-content .nav-header *,
-  body.nl-autohide-nav:not(.is-mobile) .workspace-split.mod-sidedock .workspace-leaf-content .nav-header > .nav-buttons-container::before {
+  body:is(.nl-autohide-nav, :not(.css-settings-manager)):not(.is-mobile) .workspace-split.mod-sidedock .workspace-leaf-content .nav-header,
+  body:is(.nl-autohide-nav, :not(.css-settings-manager)):not(.is-mobile) .workspace-split.mod-sidedock .workspace-leaf-content .nav-header *,
+  body:is(.nl-autohide-nav, :not(.css-settings-manager)):not(.is-mobile) .workspace-split.mod-sidedock .workspace-leaf-content .nav-header > .nav-buttons-container::before {
     transition-duration: 0s !important;
   }
 }

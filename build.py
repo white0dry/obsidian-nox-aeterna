@@ -19,7 +19,7 @@ sys.path.insert(0, str(ROOT / "tools"))
 import ornaments as O  # noqa: E402
 
 THEME_NAME = "Nox Aeterna"
-VERSION = "1.0.7"
+VERSION = "1.0.8"
 VAULT = Path(r"C:\Users\DELL\Documents\Obsidian Vault")
 DIST = ROOT
 
