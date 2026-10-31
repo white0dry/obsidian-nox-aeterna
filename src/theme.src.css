@@ -1859,6 +1859,41 @@ body.is-hidden-frameless:not(.is-fullscreen, .mod-macos, .nl-no-deco-cards) .tit
 body.is-hidden-frameless:not(.is-fullscreen, .mod-macos, .nl-no-deco-cards) .workspace-tabs.mod-top-right-space .workspace-tab-header-container {
   padding-right: calc(var(--size-4-2) + var(--frame-right-space) + 20px);
 }
+/* 1.0.6 macOS(标题栏隐藏)：红绿灯原位(关闭键框左上 14, 12)压在左上卡片的角花上；右侧栏开关 position: fixed 贴窗口右上角、
+   带不透明底，整块盖住右上卡片的角花。只能在 Windows 上模拟(body 换 mod-macos、按源码公式画假灯)，没在真 mac 上验过。
+   红绿灯位置是 Obsidian 读 body 的 --traffic-lights-offset-x/y 算的(app.js updateStatus：关闭键框 = (floor(X/2 − 8) + 2, floor(Y/2 − 8))，
+   框 14×16、三个灯共宽 52)，只在窗口缩放和 css-change(换主题、Style Settings)时重读；读到的是字符串，calc() 解析不了，
+   所以用 @property 注册成 <length>，计算值才是算好的 px。
+   红绿灯挪到左上角花右边(第一面旗原来的位置：卡片左缘往里 26px)、和标签图标同一中线(同 Windows 窗口按钮)，左上卡片的标签行让到灯后面；
+   左栏收起时左上那组换成主区的标签栏，红绿灯不会跟着动(开关侧栏不触发重读)，--frame-left-space 按灯的位置让出。
+   右侧栏开关(右栏开着时 app.js 把它挪进右栏顶上那组的标签栏)照 Windows 窗口按钮：底色透明、往下挪到标签图标中线、左移让出右上角花 */
+@property --traffic-lights-offset-x {
+  syntax: "<length>";
+  inherits: true;
+  initial-value: 40px;
+}
+@property --traffic-lights-offset-y {
+  syntax: "<length>";
+  inherits: true;
+  initial-value: 40px;
+}
+body.mod-macos.is-hidden-frameless:not(.is-fullscreen, .is-popout-window, .is-popout-modal, .is-mobile, .mod-rtl, .mod-system-rtl, .nl-no-deco-cards) {
+  --nl-tl-x: calc(var(--nl-card-gap) + 26px);   /* 关闭键框左缘离功能栏右缘 */
+  --traffic-lights-offset-x: calc(2 * (var(--frame-ribbon-left) + var(--nl-tl-x) + 6px));
+  --traffic-lights-offset-y: calc(2 * (var(--nl-card-edge) + var(--nl-card-pad) + 20.5px));
+  --frame-left-space: calc(var(--nl-tl-x) + 52px);
+}
+body.mod-macos.is-hidden-frameless:not(.is-fullscreen, .is-popout-window, .is-popout-modal, .is-mobile, .mod-rtl, .mod-system-rtl, .nl-no-deco-cards) .workspace-split.mod-sidedock > .workspace-tabs.mod-top-left-space > .workspace-tab-header-container {
+  padding-left: calc(26px + 52px + 8px - 20px);
+}
+body.mod-macos.is-hidden-frameless:not(.is-fullscreen, .is-popout-window, .is-popout-modal, .is-mobile, .mod-rtl, .mod-system-rtl, .nl-no-deco-cards) .workspace-split.mod-right-split > .workspace-tabs.mod-top-right-space .sidebar-toggle-button.mod-secondary {
+  top: calc(var(--nl-card-edge) + var(--nl-card-pad) + 0.5px);
+  inset-inline-end: calc(var(--nl-card-gap) + 14px);
+  background-color: transparent;
+}
+body.mod-macos.is-hidden-frameless:not(.is-fullscreen, .is-popout-window, .is-popout-modal, .is-mobile, .mod-rtl, .mod-system-rtl, .nl-no-deco-cards) .workspace-split.mod-right-split > .workspace-tabs.mod-top-right-space > .workspace-tab-header-container {
+  padding-right: calc(44px + 14px);
+}
 body:not(.nl-no-deco-cards) .workspace-split.mod-sidedock .workspace-leaf-resize-handle {
   border-color: transparent;
 }
