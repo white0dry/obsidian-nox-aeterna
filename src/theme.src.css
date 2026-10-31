@@ -1830,6 +1830,12 @@ body:not(.nl-no-deco-cards) .workspace-split.mod-sidedock .workspace-tab-header-
   background: none;
   border-bottom: none;
 }
+/* 1.0.7 侧栏开关进了卡片标签栏时(app.js updateFrameless：mac 隐藏标题栏或功能栏隐藏 → 左栏开关挪到左栏顶上那组标签栏最后；
+   Windows 不隐藏标题栏 → 右栏开关挪到右栏顶上那组最后)，贴着标签栏右端、压在右上角花上：右内边距同左边让出 20px。
+   窗口按钮那组(.mod-top-right-space)另有规则 */
+body:not(.nl-no-deco-cards) .workspace-split.mod-sidedock .workspace-tab-header-container {
+  padding-inline-end: calc(var(--size-4-2) + 20px);
+}
 body:not(.nl-no-deco-cards) .workspace-split.mod-sidedock .workspace-tab-header-container-inner {
   margin-top: -3px;
   padding-top: 10px;
